@@ -1,0 +1,953 @@
+[
+  {
+    "id": "A",
+    "symbol": "🤚",
+    "category": "Alphabet",
+    "label": "A",
+    "meaning": "Letter A",
+    "hindi": "अक्षर अ",
+    "kind": "static",
+    "steps": [
+      "Make a fist with your dominant hand.",
+      "Fold all fingers tightly over your palm.",
+      "Hold your thumb resting against the side of your index finger.",
+      "Keep the fist upright facing forward."
+    ],
+    "tip": "Keep fingers firmly closed — do not let the thumb stick up."
+  },
+  {
+    "id": "B",
+    "symbol": "✋",
+    "category": "Alphabet",
+    "label": "B",
+    "meaning": "Letter B",
+    "hindi": "अक्षर ब",
+    "kind": "static",
+    "steps": [
+      "Extend all four fingers straight up, held together.",
+      "Bend your thumb flat across your palm.",
+      "Hold the hand upright with palm facing forward."
+    ],
+    "tip": "Fingers must be straight and touching each other."
+  },
+  {
+    "id": "C",
+    "symbol": "🤏",
+    "category": "Alphabet",
+    "label": "C",
+    "meaning": "Letter C",
+    "hindi": "अक्षर स",
+    "kind": "static",
+    "steps": [
+      "Curve all fingers and thumb to form a 'C' shape.",
+      "Face the opening of the C to the side.",
+      "Fingers and thumb should be parallel and curved."
+    ],
+    "tip": "Imagine holding a small cylinder — that is the C shape."
+  },
+  {
+    "id": "D",
+    "symbol": "☝️",
+    "category": "Alphabet",
+    "label": "D",
+    "meaning": "Letter D",
+    "hindi": "अक्षर ड",
+    "kind": "static",
+    "steps": [
+      "Extend your index finger straight up.",
+      "Touch the tips of your middle, ring, and pinky fingers to your thumb tip.",
+      "Face the hand forward with index finger pointing up."
+    ],
+    "tip": "The circle formed by thumb and fingers is the round part of 'D'."
+  },
+  {
+    "id": "E",
+    "symbol": "🤙",
+    "category": "Alphabet",
+    "label": "E",
+    "meaning": "Letter E",
+    "hindi": "अक्षर इ",
+    "kind": "static",
+    "steps": [
+      "Bend all four fingers down so their tips touch the upper palm.",
+      "Fold your thumb inward under the bent fingers.",
+      "Hold the hand with knuckles facing outward."
+    ],
+    "tip": "The bent fingers resemble the horizontal lines of the letter E."
+  },
+  {
+    "id": "F",
+    "symbol": "👌",
+    "category": "Alphabet",
+    "label": "F",
+    "meaning": "Letter F",
+    "hindi": "अक्षर फ",
+    "kind": "static",
+    "steps": [
+      "Touch the tip of your index finger to the tip of your thumb, forming a circle.",
+      "Extend your other three fingers straight out and slightly spread.",
+      "Hold the hand upright facing forward."
+    ],
+    "tip": "Similar to the OK sign but with three fingers spread wide."
+  },
+  {
+    "id": "G",
+    "symbol": "👉",
+    "category": "Alphabet",
+    "label": "G",
+    "meaning": "Letter G",
+    "hindi": "अक्षर ग",
+    "kind": "static",
+    "steps": [
+      "Extend your index finger pointing to the side (horizontally).",
+      "Extend your thumb pointing in the same direction.",
+      "Curl remaining fingers into the palm.",
+      "Hold hand sideways with thumb and index parallel."
+    ],
+    "tip": "Think of a gun pointing sideways — that is G."
+  },
+  {
+    "id": "H",
+    "symbol": "🖖",
+    "category": "Alphabet",
+    "label": "H",
+    "meaning": "Letter H",
+    "hindi": "अक्षर ह",
+    "kind": "static",
+    "steps": [
+      "Extend your index and middle finger together, pointing to the side.",
+      "Keep the two fingers side-by-side horizontally.",
+      "Curl ring, pinky, and thumb into the palm."
+    ],
+    "tip": "The two horizontal fingers represent the two strokes of 'H'."
+  },
+  {
+    "id": "I",
+    "symbol": "🤙",
+    "category": "Alphabet",
+    "label": "I",
+    "meaning": "Letter I",
+    "hindi": "अक्षर ई",
+    "kind": "static",
+    "steps": [
+      "Extend only your pinky finger straight up.",
+      "Curl all other fingers into a fist.",
+      "Keep the pinky pointing upward."
+    ],
+    "tip": "Only the smallest finger — the I finger — stands up."
+  },
+  {
+    "id": "J",
+    "symbol": "🤙",
+    "category": "Alphabet",
+    "label": "J",
+    "meaning": "Letter J",
+    "hindi": "अक्षर ज",
+    "kind": "dynamic",
+    "steps": [
+      "Start with the pinky extended (like I).",
+      "Trace the shape of the letter J in the air with your pinky.",
+      "Move down, then curve left (or right for left-handers)."
+    ],
+    "tip": "J is a movement sign — trace the shape smoothly in the air."
+  },
+  {
+    "id": "K",
+    "symbol": "✌️",
+    "category": "Alphabet",
+    "label": "K",
+    "meaning": "Letter K",
+    "hindi": "अक्षर क",
+    "kind": "static",
+    "steps": [
+      "Extend your index finger pointing upward.",
+      "Extend your middle finger diagonally outward.",
+      "Place your thumb between the index and middle finger.",
+      "Curl ring and pinky into the palm."
+    ],
+    "tip": "The spread index and middle fingers look like the two diagonal strokes of K."
+  },
+  {
+    "id": "L",
+    "symbol": "👆",
+    "category": "Alphabet",
+    "label": "L",
+    "meaning": "Letter L",
+    "hindi": "अक्षर ल",
+    "kind": "static",
+    "steps": [
+      "Extend your index finger pointing straight up.",
+      "Extend your thumb pointing horizontally to the side.",
+      "Curl remaining fingers into the palm.",
+      "The hand forms an L shape."
+    ],
+    "tip": "Very intuitive — your hand literally makes the letter L."
+  },
+  {
+    "id": "M",
+    "symbol": "✊",
+    "category": "Alphabet",
+    "label": "M",
+    "meaning": "Letter M",
+    "hindi": "अक्षर म",
+    "kind": "static",
+    "steps": [
+      "Make a fist with the thumb tucked inside.",
+      "Drape three fingers (index, middle, ring) over the thumb.",
+      "Keep pinky folded in."
+    ],
+    "tip": "Three fingers over the thumb — three humps of M."
+  },
+  {
+    "id": "N",
+    "symbol": "✊",
+    "category": "Alphabet",
+    "label": "N",
+    "meaning": "Letter N",
+    "hindi": "अक्षर न",
+    "kind": "static",
+    "steps": [
+      "Tuck thumb inside a fist.",
+      "Drape only index and middle finger over the thumb.",
+      "Keep ring and pinky folded in."
+    ],
+    "tip": "Two fingers — two humps of N."
+  },
+  {
+    "id": "O",
+    "symbol": "👌",
+    "category": "Alphabet",
+    "label": "O",
+    "meaning": "Letter O",
+    "hindi": "अक्षर ओ",
+    "kind": "static",
+    "steps": [
+      "Curve all fingers and bring their tips to meet the thumb tip.",
+      "Form a rounded O shape.",
+      "Hold the hand so the O faces forward."
+    ],
+    "tip": "Make a circle with all your fingers touching the thumb."
+  },
+  {
+    "id": "P",
+    "symbol": "👇",
+    "category": "Alphabet",
+    "label": "P",
+    "meaning": "Letter P",
+    "hindi": "अक्षर प",
+    "kind": "static",
+    "steps": [
+      "Extend index finger pointing downward.",
+      "Extend middle finger pointing outward/diagonal.",
+      "Place thumb between index and middle.",
+      "Face the hand downward (rotated K)."
+    ],
+    "tip": "P is K rotated so the index finger points down."
+  },
+  {
+    "id": "Q",
+    "symbol": "👇",
+    "category": "Alphabet",
+    "label": "Q",
+    "meaning": "Letter Q",
+    "hindi": "अक्षर क्यू",
+    "kind": "static",
+    "steps": [
+      "Extend index finger pointing downward.",
+      "Extend thumb pointing downward alongside it.",
+      "Curl remaining fingers into the palm.",
+      "Hold with both extended fingers pointing down."
+    ],
+    "tip": "G rotated downward — both index and thumb point down."
+  },
+  {
+    "id": "R",
+    "symbol": "🤞",
+    "category": "Alphabet",
+    "label": "R",
+    "meaning": "Letter R",
+    "hindi": "अक्षर आर",
+    "kind": "static",
+    "steps": [
+      "Extend your index and middle finger.",
+      "Cross the middle finger over the index finger.",
+      "Keep ring and pinky curled. Thumb folded.",
+      "Hold crossed fingers upright."
+    ],
+    "tip": "Crossed fingers — like crossing your fingers for luck — is R."
+  },
+  {
+    "id": "S",
+    "symbol": "✊",
+    "category": "Alphabet",
+    "label": "S",
+    "meaning": "Letter S",
+    "hindi": "अक्षर एस",
+    "kind": "static",
+    "steps": [
+      "Make a fist.",
+      "Wrap fingers over the thumb so the thumb is visible at the side.",
+      "Keep the fist tight with knuckles facing out."
+    ],
+    "tip": "A tight fist with thumb wrapped by fingers, not inside."
+  },
+  {
+    "id": "T",
+    "symbol": "✊",
+    "category": "Alphabet",
+    "label": "T",
+    "meaning": "Letter T",
+    "hindi": "अक्षर टी",
+    "kind": "static",
+    "steps": [
+      "Make a fist.",
+      "Place your thumb between your index and middle finger tips.",
+      "The thumb tip should poke out between those fingers."
+    ],
+    "tip": "Thumb tip pokes between index and middle finger."
+  },
+  {
+    "id": "U",
+    "symbol": "✌️",
+    "category": "Alphabet",
+    "label": "U",
+    "meaning": "Letter U",
+    "hindi": "अक्षर यू",
+    "kind": "static",
+    "steps": [
+      "Extend your index and middle fingers together, pointing upward.",
+      "Keep the two fingers side-by-side and straight.",
+      "Curl thumb, ring, and pinky into the palm."
+    ],
+    "tip": "Two straight fingers together pointing up — like the sides of U."
+  },
+  {
+    "id": "V",
+    "symbol": "✌️",
+    "category": "Alphabet",
+    "label": "V",
+    "meaning": "Letter V",
+    "hindi": "अक्षर वी",
+    "kind": "static",
+    "steps": [
+      "Extend your index and middle fingers in a V shape (spread apart).",
+      "Point both fingers upward.",
+      "Curl remaining fingers and thumb into the palm."
+    ],
+    "tip": "The classic victory/peace sign — V for victory."
+  },
+  {
+    "id": "W",
+    "symbol": "🖖",
+    "category": "Alphabet",
+    "label": "W",
+    "meaning": "Letter W",
+    "hindi": "अक्षर डब्ल्यू",
+    "kind": "static",
+    "steps": [
+      "Extend index, middle, and ring fingers spread apart upward.",
+      "Keep thumb and pinky folded.",
+      "Three spread fingers form the three points of W."
+    ],
+    "tip": "Three spread fingers like a trident — W shape."
+  },
+  {
+    "id": "X",
+    "symbol": "☝️",
+    "category": "Alphabet",
+    "label": "X",
+    "meaning": "Letter X",
+    "hindi": "अक्षर एक्स",
+    "kind": "static",
+    "steps": [
+      "Extend your index finger.",
+      "Bend/hook it at the middle joint so it curves.",
+      "Curl remaining fingers and thumb into the palm."
+    ],
+    "tip": "A hooked index finger that looks like a bent X."
+  },
+  {
+    "id": "Y",
+    "symbol": "🤙",
+    "category": "Alphabet",
+    "label": "Y",
+    "meaning": "Letter Y",
+    "hindi": "अक्षर वाई",
+    "kind": "static",
+    "steps": [
+      "Extend your thumb pointing to the side.",
+      "Extend your pinky pointing upward.",
+      "Curl index, middle, and ring fingers into the palm."
+    ],
+    "tip": "Thumb and pinky extended — the classic 'hang loose' / call-me gesture."
+  },
+  {
+    "id": "Z",
+    "symbol": "☝️",
+    "category": "Alphabet",
+    "label": "Z",
+    "meaning": "Letter Z",
+    "hindi": "अक्षर ज़ेड",
+    "kind": "dynamic",
+    "steps": [
+      "Extend your index finger.",
+      "Trace a Z shape in the air: move right, diagonally down-left, then right again.",
+      "Keep remaining fingers curled."
+    ],
+    "tip": "Z is a movement sign — trace the zigzag shape of the letter."
+  },
+  {
+    "id": "N1",
+    "symbol": "☝️",
+    "category": "Number",
+    "label": "1",
+    "meaning": "Number 1",
+    "hindi": "एक (1)",
+    "kind": "static",
+    "steps": [
+      "Extend only your index finger pointing straight up.",
+      "Curl all other fingers and your thumb into the palm."
+    ],
+    "tip": "One finger = one."
+  },
+  {
+    "id": "N2",
+    "symbol": "✌️",
+    "category": "Number",
+    "label": "2",
+    "meaning": "Number 2",
+    "hindi": "दो (2)",
+    "kind": "static",
+    "steps": [
+      "Extend your index and middle fingers upward, spread apart in a V shape.",
+      "Curl thumb, ring, and pinky into the palm."
+    ],
+    "tip": "Two fingers spread = two."
+  },
+  {
+    "id": "N3",
+    "symbol": "🤟",
+    "category": "Number",
+    "label": "3",
+    "meaning": "Number 3",
+    "hindi": "तीन (3)",
+    "kind": "static",
+    "steps": [
+      "Extend thumb, index, and middle fingers.",
+      "Keep ring and pinky curled into the palm.",
+      "Spread the three extended fingers slightly."
+    ],
+    "tip": "Three fingers out — easy to remember."
+  },
+  {
+    "id": "N4",
+    "symbol": "🖖",
+    "category": "Number",
+    "label": "4",
+    "meaning": "Number 4",
+    "hindi": "चार (4)",
+    "kind": "static",
+    "steps": [
+      "Extend all four fingers (index, middle, ring, pinky) upward.",
+      "Curl thumb into the palm.",
+      "Keep four fingers straight and together."
+    ],
+    "tip": "Four fingers up, thumb hidden."
+  },
+  {
+    "id": "N5",
+    "symbol": "🖐️",
+    "category": "Number",
+    "label": "5",
+    "meaning": "Number 5",
+    "hindi": "पाँच (5)",
+    "kind": "static",
+    "steps": [
+      "Spread all five fingers wide open, palm facing forward.",
+      "Keep all fingers and thumb extended."
+    ],
+    "tip": "Open palm with all fingers spread = five."
+  },
+  {
+    "id": "N6",
+    "symbol": "🤙",
+    "category": "Number",
+    "label": "6",
+    "meaning": "Number 6",
+    "hindi": "छह (6)",
+    "kind": "static",
+    "steps": [
+      "Extend thumb and pinky, curl index, middle, and ring fingers.",
+      "This is the same as Y/hang-loose for 6 in ISL number system.",
+      "Some regional variants: tap pinky to thumb."
+    ],
+    "tip": "Thumb and pinky out — the 6 handshape."
+  },
+  {
+    "id": "N7",
+    "symbol": "🤘",
+    "category": "Number",
+    "label": "7",
+    "meaning": "Number 7",
+    "hindi": "सात (7)",
+    "kind": "static",
+    "steps": [
+      "Extend index and pinky fingers upward (like rock-on sign).",
+      "Curl middle and ring fingers into the palm.",
+      "Thumb may be extended or curled depending on regional variation."
+    ],
+    "tip": "Rock-on sign with thumb tucked = 7."
+  },
+  {
+    "id": "N8",
+    "symbol": "🤌",
+    "category": "Number",
+    "label": "8",
+    "meaning": "Number 8",
+    "hindi": "आठ (8)",
+    "kind": "static",
+    "steps": [
+      "Extend middle finger and thumb, touch their tips together.",
+      "Keep index slightly extended or bent; ring and pinky curled.",
+      "Some regions: open F-hand with middle finger flicking down."
+    ],
+    "tip": "Middle finger and thumb touching = 8."
+  },
+  {
+    "id": "N9",
+    "symbol": "🤏",
+    "category": "Number",
+    "label": "9",
+    "meaning": "Number 9",
+    "hindi": "नौ (9)",
+    "kind": "static",
+    "steps": [
+      "Touch index finger tip to thumb tip to form a circle.",
+      "Extend middle, ring, and pinky fingers upward.",
+      "This is similar to the F-handshape used for 9."
+    ],
+    "tip": "Circle of index+thumb = 9."
+  },
+  {
+    "id": "N10",
+    "symbol": "🤙",
+    "category": "Number",
+    "label": "10",
+    "meaning": "Number 10",
+    "hindi": "दस (10)",
+    "kind": "dynamic",
+    "steps": [
+      "Make a fist (0 or A shape) with the dominant hand.",
+      "Shake or wiggle the hand/thumb to indicate 'ten'.",
+      "Some variants: show 1 then 0 in sequence."
+    ],
+    "tip": "A shake of the fist or sequential 1-0 represents 10."
+  },
+  {
+    "id": "G1",
+    "symbol": "🙏",
+    "category": "Greeting",
+    "label": "Namaste",
+    "meaning": "Hello / Greetings",
+    "hindi": "नमस्ते",
+    "kind": "static",
+    "steps": [
+      "Bring both palms together in front of your chest.",
+      "Keep fingers pointing upward, thumbs close to the chest.",
+      "Slight bow of the head is optional but adds warmth."
+    ],
+    "tip": "The universal Indian greeting — palms together at chest level."
+  },
+  {
+    "id": "G2",
+    "symbol": "👋",
+    "category": "Greeting",
+    "label": "Hello",
+    "meaning": "Hello",
+    "hindi": "हैलो",
+    "kind": "dynamic",
+    "steps": [
+      "Open your dominant hand flat, palm facing outward.",
+      "Hold the hand at shoulder or head height.",
+      "Wave side to side gently 2–3 times."
+    ],
+    "tip": "A friendly open-palm wave at shoulder height."
+  },
+  {
+    "id": "G3",
+    "symbol": "🙏",
+    "category": "Greeting",
+    "label": "Thank You",
+    "meaning": "Thank You",
+    "hindi": "धन्यवाद",
+    "kind": "dynamic",
+    "steps": [
+      "Bring your dominant hand flat, fingers together.",
+      "Touch the fingertips to your chin.",
+      "Move the hand forward and slightly downward away from the chin."
+    ],
+    "tip": "The hand moves from chin outward — gratitude flowing outward."
+  },
+  {
+    "id": "G4",
+    "symbol": "😊",
+    "category": "Greeting",
+    "label": "Good Morning",
+    "meaning": "Good Morning",
+    "hindi": "सुप्रभात",
+    "kind": "dynamic",
+    "steps": [
+      "Hold both hands at chest level, palms up.",
+      "Move both hands upward and outward to shoulder level.",
+      "Open them like a sunrise."
+    ],
+    "tip": "Imagine the sun rising — hands lift and open outward."
+  },
+  {
+    "id": "G5",
+    "symbol": "🌙",
+    "category": "Greeting",
+    "label": "Good Night",
+    "meaning": "Good Night",
+    "hindi": "शुभ रात्रि",
+    "kind": "dynamic",
+    "steps": [
+      "Cup your dominant hand over your non-dominant fist.",
+      "Bring both hands down from eye level to chest level.",
+      "Close your eyes briefly (optional) to convey night."
+    ],
+    "tip": "Hands come down like night descending."
+  },
+  {
+    "id": "G6",
+    "symbol": "👏",
+    "category": "Greeting",
+    "label": "Welcome",
+    "meaning": "Welcome",
+    "hindi": "स्वागत है",
+    "kind": "dynamic",
+    "steps": [
+      "Extend both arms forward, palms up.",
+      "Sweep both hands inward toward your body in a welcoming gesture."
+    ],
+    "tip": "Arms open outward then sweep in — welcoming someone in."
+  },
+  {
+    "id": "G7",
+    "symbol": "👋",
+    "category": "Greeting",
+    "label": "Goodbye",
+    "meaning": "Goodbye / Farewell",
+    "hindi": "विदाई / अलविदा",
+    "kind": "dynamic",
+    "steps": [
+      "Open your dominant hand wide, palm facing the other person.",
+      "Wave it side to side 2–3 times at shoulder height.",
+      "Alternatively, move the hand away from the body while waving."
+    ],
+    "tip": "Similar to Hello wave, but slightly more final — the hand often moves away."
+  },
+  {
+    "id": "G8",
+    "symbol": "🤝",
+    "category": "Greeting",
+    "label": "Nice to meet you",
+    "meaning": "Nice to meet you",
+    "hindi": "आपसे मिलकर अच्छा लगा",
+    "kind": "dynamic",
+    "steps": [
+      "Extend both hands forward, palms facing each other.",
+      "Bring them together once in a gentle handshake motion.",
+      "Nod head slightly while doing this."
+    ],
+    "tip": "A brief two-hand clasp or handshake motion with a nod."
+  },
+  {
+    "id": "W1",
+    "symbol": "❤️",
+    "category": "Common",
+    "label": "Love",
+    "meaning": "Love / I love you",
+    "hindi": "प्यार",
+    "kind": "static",
+    "steps": [
+      "Extend thumb, index finger, and pinky.",
+      "Curl middle and ring fingers into the palm.",
+      "Hold the hand up — this is also the ASL 'I love you' hand.",
+      "In ISL: you may also cross both hands over the chest."
+    ],
+    "tip": "Thumb, index, and pinky extended — a universally recognised love sign."
+  },
+  {
+    "id": "W2",
+    "symbol": "✅",
+    "category": "Common",
+    "label": "Yes",
+    "meaning": "Yes",
+    "hindi": "हाँ",
+    "kind": "dynamic",
+    "steps": [
+      "Make a fist with your dominant hand.",
+      "Nod the fist up and down at wrist level, mimicking a head nod."
+    ],
+    "tip": "The fist nods 'yes' just like your head would."
+  },
+  {
+    "id": "W3",
+    "symbol": "❌",
+    "category": "Common",
+    "label": "No",
+    "meaning": "No",
+    "hindi": "नहीं",
+    "kind": "dynamic",
+    "steps": [
+      "Extend your index and middle fingers together.",
+      "Tap them against your extended thumb, opening and closing quickly.",
+      "This creates a snapping motion."
+    ],
+    "tip": "Index and middle finger snap against thumb — like a quick 'no no no'."
+  },
+  {
+    "id": "W4",
+    "symbol": "🙏",
+    "category": "Common",
+    "label": "Please",
+    "meaning": "Please",
+    "hindi": "कृपया",
+    "kind": "dynamic",
+    "steps": [
+      "Place your dominant hand flat on your chest, palm inward.",
+      "Move the hand in a circular motion on your chest (clockwise)."
+    ],
+    "tip": "A circular rub on the chest — humble and sincere."
+  },
+  {
+    "id": "W5",
+    "symbol": "😐",
+    "category": "Common",
+    "label": "Sorry",
+    "meaning": "Sorry / Apology",
+    "hindi": "माफ करें",
+    "kind": "dynamic",
+    "steps": [
+      "Make a fist with your dominant hand.",
+      "Place it on your chest.",
+      "Rub it in a circular motion on your chest."
+    ],
+    "tip": "A fist rubbing the chest — feeling of regret over the heart."
+  },
+  {
+    "id": "W6",
+    "symbol": "🏠",
+    "category": "Common",
+    "label": "Home",
+    "meaning": "Home / House",
+    "hindi": "घर",
+    "kind": "static",
+    "steps": [
+      "Bring fingertips together above palm to make a rooftop shape.",
+      "Both hands can form the roof peak with touching fingertips.",
+      "Then sweep hands apart and downward for the walls (optional)."
+    ],
+    "tip": "Fingertips touching above form the roof of a house."
+  },
+  {
+    "id": "W7",
+    "symbol": "🍽️",
+    "category": "Common",
+    "label": "Food / Eat",
+    "meaning": "Food / I want to eat",
+    "hindi": "खाना",
+    "kind": "dynamic",
+    "steps": [
+      "Bring all fingertips of dominant hand together.",
+      "Bring the pinched fingers to your mouth repeatedly.",
+      "This mimics eating food."
+    ],
+    "tip": "Fingers pinched together move to the mouth — universal eating gesture."
+  },
+  {
+    "id": "W8",
+    "symbol": "💧",
+    "category": "Common",
+    "label": "Water",
+    "meaning": "Water / I need water",
+    "hindi": "पानी",
+    "kind": "dynamic",
+    "steps": [
+      "Extend your index, middle, and ring fingers.",
+      "Tap your index finger to your chin twice.",
+      "Some variations: make a W handshape and tap chin."
+    ],
+    "tip": "Tapping the chin with two or three fingers means water."
+  },
+  {
+    "id": "W9",
+    "symbol": "🚽",
+    "category": "Common",
+    "label": "Toilet",
+    "meaning": "I need the toilet / Bathroom",
+    "hindi": "शौचालय",
+    "kind": "dynamic",
+    "steps": [
+      "Make a T handshape (thumb between index and middle fingers).",
+      "Shake the hand slightly side to side."
+    ],
+    "tip": "T handshape shaken = toilet. A very useful sign in daily life."
+  },
+  {
+    "id": "W10",
+    "symbol": "🩺",
+    "category": "Common",
+    "label": "Doctor",
+    "meaning": "Doctor / I need a doctor",
+    "hindi": "डॉक्टर",
+    "kind": "static",
+    "steps": [
+      "Place the fingertips of your dominant hand on the inside wrist of your other hand.",
+      "Mimic checking a pulse."
+    ],
+    "tip": "Two fingers on the wrist — feeling for a pulse = doctor."
+  },
+  {
+    "id": "W11",
+    "symbol": "👨‍👩‍👧",
+    "category": "Common",
+    "label": "Family",
+    "meaning": "Family",
+    "hindi": "परिवार",
+    "kind": "dynamic",
+    "steps": [
+      "Make an F handshape with both hands (index to thumb).",
+      "Place them together in front, thumbs touching.",
+      "Rotate both hands outward in a circle until pinkies touch."
+    ],
+    "tip": "Both F-hands circle outward — the family circle."
+  },
+  {
+    "id": "W12",
+    "symbol": "🏫",
+    "category": "Common",
+    "label": "School",
+    "meaning": "School",
+    "hindi": "स्कूल",
+    "kind": "dynamic",
+    "steps": [
+      "Hold non-dominant hand palm up.",
+      "Clap dominant hand down onto it twice."
+    ],
+    "tip": "Two claps on the open palm — teacher clapping for attention in class."
+  },
+  {
+    "id": "W13",
+    "symbol": "📖",
+    "category": "Common",
+    "label": "Book",
+    "meaning": "Book / Read",
+    "hindi": "किताब",
+    "kind": "dynamic",
+    "steps": [
+      "Hold both hands together, palms touching (closed book).",
+      "Open them outward like opening a book."
+    ],
+    "tip": "Hands open like a book — simple and visual."
+  },
+  {
+    "id": "W14",
+    "symbol": "🤒",
+    "category": "Common",
+    "label": "Pain / Hurt",
+    "meaning": "Pain / I am in pain",
+    "hindi": "दर्द",
+    "kind": "dynamic",
+    "steps": [
+      "Extend both index fingers.",
+      "Point them toward each other and twist them in opposite directions near the painful body part."
+    ],
+    "tip": "Two index fingers twisting toward each other — the twisting shows pain."
+  },
+  {
+    "id": "W15",
+    "symbol": "😊",
+    "category": "Common",
+    "label": "Happy",
+    "meaning": "Happy / I am happy",
+    "hindi": "खुश",
+    "kind": "dynamic",
+    "steps": [
+      "Place your dominant hand flat on your chest, palm inward.",
+      "Brush it upward twice in a quick, light motion."
+    ],
+    "tip": "Happiness rising from the heart upward."
+  },
+  {
+    "id": "W16",
+    "symbol": "😢",
+    "category": "Common",
+    "label": "Sad",
+    "meaning": "Sad / I am sad",
+    "hindi": "दुखी",
+    "kind": "dynamic",
+    "steps": [
+      "Hold both hands open with fingertips pointing toward your face.",
+      "Draw both hands downward along your cheeks (like tears falling)."
+    ],
+    "tip": "Hands mimicking tears streaming down the cheeks."
+  },
+  {
+    "id": "W17",
+    "symbol": "🚨",
+    "category": "Common",
+    "label": "Help",
+    "meaning": "Help / I need help",
+    "hindi": "मदद",
+    "kind": "dynamic",
+    "steps": [
+      "Place your dominant hand in an A-shape (fist, thumb up) on your non-dominant flat palm.",
+      "Lift both hands upward together."
+    ],
+    "tip": "One fist lifted by the flat palm — being lifted up = help."
+  },
+  {
+    "id": "W18",
+    "symbol": "🚗",
+    "category": "Common",
+    "label": "Go",
+    "meaning": "Go / Let us go",
+    "hindi": "जाओ / चलो",
+    "kind": "dynamic",
+    "steps": [
+      "Extend both index fingers pointing forward.",
+      "Move both hands forward away from the body."
+    ],
+    "tip": "Both index fingers point and move in the direction of travel."
+  },
+  {
+    "id": "W19",
+    "symbol": "🛑",
+    "category": "Common",
+    "label": "Stop",
+    "meaning": "Stop",
+    "hindi": "रुको",
+    "kind": "dynamic",
+    "steps": [
+      "Hold your non-dominant hand flat, palm up.",
+      "Bring the edge of your dominant hand down sharply onto the non-dominant palm."
+    ],
+    "tip": "A sharp karate-chop onto the open palm = stop."
+  },
+  {
+    "id": "W20",
+    "symbol": "❓",
+    "category": "Common",
+    "label": "What",
+    "meaning": "What?",
+    "hindi": "क्या?",
+    "kind": "dynamic",
+    "steps": [
+      "Extend all fingers, palm facing up.",
+      "Shake the hand side to side with a questioning expression."
+    ],
+    "tip": "Open palm shaking side to side with a quizzical look = what?"
+  }
+]

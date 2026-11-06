@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10172b">
+  <title>SignBridge — ISL Communication</title>
+  <link rel="stylesheet" href="/styles.css?v=20261106_2">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="SignBridge home"><span class="brand-mark">S</span><span>sign<span class="brand-accent">bridge</span><small>ISL COMMUNICATION</small></span></a>
+      <nav class="navigation" aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-link" data-page="recognition"><span>◉</span> Live recognition</button>
+        <button class="nav-link" data-page="communication"><span>↔</span> Two-way communication</button>
+        <button class="nav-link" data-page="emergency"><span>✚</span> Emergency</button>
+        <button class="nav-link" data-page="learning"><span>✳</span> AI learning mode</button>
+        <button class="nav-link" data-page="dictionary"><span>▤</span> Gesture dictionary</button>
+        <button class="nav-link" data-page="isl-reference"><span>🤟</span> ISL Reference</button>
+        <button class="nav-link" data-page="gesture-learn"><span>📚</span> Gesture Learning</button>
+        <button class="nav-link" data-page="history"><span>◷</span> Conversation history</button>
+        <button class="nav-link" data-page="settings"><span>⚙</span> Settings</button>
+      </nav>
+      <div class="sidebar-note"><span class="live-dot"></span><span id="service-status">Connecting to local AI…</span></div>
+      <div class="privacy-note"><span>⌑</span><p>Private by design<br><small>Camera frames are processed locally.</small></p></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Workspace</span><b>/</b><strong id="page-title">Dashboard</strong></div>
+        <div class="top-actions">
+          <label class="language-select" for="speech-language">◉ <select id="speech-language" aria-label="Speech language"><option value="en-US">English</option><option value="hi-IN">हिन्दी</option></select></label>
+          <button id="theme-toggle" class="icon-button" aria-label="Toggle light theme" title="Toggle theme">☼</button>
+          <div class="avatar" aria-label="Local user">SB</div>
+        </div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="welcome-row">
+          <div><p class="eyebrow">YOUR ACCESSIBLE COMMUNICATION SPACE</p><h1>Good day <span class="wave">✦</span></h1><p class="muted">A bridge between Indian Sign Language and spoken communication.</p></div>
+          <button class="button button-primary" data-go="recognition">Start a conversation <span>→</span></button>
+        </div>
+        <div class="notice"><span>ⓘ</span><div><strong>Transparent recognition</strong><p>Sign recognition starts with an empty, user-managed dataset. It only identifies gestures after sufficient labelled examples are collected and validated.</p></div><button class="text-button" data-go="learning">Build your dataset →</button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-icon blue">◉</span><div><span class="muted">Gesture classes</span><strong id="stat-gestures">—</strong><small>in your local dictionary</small></div></article>
+          <article class="stat-card"><span class="stat-icon purple">✓</span><div><span class="muted">Validated classes</span><strong id="stat-ready">—</strong><small>eligible for recognition</small></div></article>
+          <article class="stat-card"><span class="stat-icon green">◷</span><div><span class="muted">Saved conversations</span><strong id="stat-history">—</strong><small>stored on this device</small></div></article>
+          <article class="stat-card"><span class="stat-icon amber">◎</span><div><span class="muted">Camera status</span><strong id="stat-camera">Off</strong><small>permission required</small></div></article>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">QUICK ACCESS</p><h2>Choose a communication mode</h2></div></div>
+        <div class="quick-grid">
+          <button class="quick-card" data-go="recognition"><span class="quick-icon blue">◉</span><strong>Sign to speech</strong><span>Recognise labelled gestures and speak your sentence.</span><b>Open recognition →</b></button>
+          <button class="quick-card" data-go="communication"><span class="quick-icon purple">↔</span><strong>Two-way conversation</strong><span>Combine sign recognition with live spoken captions.</span><b>Start communicating →</b></button>
+          <button class="quick-card" data-go="emergency"><span class="quick-icon red">✚</span><strong>Emergency phrases</strong><span>Speak a frequently needed phrase with one tap.</span><b>View phrases →</b></button>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">RECENT ACTIVITY</p><h2>Latest conversations</h2></div><button class="text-button" data-go="history">View history →</button></div>
+        <div class="activity-card" id="recent-activity"><p class="empty-state">Your saved conversations will appear here.</p></div>
+      </section>
+
+      <section class="page" id="page-recognition">
+        <div class="page-heading"><div><p class="eyebrow">CAMERA-BASED LANDMARK ANALYSIS</p><h1>Live sign recognition</h1><p class="muted">Frame-by-frame hand tracking with confidence-gated, locally collected gesture samples.</p></div><span id="camera-badge" class="status-badge">● Camera off</span></div>
+        <div class="recognition-layout">
+          <article class="panel camera-panel"><div class="panel-heading"><div><h2>Live camera</h2><p>Center your hands in the frame</p></div><span id="hand-status" class="status-badge">No hand detected</span></div><div class="camera-frame"><video id="camera-video" playsinline muted></video><canvas id="landmark-canvas"></canvas><div class="camera-placeholder" id="camera-placeholder"><span>◉</span><strong>Camera preview</strong><small>Allow camera access to start landmark tracking.</small></div><div class="camera-overlay"><span id="face-status">Face landmarks: waiting</span><span>LOCAL PROCESSING</span></div></div><div class="camera-controls"><button id="camera-start" class="button button-primary">Start camera</button><button id="camera-stop" class="button button-secondary" disabled>Stop camera</button><span class="muted small">A connected hand diagram appears when detected. Gesture names require validated examples.</span></div></article>
+          <article class="panel result-panel"><div class="panel-heading"><div><h2>Recognition result</h2><p>Uncertain predictions are not shown as confirmed.</p></div><span class="confidence-label">AI confidence</span></div><div class="result-box"><span id="recognition-icon" class="result-symbol">✳</span><strong id="recognized-word">Gesture not recognised</strong><span id="recognition-detail">Create and validate gesture samples in AI Learning Mode.</span></div><div class="alphabet-output"><div><span class="eyebrow">ISL FINGERSPELLING</span><strong id="alphabet-word">Checking model…</strong><p id="alphabet-detail">Loading the local alphabet recognizer.</p></div><label class="check-option"><input id="auto-add-letters" type="checkbox" checked> Add stable letters to sentence</label></div><button class="text-button" data-go="learning">Set up gesture labels →</button><div class="confidence-row"><span>Confidence</span><strong id="confidence-value">—</strong></div><div class="confidence-track"><span id="confidence-bar"></span></div>          <div class="recognition-controls"><label class="check-option"><input id="auto-add" type="checkbox" checked> Add stable signs to sentence</label><div class="button-row"><button id="speak-sentence" class="button button-primary">▶ Speak</button><button id="pause-speech" class="button button-secondary">Ⅱ Pause</button><button id="replay-speech" class="button button-secondary">↻ Replay</button></div></div><p class="privacy-small">Confidence is a similarity score, not a calibrated probability. Recognition requires 8 training samples, 2 validation samples, and 2 contributors per gesture.</p></article>
+        </div>
+        <article class="panel phrase-panel" id="phrase-panel" aria-live="polite">
+          <div class="panel-heading"><div><h2>Phrase ideas</h2><p id="phrase-status">Show a recognized A–Z letter to see matching ideas. These are suggestions, not translations.</p></div></div>
+          <div class="phrase-list" id="phrase-list"></div>
+          <div class="phrase-controls">
+            <label class="check-option"><input id="pointing-controls" type="checkbox"> Enable index-pointing navigation</label>
+            <label class="check-option"><input id="phrase-blink-controls" type="checkbox"> Double-blink to select and speak</label>
+            <div class="button-row"><button id="phrase-prev" class="button button-secondary" disabled>← Previous idea</button><button id="phrase-next" class="button button-secondary" disabled>Next idea →</button><button id="phrase-use" class="button button-primary" disabled>Use &amp; speak selected</button></div>
+            <span class="privacy-small">Hands-free controls are off until enabled. Arrow keys and these buttons remain available. Eye data is analyzed locally and not saved.</span>
+          </div>
+        </article>
+        <article class="panel sentence-panel"><div class="panel-heading"><div><h2>Build your sentence</h2><p>Edit the recognized words before sharing.</p></div><span class="sentence-count" id="sentence-count">0 characters</span></div><textarea id="sentence-text" rows="3" placeholder="Recognized words will appear here. You can also type or edit a sentence."></textarea><div class="sentence-actions"><button id="copy-sentence" class="button button-secondary">Copy text</button><button id="clear-sentence" class="button button-quiet">Clear</button><button id="save-sentence" class="button button-quiet">Save conversation</button></div></article>
+      </section>
+
+      <section class="page" id="page-communication">
+        <div class="page-heading"><div><p class="eyebrow">SIGN ↔ SPEECH</p><h1>Two-way communication</h1><p class="muted">Use the camera for signs and your microphone for live captions.</p></div></div>
+        <div class="communication-grid">
+          <article class="panel"><div class="panel-heading"><div><h2>Sign → spoken language</h2><p>Recognized signs flow into your editable sentence.</p></div><span class="quick-icon blue">◉</span></div><div class="compact-camera" id="compact-camera-state">Start camera from Live recognition to begin.</div><button class="button button-primary" data-go="recognition">Open live recognition →</button></article>
+          <article class="panel"><div class="panel-heading"><div><h2>Speech → live captions</h2><p>Browser speech recognition; audio is not uploaded.</p></div><span class="quick-icon purple">♫</span></div><div class="caption-box" id="caption-output" aria-live="polite">Live captions will appear here.</div><div class="button-row"><button id="speech-start" class="button button-primary">Start microphone</button><button id="speech-stop" class="button button-secondary" disabled>Stop</button></div><p class="privacy-small" id="speech-support">Checking browser speech-recognition support…</p></article>
+        </div>
+        <article class="panel sentence-panel"><div class="panel-heading"><div><h2>Caption transcript</h2><button id="save-caption" class="text-button">Save transcript</button></div></div><textarea id="caption-transcript" rows="5" placeholder="Final speech captions will be collected here."></textarea></article>
+      </section>
+
+      <section class="page" id="page-emergency">
+        <div class="page-heading"><div><p class="eyebrow">QUICK, CLEAR COMMUNICATION</p><h1>Emergency phrases</h1><p class="muted">Tap a phrase to display it prominently and speak it aloud.</p></div><button id="custom-phrase-button" class="button button-secondary">＋ Add custom phrase</button></div>
+        <div class="emergency-banner"><span>✚</span><div><strong>Need immediate assistance?</strong><p>Select a phrase below. Audio uses your browser's speech engine and selected language.</p></div></div>
+        <div class="emergency-grid" id="emergency-grid"></div>
+        <div class="panel emergency-display" id="emergency-display"><span>SELECTED MESSAGE</span><strong id="emergency-text">Choose a phrase to display it here</strong><button id="emergency-speak" class="button button-primary" disabled>▶ Speak phrase</button></div>
+      </section>
+
+      <section class="page" id="page-learning">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">CONTROLLED DATASET MANAGEMENT</p>
+            <h1>AI learning mode</h1>
+            <p class="muted">Record live training examples with your webcam. Position hands in frame and record when ready.</p>
+          </div>
+          <span id="learning-camera-badge" class="status-badge">● Camera off</span>
+        </div>
+
+        <div class="learning-layout">
+          <!-- Left Column: Camera Preview & Hand Landmark View -->
+          <article class="panel camera-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Learning Camera Preview</h2>
+                <p id="learning-camera-message">Center your hands in the frame to record samples</p>
+              </div>
+              <span id="learning-hand-status" class="status-badge">No hand detected</span>
+            </div>
+            <div class="camera-frame learning-camera-frame">
+              <video id="learning-camera-video" playsinline muted></video>
+              <canvas id="learning-landmark-canvas"></canvas>
+              <div class="camera-placeholder" id="learning-camera-placeholder">
+                <span>◉</span>
+                <strong>AI Learning Camera</strong>
+                <small>Click "Start Camera" below to see live hand landmarks and record examples.</small>
+              </div>
+              <div class="camera-overlay">
+                <span id="learning-hand-label">Waiting for hands</span>
+                <span>LOCAL PROCESSING</span>
+              </div>
+            </div>
+            <div class="camera-controls">
+              <button id="learning-camera-start" class="button button-primary">Start camera</button>
+              <button id="learning-camera-stop" class="button button-secondary" disabled>Stop camera</button>
+              <span class="muted small" id="learning-fps-status">Both hands supported</span>
+            </div>
+          </article>
+
+          <!-- Right Column: Record Sample Form -->
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Record an example</h2>
+                <p>Record training and validation samples for your gesture</p>
+              </div>
+              <span class="quick-icon purple">✳</span>
+            </div>
+            <label>Gesture class *
+              <select id="sample-gesture">
+                <option value="">Select a class</option>
+              </select>
+            </label>
+            <div class="form-grid" style="margin-bottom:0">
+              <label>Target Hand
+                <select id="sample-target-hand">
+                  <option value="any">Any / Auto (Detected)</option>
+                  <option value="Both">Both Hands</option>
+                  <option value="Right">Right Hand</option>
+                  <option value="Left">Left Hand</option>
+                </select>
+              </label>
+              <label>Dataset split *
+                <select id="sample-split">
+                  <option value="train">Training sample (min 8)</option>
+                  <option value="validation">Validation sample (min 2)</option>
+                </select>
+              </label>
+            </div>
+            <label>Contributor / signer ID *
+              <input id="signer-id" maxlength="80" placeholder="e.g. signer_1" value="signer_1">
+            </label>
+            <div class="button-row" style="margin-top:16px;flex-wrap:wrap">
+              <button id="record-sample" class="button button-primary" disabled>Record landmarks now</button>
+              <button id="record-countdown-btn" class="button button-secondary" disabled>⏱ 3s Countdown</button>
+              <span id="sample-countdown" class="muted small"></span>
+            </div>
+            <label class="check-option training-blink-option"><input id="learning-blink-controls" type="checkbox"> Double-blink to save current landmark sample</label>
+            <div class="sample-status-box" id="sample-status-box" style="margin-top:12px;padding:8px 12px;background:var(--surface-soft);border-radius:8px;font-size:11px;color:var(--muted)">
+              Hand status: <strong id="sample-hand-indicator">Camera off</strong>
+            </div>
+            <p class="privacy-small">Only hand landmarks are saved; no camera photos or video are recorded. Requires 8 training samples, 2 validation samples, and 2 unique contributors before a class becomes eligible for recognition.</p>
+          </article>
+        </div>
+
+        <!-- Create Gesture Class Form Panel -->
+        <article class="panel" style="margin-bottom:15px">
+          <div class="panel-heading">
+            <div>
+              <h2>Create a new gesture class</h2>
+              <p>Define a new class name, meaning, and movement type to collect samples for</p>
+            </div>
+            <span class="quick-icon blue">＋</span>
+          </div>
+          <form id="gesture-form" class="form-grid">
+            <label>Gesture name<input id="gesture-label" required maxlength="80" placeholder="e.g. Namaste or Open palm"></label>
+            <label>Meaning<input id="gesture-meaning" required maxlength="200" placeholder="e.g. Hello / Greetings"></label>
+            <label>Spoken language<select id="gesture-language"><option value="en">English</option><option value="hi">Hindi</option></select></label>
+            <label>Gesture category<input id="gesture-category" maxlength="50" value="daily"></label>
+            <label>Gesture type<select id="gesture-kind"><option value="static">Static hand shape</option><option value="dynamic">Dynamic movement</option></select></label>
+            <button class="button button-primary" type="submit" style="height:38px;align-self:flex-end">Create gesture class</button>
+          </form>
+        </article>
+
+        <article class="panel dataset-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Your gesture dataset</h2>
+              <p>Classes become eligible for recognition when requirements are met.</p>
+            </div>
+            <button id="refresh-gestures" class="text-button">↻ Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Gesture</th>
+                  <th>Type</th>
+                  <th>Samples</th>
+                  <th>Train / validation</th>
+                  <th>Contributors</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="gesture-table">
+                <tr><td colspan="7" class="empty-state">No gesture classes collected yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="page" id="page-dictionary">
+        <div class="page-heading">
+          <div><p class="eyebrow">COMPLETE ISL VOCABULARY</p><h1>Gesture dictionary</h1><p class="muted">Browse all ISL reference gestures, or view your locally collected gestures.</p></div>
+          <button class="button button-primary" data-go="learning">&#65291; Add gesture</button>
+        </div>
+        <div class="dict-tabs">
+          <button class="dict-tab active" data-dtab="isl">ISL Reference <span class="dict-tab-count">62</span></button>
+          <button class="dict-tab" data-dtab="user">My collected <span class="dict-tab-count" id="dict-user-count">0</span></button>
+        </div>
+        <div class="search-row">
+          <input id="dictionary-search" type="search" placeholder="Search gesture, meaning or Hindi&#8230;" aria-label="Search gestures">
+          <span id="dictionary-count" class="muted"></span>
+        </div>
+        <div class="dictionary-grid" id="dictionary-grid"><p class="empty-state">Loading&#8230;</p></div>
+      </section>
+
+      <section class="page" id="page-history">
+        <div class="page-heading"><div><p class="eyebrow">LOCAL CONVERSATION LOG</p><h1>Conversation history</h1><p class="muted">Search, review, or remove conversations saved on this device.</p></div><button id="clear-history" class="button button-danger">Clear history</button></div>
+        <div class="search-row"><input id="history-search" type="search" placeholder="Search saved conversations…" aria-label="Search history"><span id="history-count" class="muted"></span></div><div class="history-list" id="history-list"><p class="empty-state">No saved conversations.</p></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-heading"><div><p class="eyebrow">PERSONALIZE YOUR EXPERIENCE</p><h1>Settings</h1><p class="muted">Manage language, appearance, privacy, and local data.</p></div></div>
+        <div class="settings-grid"><article class="panel"><h2>Speech language</h2><p class="muted">Used by text-to-speech and speech recognition.</p><label>Preferred language<select id="settings-language"><option value="en-US">English (India)</option><option value="hi-IN">Hindi (India)</option></select></label></article><article class="panel"><h2>Appearance</h2><p class="muted">Choose a comfortable dashboard theme.</p><button id="settings-theme" class="button button-secondary">Toggle light / dark theme</button></article><article class="panel"><h2>Privacy & data</h2><p class="muted">Gesture samples and history are saved in your configured MySQL database. Camera frames and microphone audio are processed in your browser/local service and are not intentionally persisted.</p><p class="privacy-small">Use anonymized contributor IDs. Back up your MySQL <code>signbridge</code> database regularly.</p></article><article class="panel"><h2>System status</h2><p id="system-status" class="muted">Checking local backend…</p><p class="privacy-small">Speech features depend on browser support and may need network access depending on the browser engine.</p></article></div>
+      </section>
+      <section class="page" id="page-isl-reference">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">INDIAN SIGN LANGUAGE REFERENCE</p>
+            <h1>ISL Gesture Guide</h1>
+            <p class="muted">Public reference dictionary. Add new gestures, edit meanings, and save changes permanently.</p>
+          </div>
+          <div class="isl-header-buttons">
+            <button class="button button-primary" id="isl-add-gesture-btn">＋ Add New Gesture</button>
+            <button class="button button-secondary" id="isl-reset-btn" title="Reset to standard 64 ISL gestures">↺ Reset Defaults</button>
+          </div>
+        </div>
+        <div class="isl-filter-row">
+          <input id="isl-search" type="search" placeholder="Search gestures, meanings, or categories…" aria-label="Search ISL reference">
+          <div class="isl-category-pills" id="isl-category-pills"></div>
+          <span id="isl-count" class="muted"></span>
+        </div>
+        <div class="isl-grid" id="isl-grid">
+          <p class="empty-state">Loading ISL reference…</p>
+        </div>
+
+        <!-- View Detail modal -->
+        <div id="isl-modal-overlay" class="isl-modal-overlay" hidden style="display:none">
+          <div class="isl-modal" role="dialog" aria-modal="true" aria-labelledby="isl-modal-title">
+            <div class="isl-modal-header">
+              <div>
+                <span class="isl-modal-symbol" id="isl-modal-symbol"></span>
+                <div>
+                  <h2 id="isl-modal-title"></h2>
+                  <span class="tag" id="isl-modal-tag"></span>
+                </div>
+              </div>
+              <button id="isl-modal-close" class="icon-button" aria-label="Close" onclick="closeIslModal()">&#x2715;</button>
+            </div>
+            <div class="isl-modal-body">
+              <div class="isl-meaning-row">
+                <div><span class="eyebrow">MEANING</span><p id="isl-modal-meaning"></p></div>
+                <div><span class="eyebrow">HINDI</span><p id="isl-modal-hindi"></p></div>
+              </div>
+              <div class="isl-steps-section">
+                <p class="eyebrow">HOW TO SIGN</p>
+                <ol id="isl-modal-steps" class="isl-steps"></ol>
+              </div>
+              <div class="isl-tips-section" id="isl-tips-section">
+                <p class="eyebrow">TIPS</p>
+                <p id="isl-modal-tip" class="muted"></p>
+              </div>
+              <div id="isl-modal-photo-section" class="isl-photo-section" hidden>
+                <p class="eyebrow">GESTURE PHOTOS</p>
+                <div id="isl-modal-photos" class="isl-photo-grid"></div>
+              </div>
+              <div class="isl-practice-row">
+                <button class="button button-primary" id="isl-go-learn">Train this gesture →</button>
+                <button class="button button-secondary" id="isl-speak-meaning">▶ Speak meaning</button>
+                <button class="button button-secondary" id="isl-modal-edit-btn">✏️ Edit Gesture</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add / Edit Gesture Modal -->
+        <div id="isl-edit-modal-overlay" class="isl-modal-overlay" hidden style="display:none">
+          <div class="isl-modal" role="dialog" aria-modal="true" aria-labelledby="isl-edit-modal-title">
+            <div class="isl-modal-header">
+              <div>
+                <h2 id="isl-edit-modal-title">Add New ISL Gesture</h2>
+                <p class="muted small">This gesture will be saved in your local ISL dictionary.</p>
+              </div>
+              <button id="isl-edit-modal-close" class="icon-button" aria-label="Close" onclick="closeIslEditModal()">&#x2715;</button>
+            </div>
+            <form id="isl-gesture-form" class="isl-edit-form">
+              <input type="hidden" id="isl-edit-id">
+              <div class="isl-form-row">
+                <label>Gesture Name / Word *
+                  <input id="isl-edit-label" required maxlength="80" placeholder="e.g. Namaste or Thank You">
+                </label>
+                <label>Emoji Symbol
+                  <input id="isl-edit-symbol" maxlength="10" placeholder="e.g. 🙏 or ✋" value="✋">
+                </label>
+              </div>
+              <div class="isl-form-row">
+                <label>English Meaning *
+                  <input id="isl-edit-meaning" required maxlength="250" placeholder="e.g. Traditional Indian greeting">
+                </label>
+                <label>Hindi Translation
+                  <input id="isl-edit-hindi" maxlength="250" placeholder="e.g. नमस्ते">
+                </label>
+              </div>
+              <div class="isl-form-row">
+                <label>Category
+                  <select id="isl-edit-category">
+                    <option value="Common">Common Word</option>
+                    <option value="Greeting">Greeting</option>
+                    <option value="Alphabet">Alphabet</option>
+                    <option value="Number">Number</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="Custom">Custom</option>
+                  </select>
+                </label>
+                <label>Gesture Movement
+                  <select id="isl-edit-kind">
+                    <option value="static">Static hand shape</option>
+                    <option value="dynamic">Dynamic movement</option>
+                  </select>
+                </label>
+              </div>
+              <label>How to sign (Enter each step on a new line) *
+                <textarea id="isl-edit-steps" rows="4" required placeholder="Step 1: Bring both palms together in front of chest&#10;Step 2: Keep fingers pointing upward&#10;Step 3: Bow head slightly"></textarea>
+              </label>
+              <label>Helpful Tip (Optional)
+                <input id="isl-edit-tip" maxlength="250" placeholder="e.g. Keep palms touching firmly at chest level">
+              </label>
+              <div class="isl-photo-section">
+                <label>Gesture Photos
+                  <input id="isl-edit-photos-input" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+                </label>
+                <p class="muted small">Add up to 12 JPEG, PNG, or WebP reference photos per gesture (4 MB each). Photos are saved with this dictionary entry; they do not train recognition. Use “Train this gesture” to collect webcam samples separately.</p>
+                <div id="isl-edit-photos" class="isl-photo-grid"></div>
+              </div>
+              <div class="isl-form-actions">
+                <button type="button" class="button button-secondary" id="isl-edit-cancel" onclick="closeIslEditModal()">Cancel</button>
+                <button type="submit" class="button button-primary" id="isl-edit-submit">💾 Save Gesture</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <!-- ── Gesture Learning Page ───────────────────────────────────── -->
+      <section class="page" id="page-gesture-learn">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">INTERACTIVE ISL STUDY</p>
+            <h1>Gesture Learning</h1>
+            <p class="muted">Study each ISL sign with its visual, meaning, and audio guide.</p>
+          </div>
+          <div class="gl-header-controls">
+            <label class="gl-auto-label"><input type="checkbox" id="gl-autoplay"> Auto-advance</label>
+            <button class="button button-secondary" id="gl-shuffle">&#8644; Shuffle</button>
+            <button class="button button-primary" id="gl-quiz-btn">&#129504; Quiz Me</button>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="gl-progress-bar-wrap"><div class="gl-progress-bar" id="gl-progress-bar"></div></div>
+        <div class="gl-progress-label">
+          <span id="gl-progress-text">Card 1 of 62</span>
+          <span id="gl-score-display" class="muted" hidden>Score: 0 / 0</span>
+        </div>
+
+        <!-- Category pills -->
+        <div class="gl-pills" id="gl-pills"></div>
+
+        <!-- Main flashcard stage -->
+        <div class="gl-stage">
+          <button class="gl-nav-btn" id="gl-prev" aria-label="Previous">&#8592;</button>
+
+          <div class="gl-card-wrap">
+
+            <!-- FRONT -->
+            <div class="gl-card-face" id="gl-front">
+              <div class="gl-visual" id="gl-visual">
+                <span class="gl-big-emoji" id="gl-emoji">&#128075;</span>
+                <img class="gl-reference-photo" id="gl-photo" alt="" hidden>
+                <div class="gl-visual-labels">
+                  <span class="gl-kind-tag" id="gl-kind-tag">static</span>
+                  <span class="gl-step0" id="gl-step0"></span>
+                </div>
+              </div>
+              <div class="gl-front-body">
+                <span class="gl-cat-pill" id="gl-cat-pill">Alphabet</span>
+                <h2 class="gl-big-label" id="gl-label">A</h2>
+                <p class="gl-meaning-hint" id="gl-meaning-hint">Letter A</p>
+              </div>
+              <div class="gl-front-actions">
+                <button class="gl-btn-audio" id="gl-speak-name">&#128266; Hear name</button>
+                <button class="gl-btn-flip" id="gl-flip">Show steps &#8595;</button>
+              </div>
+            </div>
+
+            <!-- BACK -->
+            <div class="gl-card-face" id="gl-back" hidden>
+              <img class="gl-back-photo" id="gl-back-photo" alt="" hidden>
+              <div class="gl-back-header">
+                <span class="gl-emoji-sm" id="gl-back-emoji"></span>
+                <div>
+                  <h2 id="gl-back-label"></h2>
+                  <span class="gl-cat-pill" id="gl-back-cat"></span>
+                </div>
+              </div>
+              <div class="gl-meanings">
+                <div class="gl-m-box"><span class="eyebrow">MEANING</span><strong id="gl-back-meaning"></strong></div>
+                <div class="gl-m-box"><span class="eyebrow">HINDI</span><strong id="gl-back-hindi"></strong></div>
+              </div>
+              <div class="gl-steps-wrap">
+                <span class="eyebrow">HOW TO SIGN</span>
+                <ol id="gl-back-steps" class="gl-ol"></ol>
+              </div>
+              <div class="gl-tip" id="gl-tip" hidden>
+                <span>&#128161;</span><p id="gl-tip-text"></p>
+              </div>
+              <div class="gl-back-actions">
+                <button class="gl-btn-audio" id="gl-speak-all">&#128266; Full guide</button>
+                <button class="gl-btn-audio" id="gl-speak-steps">&#128203; Steps only</button>
+                <button class="gl-btn-flip" id="gl-flip-back">&#8593; Back</button>
+              </div>
+              <div class="gl-quiz-btns" id="gl-quiz-btns" hidden>
+                <button class="gl-q-correct" id="gl-mark-correct">&#10003; Got it right</button>
+                <button class="gl-q-wrong"   id="gl-mark-wrong">&#10007; Need more practice</button>
+              </div>
+            </div>
+
+          </div><!-- /.gl-card-wrap -->
+
+          <button class="gl-nav-btn" id="gl-next" aria-label="Next">&#8594;</button>
+        </div><!-- /.gl-stage -->
+
+        <!-- Thumbnail strip -->
+        <div class="gl-strip-section">
+          <p class="eyebrow">ALL GESTURES IN THIS SET</p>
+          <div class="gl-strip" id="gl-strip"></div>
+        </div>
+      </section>
+
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+  <script src="/app.js?v=20261106_2" defer></script>
+</body>
+</html>

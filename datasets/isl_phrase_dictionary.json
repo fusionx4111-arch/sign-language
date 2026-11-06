@@ -1,0 +1,3131 @@
+[
+  {
+    "letter": "A",
+    "category": "Emergency",
+    "english": "Accident",
+    "hindi": "दुर्घटना हो गई",
+    "priority": 1
+  },
+  {
+    "letter": "A",
+    "category": "Deaf communication",
+    "english": "Announcement please write it",
+    "hindi": "घोषणा कृपया लिखकर बताइए",
+    "priority": 1
+  },
+  {
+    "letter": "A",
+    "category": "Replies",
+    "english": "Again",
+    "hindi": "फिर से",
+    "priority": 2
+  },
+  {
+    "letter": "A",
+    "category": "Questions",
+    "english": "Are you free?",
+    "hindi": "क्या आप खाली हैं?",
+    "priority": 2
+  },
+  {
+    "letter": "A",
+    "category": "Travel",
+    "english": "Auto rickshaw",
+    "hindi": "ऑटो रिक्शा",
+    "priority": 2
+  },
+  {
+    "letter": "A",
+    "category": "Family and people",
+    "english": "Aunt",
+    "hindi": "चाची",
+    "priority": 3
+  },
+  {
+    "letter": "A",
+    "category": "Food",
+    "english": "Apple",
+    "hindi": "सेब",
+    "priority": 3
+  },
+  {
+    "letter": "A",
+    "category": "Time and days",
+    "english": "Always",
+    "hindi": "हमेशा",
+    "priority": 3
+  },
+  {
+    "letter": "A",
+    "category": "Time and days",
+    "english": "Afternoon",
+    "hindi": "दोपहर",
+    "priority": 3
+  },
+  {
+    "letter": "A",
+    "category": "Food",
+    "english": "A glass of water please",
+    "hindi": "कृपया एक गिलास पानी दीजिए",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Medical",
+    "english": "Blood test",
+    "hindi": "खून की जाँच",
+    "priority": 1
+  },
+  {
+    "letter": "B",
+    "category": "Medical",
+    "english": "Before food or after food?",
+    "hindi": "खाने से पहले या बाद में?",
+    "priority": 1
+  },
+  {
+    "letter": "B",
+    "category": "Replies",
+    "english": "Bad",
+    "hindi": "बुरा",
+    "priority": 2
+  },
+  {
+    "letter": "B",
+    "category": "Replies",
+    "english": "Big",
+    "hindi": "बड़ा",
+    "priority": 2
+  },
+  {
+    "letter": "B",
+    "category": "Travel",
+    "english": "Bus",
+    "hindi": "बस",
+    "priority": 2
+  },
+  {
+    "letter": "B",
+    "category": "Greetings",
+    "english": "Best wishes",
+    "hindi": "शुभकामनाएँ",
+    "priority": 2
+  },
+  {
+    "letter": "B",
+    "category": "Home and places",
+    "english": "Bed",
+    "hindi": "बिस्तर",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Family and people",
+    "english": "Boy",
+    "hindi": "लड़का",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Shopping and money",
+    "english": "Bank",
+    "hindi": "बैंक",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "School and work",
+    "english": "Book",
+    "hindi": "किताब",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Food",
+    "english": "Banana",
+    "hindi": "केला",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Home and places",
+    "english": "Bedroom",
+    "hindi": "शयनकक्ष",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Family and people",
+    "english": "Brother",
+    "hindi": "भाई",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Time and days",
+    "english": "Birthday",
+    "hindi": "जन्मदिन",
+    "priority": 3
+  },
+  {
+    "letter": "B",
+    "category": "Food",
+    "english": "Breakfast",
+    "hindi": "नाश्ता",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "Emergency",
+    "english": "Call my family",
+    "hindi": "मेरे परिवार को फोन कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "C",
+    "category": "Emergency",
+    "english": "Call the police",
+    "hindi": "पुलिस को बुलाइए",
+    "priority": 1
+  },
+  {
+    "letter": "C",
+    "category": "Emergency",
+    "english": "Call an ambulance",
+    "hindi": "एम्बुलेंस बुलाइए",
+    "priority": 1
+  },
+  {
+    "letter": "C",
+    "category": "Emergency",
+    "english": "Call the fire brigade",
+    "hindi": "दमकल को बुलाइए",
+    "priority": 1
+  },
+  {
+    "letter": "C",
+    "category": "Replies",
+    "english": "Come here",
+    "hindi": "यहाँ आइए",
+    "priority": 2
+  },
+  {
+    "letter": "C",
+    "category": "Daily conversation",
+    "english": "Come with me",
+    "hindi": "मेरे साथ आइए",
+    "priority": 2
+  },
+  {
+    "letter": "C",
+    "category": "Greetings",
+    "english": "Congratulations",
+    "hindi": "बधाई हो",
+    "priority": 2
+  },
+  {
+    "letter": "C",
+    "category": "Questions",
+    "english": "Can you help me?",
+    "hindi": "क्या आप मेरी मदद कर सकते हैं?",
+    "priority": 2
+  },
+  {
+    "letter": "C",
+    "category": "Questions",
+    "english": "Can I ask something?",
+    "hindi": "क्या मैं कुछ पूछ सकता हूँ?",
+    "priority": 2
+  },
+  {
+    "letter": "C",
+    "category": "Shopping and money",
+    "english": "Cash",
+    "hindi": "नकद",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "Home and places",
+    "english": "City",
+    "hindi": "शहर",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "Family and people",
+    "english": "Child",
+    "hindi": "बच्चा",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "School and work",
+    "english": "Class",
+    "hindi": "कक्षा",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "Home and places",
+    "english": "Church",
+    "hindi": "गिरजाघर",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "Family and people",
+    "english": "Cousin",
+    "hindi": "चचेरा भाई",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "School and work",
+    "english": "Computer",
+    "hindi": "कंप्यूटर",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "School and work",
+    "english": "Certificate",
+    "hindi": "प्रमाणपत्र",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "Shopping and money",
+    "english": "Can I pay by UPI?",
+    "hindi": "क्या मैं यूपीआई से भुगतान कर सकता हूँ?",
+    "priority": 3
+  },
+  {
+    "letter": "C",
+    "category": "School and work",
+    "english": "Can I see the notes?",
+    "hindi": "क्या मैं नोट्स देख सकता हूँ?",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Emergency",
+    "english": "Danger",
+    "hindi": "खतरा",
+    "priority": 1
+  },
+  {
+    "letter": "D",
+    "category": "Emergency",
+    "english": "Do not touch me",
+    "hindi": "मुझे मत छुइए",
+    "priority": 1
+  },
+  {
+    "letter": "D",
+    "category": "Deaf communication",
+    "english": "Do you know sign language?",
+    "hindi": "क्या आप सांकेतिक भाषा जानते हैं?",
+    "priority": 1
+  },
+  {
+    "letter": "D",
+    "category": "Daily conversation",
+    "english": "Don't worry",
+    "hindi": "चिंता मत कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "D",
+    "category": "Questions",
+    "english": "Do you have this?",
+    "hindi": "क्या आपके पास यह है?",
+    "priority": 2
+  },
+  {
+    "letter": "D",
+    "category": "Questions",
+    "english": "Do you understand?",
+    "hindi": "क्या आप समझे?",
+    "priority": 2
+  },
+  {
+    "letter": "D",
+    "category": "Food",
+    "english": "Dal",
+    "hindi": "दाल",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Time and days",
+    "english": "Date",
+    "hindi": "तारीख",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Home and places",
+    "english": "Door",
+    "hindi": "दरवाज़ा",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Food",
+    "english": "Dinner",
+    "hindi": "रात का खाना",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Family and people",
+    "english": "Doctor",
+    "hindi": "डॉक्टर",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Family and people",
+    "english": "Driver",
+    "hindi": "चालक",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Family and people",
+    "english": "Daughter",
+    "hindi": "बेटी",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Shopping and money",
+    "english": "Do you accept cards?",
+    "hindi": "क्या आप कार्ड लेते हैं?",
+    "priority": 3
+  },
+  {
+    "letter": "D",
+    "category": "Shopping and money",
+    "english": "Do you have a smaller size?",
+    "hindi": "क्या आपके पास छोटा साइज़ है?",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Emergency",
+    "english": "Emergency",
+    "hindi": "आपातकाल",
+    "priority": 1
+  },
+  {
+    "letter": "E",
+    "category": "Emergency",
+    "english": "Earthquake",
+    "hindi": "भूकंप",
+    "priority": 1
+  },
+  {
+    "letter": "E",
+    "category": "Greetings",
+    "english": "Excuse me",
+    "hindi": "क्षमा कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "E",
+    "category": "Food",
+    "english": "Egg",
+    "hindi": "अंडा",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "School and work",
+    "english": "Exam",
+    "hindi": "परीक्षा",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Home and places",
+    "english": "Exit",
+    "hindi": "बाहर निकलने का रास्ता",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Time and days",
+    "english": "Early",
+    "hindi": "जल्दी",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Numbers",
+    "english": "Eight",
+    "hindi": "आठ",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Time and days",
+    "english": "Evening",
+    "hindi": "शाम",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Home and places",
+    "english": "Entrance",
+    "hindi": "प्रवेश",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Time and days",
+    "english": "Every day",
+    "hindi": "हर दिन",
+    "priority": 3
+  },
+  {
+    "letter": "E",
+    "category": "Home and places",
+    "english": "Electricity",
+    "hindi": "बिजली",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Emergency",
+    "english": "Flood",
+    "hindi": "बाढ़",
+    "priority": 1
+  },
+  {
+    "letter": "F",
+    "category": "Daily conversation",
+    "english": "Follow me",
+    "hindi": "मेरे पीछे आइए",
+    "priority": 2
+  },
+  {
+    "letter": "F",
+    "category": "Home and places",
+    "english": "Fan",
+    "hindi": "पंखा",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Numbers",
+    "english": "Five",
+    "hindi": "पाँच",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Numbers",
+    "english": "Four",
+    "hindi": "चार",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Food",
+    "english": "Fruit",
+    "hindi": "फल",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Family and people",
+    "english": "Family",
+    "hindi": "परिवार",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Family and people",
+    "english": "Father",
+    "hindi": "पिता",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Time and days",
+    "english": "Friday",
+    "hindi": "शुक्रवार",
+    "priority": 3
+  },
+  {
+    "letter": "F",
+    "category": "Family and people",
+    "english": "Friend",
+    "hindi": "दोस्त",
+    "priority": 3
+  },
+  {
+    "letter": "G",
+    "category": "Emergency",
+    "english": "Gas leak",
+    "hindi": "गैस लीक",
+    "priority": 1
+  },
+  {
+    "letter": "G",
+    "category": "Replies",
+    "english": "Good",
+    "hindi": "अच्छा",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Greetings",
+    "english": "Goodbye",
+    "hindi": "अलविदा",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Replies",
+    "english": "Go there",
+    "hindi": "वहाँ जाइए",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Replies",
+    "english": "Good idea",
+    "hindi": "अच्छा विचार है",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Greetings",
+    "english": "Good luck",
+    "hindi": "शुभकामनाएँ",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Greetings",
+    "english": "Good night",
+    "hindi": "शुभ रात्रि",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Travel",
+    "english": "Go straight",
+    "hindi": "सीधे जाइए",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Greetings",
+    "english": "Good evening",
+    "hindi": "शुभ संध्या",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Greetings",
+    "english": "Good morning",
+    "hindi": "सुप्रभात",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Greetings",
+    "english": "Good afternoon",
+    "hindi": "शुभ दोपहर",
+    "priority": 2
+  },
+  {
+    "letter": "G",
+    "category": "Family and people",
+    "english": "Girl",
+    "hindi": "लड़की",
+    "priority": 3
+  },
+  {
+    "letter": "G",
+    "category": "Home and places",
+    "english": "Garden",
+    "hindi": "बगीचा",
+    "priority": 3
+  },
+  {
+    "letter": "G",
+    "category": "Food",
+    "english": "Grapes",
+    "hindi": "अंगूर",
+    "priority": 3
+  },
+  {
+    "letter": "G",
+    "category": "Home and places",
+    "english": "Gurudwara",
+    "hindi": "गुरुद्वारा",
+    "priority": 3
+  },
+  {
+    "letter": "G",
+    "category": "Family and people",
+    "english": "Grandfather",
+    "hindi": "दादा",
+    "priority": 3
+  },
+  {
+    "letter": "G",
+    "category": "Family and people",
+    "english": "Grandmother",
+    "hindi": "दादी",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "Emergency",
+    "english": "Help",
+    "hindi": "मदद कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "H",
+    "category": "Emergency",
+    "english": "Help me please",
+    "hindi": "कृपया मेरी मदद कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "H",
+    "category": "Medical",
+    "english": "How many times a day?",
+    "hindi": "दिन में कितनी बार?",
+    "priority": 1
+  },
+  {
+    "letter": "H",
+    "category": "Questions",
+    "english": "How?",
+    "hindi": "कैसे?",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Greetings",
+    "english": "Hello",
+    "hindi": "नमस्ते",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Replies",
+    "english": "Hurry up",
+    "hindi": "जल्दी कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Greetings",
+    "english": "Happy Diwali",
+    "hindi": "दीपावली की शुभकामनाएँ",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Greetings",
+    "english": "How are you?",
+    "hindi": "आप कैसे हैं?",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Greetings",
+    "english": "Happy birthday",
+    "hindi": "जन्मदिन मुबारक",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Greetings",
+    "english": "Happy new year",
+    "hindi": "नया साल मुबारक",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Questions",
+    "english": "How far is it?",
+    "hindi": "यह कितनी दूर है?",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Questions",
+    "english": "How much is this?",
+    "hindi": "यह कितने का है?",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Travel",
+    "english": "How much is the fare?",
+    "hindi": "किराया कितना है?",
+    "priority": 2
+  },
+  {
+    "letter": "H",
+    "category": "Home and places",
+    "english": "Home",
+    "hindi": "घर",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "Time and days",
+    "english": "Hour",
+    "hindi": "घंटा",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "Numbers",
+    "english": "Hundred",
+    "hindi": "सौ",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "Family and people",
+    "english": "Husband",
+    "hindi": "पति",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "School and work",
+    "english": "Homework",
+    "hindi": "गृहकार्य",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "Home and places",
+    "english": "Hospital",
+    "hindi": "अस्पताल",
+    "priority": 3
+  },
+  {
+    "letter": "H",
+    "category": "Shopping and money",
+    "english": "How much does it cost?",
+    "hindi": "इसकी कीमत कितनी है?",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "Injury",
+    "hindi": "चोट",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "I am deaf",
+    "hindi": "मैं सुन नहीं सकता",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Emergency",
+    "english": "I am lost",
+    "hindi": "मैं खो गया हूँ",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I am sick",
+    "hindi": "मैं बीमार हूँ",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I feel weak",
+    "hindi": "मुझे कमजोरी महसूस हो रही है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I feel dizzy",
+    "hindi": "मुझे चक्कर आ रहे हैं",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I am bleeding",
+    "hindi": "मुझे खून बह रहा है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I am pregnant",
+    "hindi": "मैं गर्भवती हूँ",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I am vomiting",
+    "hindi": "मुझे उल्टी हो रही है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I feel better",
+    "hindi": "मुझे बेहतर लग रहा है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have a cold",
+    "hindi": "मुझे जुकाम है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Emergency",
+    "english": "I am in danger",
+    "hindi": "मैं खतरे में हूँ",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have a cough",
+    "hindi": "मुझे खाँसी है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have a fever",
+    "hindi": "मुझे बुखार है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "I can read lips",
+    "hindi": "मैं होंठ पढ़ सकता हूँ",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Emergency",
+    "english": "I need a doctor",
+    "hindi": "मुझे डॉक्टर चाहिए",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I need an X-ray",
+    "hindi": "मुझे एक्स-रे कराना है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I need medicine",
+    "hindi": "मुझे दवा चाहिए",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I cannot breathe",
+    "hindi": "मुझे साँस नहीं आ रही",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have pain here",
+    "hindi": "यहाँ दर्द है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have a headache",
+    "hindi": "मेरे सिर में दर्द है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have a toothache",
+    "hindi": "मेरे दाँत में दर्द है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Emergency",
+    "english": "I have been robbed",
+    "hindi": "मेरे साथ चोरी हुई है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "I use sign language",
+    "hindi": "मैं सांकेतिक भाषा का उपयोग करता हूँ",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "I did not understand",
+    "hindi": "मुझे समझ नहीं आया",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I am allergic to this",
+    "hindi": "मुझे इससे एलर्जी है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I have a stomach ache",
+    "hindi": "मेरे पेट में दर्द है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "I need an interpreter",
+    "hindi": "मुझे दुभाषिए की जरूरत है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Medical",
+    "english": "I need to see a doctor",
+    "hindi": "मुझे डॉक्टर को दिखाना है",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "Is there a visual alarm?",
+    "hindi": "क्या कोई दृश्य अलार्म है?",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Deaf communication",
+    "english": "Is there an interpreter?",
+    "hindi": "क्या कोई दुभाषिया है?",
+    "priority": 1
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I know",
+    "hindi": "मैं जानता हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I agree",
+    "hindi": "मैं सहमत हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I am hot",
+    "hindi": "मुझे गर्मी लग रही है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I forgot",
+    "hindi": "मैं भूल गया",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I am busy",
+    "hindi": "मैं व्यस्त हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I am cold",
+    "hindi": "मुझे ठंड लग रही है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Greetings",
+    "english": "I am fine",
+    "hindi": "मैं ठीक हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I like it",
+    "hindi": "मुझे यह पसंद है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I am ready",
+    "hindi": "मैं तैयार हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I am tired",
+    "hindi": "मैं थका हुआ हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I disagree",
+    "hindi": "मैं सहमत नहीं हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I remember",
+    "hindi": "मुझे याद है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I will try",
+    "hindi": "मैं कोशिश करूँगा",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Questions",
+    "english": "Is it far?",
+    "hindi": "क्या यह दूर है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I am coming",
+    "hindi": "मैं आ रहा हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I am hungry",
+    "hindi": "मुझे भूख लगी है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I am sleepy",
+    "hindi": "मुझे नींद आ रही है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need food",
+    "hindi": "मुझे खाना चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need help",
+    "hindi": "मुझे मदद चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need rest",
+    "hindi": "मुझे आराम चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I want this",
+    "hindi": "मुझे यह चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Travel",
+    "english": "Is it near?",
+    "hindi": "क्या यह पास है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Questions",
+    "english": "Is it okay?",
+    "hindi": "क्या यह ठीक है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Questions",
+    "english": "Is it open?",
+    "hindi": "क्या यह खुला है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I am thirsty",
+    "hindi": "मुझे प्यास लगी है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need money",
+    "hindi": "मुझे पैसे चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need water",
+    "hindi": "मुझे पानी चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I am free now",
+    "hindi": "मैं अभी खाली हूँ",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I do not know",
+    "hindi": "मुझे नहीं पता",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need a phone",
+    "hindi": "मुझे फोन चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I will be late",
+    "hindi": "मुझे देर होगी",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Travel",
+    "english": "I missed my bus",
+    "hindi": "मेरी बस छूट गई",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Travel",
+    "english": "I want a ticket",
+    "hindi": "मुझे टिकट चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Phone and technology",
+    "english": "Is there Wi-Fi?",
+    "hindi": "क्या वाई-फाई है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I do not like it",
+    "hindi": "मुझे यह पसंद नहीं",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need a blanket",
+    "hindi": "मुझे कंबल चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need a charger",
+    "hindi": "मुझे चार्जर चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Questions",
+    "english": "Is this correct?",
+    "hindi": "क्या यह सही है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Replies",
+    "english": "I do not want this",
+    "hindi": "मुझे यह नहीं चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need pen and paper",
+    "hindi": "मुझे कलम और कागज़ चाहिए",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Daily conversation",
+    "english": "I will call you later",
+    "hindi": "मैं बाद में फोन करूँगा",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Phone and technology",
+    "english": "Internet is not working",
+    "hindi": "इंटरनेट नहीं चल रहा",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Travel",
+    "english": "Is this the right train?",
+    "hindi": "क्या यह सही ट्रेन है?",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Basic needs",
+    "english": "I need to go to the toilet",
+    "hindi": "मुझे शौचालय जाना है",
+    "priority": 2
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am sad",
+    "hindi": "मैं उदास हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Food",
+    "english": "I am full",
+    "hindi": "मेरा पेट भर गया",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Food",
+    "english": "Ice cream",
+    "hindi": "आइसक्रीम",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "Interview",
+    "hindi": "साक्षात्कार",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am alone",
+    "hindi": "मैं अकेला हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am angry",
+    "hindi": "मुझे गुस्सा आ रहा है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am bored",
+    "hindi": "मैं ऊब गया हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am happy",
+    "hindi": "मैं खुश हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am sorry",
+    "hindi": "मुझे खेद है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I love you",
+    "hindi": "मुझे आपसे प्यार है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I miss you",
+    "hindi": "मुझे आपकी याद आती है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Food",
+    "english": "I want tea",
+    "hindi": "मुझे चाय चाहिए",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am scared",
+    "hindi": "मुझे डर लग रहा है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I feel safe",
+    "hindi": "मैं सुरक्षित महसूस करता हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "I work here",
+    "hindi": "मैं यहाँ काम करता हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Family and people",
+    "english": "Interpreter",
+    "hindi": "दुभाषिया",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am excited",
+    "hindi": "मैं उत्साहित हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am worried",
+    "hindi": "मैं चिंतित हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am confused",
+    "hindi": "मैं उलझन में हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am grateful",
+    "hindi": "मैं आभारी हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I forgive you",
+    "hindi": "मैंने आपको माफ़ किया",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Shopping and money",
+    "english": "I need a bill",
+    "hindi": "मुझे बिल चाहिए",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Food",
+    "english": "I need a menu",
+    "hindi": "मुझे मेन्यू चाहिए",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Food",
+    "english": "I want coffee",
+    "hindi": "मुझे कॉफी चाहिए",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "I am a student",
+    "hindi": "मैं विद्यार्थी हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am surprised",
+    "hindi": "मैं हैरान हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Food",
+    "english": "I am vegetarian",
+    "hindi": "मैं शाकाहारी हूँ",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "I need captions",
+    "hindi": "मुझे कैप्शन चाहिए",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Shopping and money",
+    "english": "I will take this",
+    "hindi": "मैं यह लूँगा",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Feelings",
+    "english": "I am proud of you",
+    "hindi": "मुझे आप पर गर्व है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "I have a question",
+    "hindi": "मेरा एक सवाल है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "I need extra time",
+    "hindi": "मुझे और समय चाहिए",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "School and work",
+    "english": "I finished my work",
+    "hindi": "मैंने अपना काम पूरा कर लिया",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Shopping and money",
+    "english": "It is too expensive",
+    "hindi": "यह बहुत महंगा है",
+    "priority": 3
+  },
+  {
+    "letter": "I",
+    "category": "Shopping and money",
+    "english": "I want to return this",
+    "hindi": "मुझे यह वापस करना है",
+    "priority": 3
+  },
+  {
+    "letter": "J",
+    "category": "Daily conversation",
+    "english": "Join me",
+    "hindi": "मेरे साथ जुड़िए",
+    "priority": 2
+  },
+  {
+    "letter": "J",
+    "category": "Replies",
+    "english": "Just a minute",
+    "hindi": "बस एक मिनट",
+    "priority": 2
+  },
+  {
+    "letter": "J",
+    "category": "Shopping and money",
+    "english": "Job",
+    "hindi": "नौकरी",
+    "priority": 3
+  },
+  {
+    "letter": "J",
+    "category": "Food",
+    "english": "Juice",
+    "hindi": "जूस",
+    "priority": 3
+  },
+  {
+    "letter": "K",
+    "category": "Basic needs",
+    "english": "Key",
+    "hindi": "चाबी",
+    "priority": 2
+  },
+  {
+    "letter": "K",
+    "category": "Basic needs",
+    "english": "Kindly help me",
+    "hindi": "कृपया मेरी मदद कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "K",
+    "category": "Feelings",
+    "english": "Kind",
+    "hindi": "दयालु",
+    "priority": 3
+  },
+  {
+    "letter": "K",
+    "category": "Home and places",
+    "english": "Kitchen",
+    "hindi": "रसोई",
+    "priority": 3
+  },
+  {
+    "letter": "L",
+    "category": "Replies",
+    "english": "Later",
+    "hindi": "बाद में",
+    "priority": 2
+  },
+  {
+    "letter": "L",
+    "category": "Daily conversation",
+    "english": "Let us go",
+    "hindi": "चलिए चलें",
+    "priority": 2
+  },
+  {
+    "letter": "L",
+    "category": "Replies",
+    "english": "Let me think",
+    "hindi": "मुझे सोचने दीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "L",
+    "category": "Home and places",
+    "english": "Lift",
+    "hindi": "लिफ्ट",
+    "priority": 3
+  },
+  {
+    "letter": "L",
+    "category": "Home and places",
+    "english": "Light",
+    "hindi": "बत्ती",
+    "priority": 3
+  },
+  {
+    "letter": "L",
+    "category": "Food",
+    "english": "Lunch",
+    "hindi": "दोपहर का खाना",
+    "priority": 3
+  },
+  {
+    "letter": "L",
+    "category": "School and work",
+    "english": "Library",
+    "hindi": "पुस्तकालय",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Emergency",
+    "english": "My phone is stolen",
+    "hindi": "मेरा फोन चोरी हो गया है",
+    "priority": 1
+  },
+  {
+    "letter": "M",
+    "category": "Replies",
+    "english": "Maybe",
+    "hindi": "शायद",
+    "priority": 2
+  },
+  {
+    "letter": "M",
+    "category": "Greetings",
+    "english": "My name is",
+    "hindi": "मेरा नाम है",
+    "priority": 2
+  },
+  {
+    "letter": "M",
+    "category": "Phone and technology",
+    "english": "My phone is dead",
+    "hindi": "मेरा फोन बंद हो गया है",
+    "priority": 2
+  },
+  {
+    "letter": "M",
+    "category": "Phone and technology",
+    "english": "My battery is low",
+    "hindi": "मेरी बैटरी कम है",
+    "priority": 2
+  },
+  {
+    "letter": "M",
+    "category": "Family and people",
+    "english": "Man",
+    "hindi": "आदमी",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Food",
+    "english": "Milk",
+    "hindi": "दूध",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Food",
+    "english": "Mango",
+    "hindi": "आम",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Time and days",
+    "english": "Month",
+    "hindi": "महीना",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Time and days",
+    "english": "Minute",
+    "hindi": "मिनट",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Time and days",
+    "english": "Monday",
+    "hindi": "सोमवार",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Home and places",
+    "english": "Mosque",
+    "hindi": "मस्जिद",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Family and people",
+    "english": "Mother",
+    "hindi": "माँ",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Time and days",
+    "english": "Morning",
+    "hindi": "सुबह",
+    "priority": 3
+  },
+  {
+    "letter": "M",
+    "category": "Food",
+    "english": "More please",
+    "hindi": "कृपया और दीजिए",
+    "priority": 3
+  },
+  {
+    "letter": "N",
+    "category": "Replies",
+    "english": "No",
+    "hindi": "नहीं",
+    "priority": 2
+  },
+  {
+    "letter": "N",
+    "category": "Replies",
+    "english": "Now",
+    "hindi": "अभी",
+    "priority": 2
+  },
+  {
+    "letter": "N",
+    "category": "Replies",
+    "english": "Nice",
+    "hindi": "बढ़िया",
+    "priority": 2
+  },
+  {
+    "letter": "N",
+    "category": "Replies",
+    "english": "Not now",
+    "hindi": "अभी नहीं",
+    "priority": 2
+  },
+  {
+    "letter": "N",
+    "category": "Greetings",
+    "english": "Nice to meet you",
+    "hindi": "आपसे मिलकर खुशी हुई",
+    "priority": 2
+  },
+  {
+    "letter": "N",
+    "category": "Numbers",
+    "english": "Nine",
+    "hindi": "नौ",
+    "priority": 3
+  },
+  {
+    "letter": "N",
+    "category": "Time and days",
+    "english": "Never",
+    "hindi": "कभी नहीं",
+    "priority": 3
+  },
+  {
+    "letter": "N",
+    "category": "Time and days",
+    "english": "Night",
+    "hindi": "रात",
+    "priority": 3
+  },
+  {
+    "letter": "N",
+    "category": "Family and people",
+    "english": "Nurse",
+    "hindi": "नर्स",
+    "priority": 3
+  },
+  {
+    "letter": "N",
+    "category": "Family and people",
+    "english": "Neighbour",
+    "hindi": "पड़ोसी",
+    "priority": 3
+  },
+  {
+    "letter": "N",
+    "category": "Food",
+    "english": "No spicy food please",
+    "hindi": "कृपया तीखा खाना नहीं",
+    "priority": 3
+  },
+  {
+    "letter": "O",
+    "category": "Replies",
+    "english": "OK",
+    "hindi": "ठीक है",
+    "priority": 2
+  },
+  {
+    "letter": "O",
+    "category": "Daily conversation",
+    "english": "Open the door",
+    "hindi": "दरवाज़ा खोलिए",
+    "priority": 2
+  },
+  {
+    "letter": "O",
+    "category": "Phone and technology",
+    "english": "Open the camera",
+    "hindi": "कैमरा खोलिए",
+    "priority": 2
+  },
+  {
+    "letter": "O",
+    "category": "Food",
+    "english": "Oil",
+    "hindi": "तेल",
+    "priority": 3
+  },
+  {
+    "letter": "O",
+    "category": "Numbers",
+    "english": "One",
+    "hindi": "एक",
+    "priority": 3
+  },
+  {
+    "letter": "O",
+    "category": "Shopping and money",
+    "english": "Offer",
+    "hindi": "ऑफ़र",
+    "priority": 3
+  },
+  {
+    "letter": "O",
+    "category": "Food",
+    "english": "Onion",
+    "hindi": "प्याज़",
+    "priority": 3
+  },
+  {
+    "letter": "O",
+    "category": "School and work",
+    "english": "Office",
+    "hindi": "कार्यालय",
+    "priority": 3
+  },
+  {
+    "letter": "O",
+    "category": "Food",
+    "english": "Orange",
+    "hindi": "संतरा",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Medical",
+    "english": "Prescription",
+    "hindi": "दवा की पर्ची",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please repeat",
+    "hindi": "कृपया दोबारा बताइए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please show me",
+    "hindi": "कृपया मुझे दिखाइए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please text me",
+    "hindi": "कृपया मुझे मैसेज कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Emergency",
+    "english": "Please call 112",
+    "hindi": "कृपया 112 पर कॉल कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please do not shout",
+    "hindi": "कृपया चिल्लाइए मत",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please speak slowly",
+    "hindi": "कृपया धीरे बोलिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please write it down",
+    "hindi": "कृपया इसे लिख दीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please tap my shoulder",
+    "hindi": "कृपया मेरे कंधे को थपथपाइए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please turn on subtitles",
+    "hindi": "कृपया सबटाइटल चालू कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please type on the phone",
+    "hindi": "कृपया फोन में टाइप कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please use pen and paper",
+    "hindi": "कृपया कलम और कागज़ का उपयोग कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please call me by message",
+    "hindi": "कृपया मुझे मैसेज करके बुलाइए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please speak one at a time",
+    "hindi": "कृपया एक-एक करके बोलिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Deaf communication",
+    "english": "Please face me when you speak",
+    "hindi": "बोलते समय कृपया मेरी तरफ देखिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Emergency",
+    "english": "Please take me to the hospital",
+    "hindi": "कृपया मुझे अस्पताल ले चलिए",
+    "priority": 1
+  },
+  {
+    "letter": "P",
+    "category": "Greetings",
+    "english": "Please",
+    "hindi": "कृपया",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Daily conversation",
+    "english": "Please sit",
+    "hindi": "कृपया बैठिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Daily conversation",
+    "english": "Please explain",
+    "hindi": "कृपया समझाइए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Travel",
+    "english": "Please stop here",
+    "hindi": "कृपया यहाँ रोकिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Daily conversation",
+    "english": "Please be patient",
+    "hindi": "कृपया धैर्य रखिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Phone and technology",
+    "english": "Please record this",
+    "hindi": "कृपया इसे रिकॉर्ड कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Daily conversation",
+    "english": "Please wait for me",
+    "hindi": "कृपया मेरा इंतज़ार कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Phone and technology",
+    "english": "Please send a photo",
+    "hindi": "कृपया फोटो भेजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Basic needs",
+    "english": "Please open the door",
+    "hindi": "कृपया दरवाज़ा खोलिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Travel",
+    "english": "Please use the meter",
+    "hindi": "कृपया मीटर चालू कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Phone and technology",
+    "english": "Please send a message",
+    "hindi": "कृपया मैसेज भेजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Basic needs",
+    "english": "Please give me a chair",
+    "hindi": "कृपया मुझे कुर्सी दीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Basic needs",
+    "english": "Please close the window",
+    "hindi": "कृपया खिड़की बंद कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Daily conversation",
+    "english": "Please give me a moment",
+    "hindi": "कृपया मुझे एक पल दीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Phone and technology",
+    "english": "Please turn on captions",
+    "hindi": "कृपया कैप्शन चालू कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Phone and technology",
+    "english": "Please share your number",
+    "hindi": "कृपया अपना नंबर दीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "Travel",
+    "english": "Please help me cross the road",
+    "hindi": "कृपया सड़क पार करने में मदद कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "P",
+    "category": "School and work",
+    "english": "Pen",
+    "hindi": "कलम",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Home and places",
+    "english": "Park",
+    "hindi": "पार्क",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "School and work",
+    "english": "Paper",
+    "hindi": "कागज़",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Food",
+    "english": "Plate",
+    "hindi": "थाली",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Food",
+    "english": "Potato",
+    "hindi": "आलू",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Family and people",
+    "english": "Police officer",
+    "hindi": "पुलिस अधिकारी",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Shopping and money",
+    "english": "Please give me change",
+    "hindi": "कृपया मुझे खुले पैसे दीजिए",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "Shopping and money",
+    "english": "Please give a discount",
+    "hindi": "कृपया छूट दीजिए",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "School and work",
+    "english": "Please share the slides",
+    "hindi": "कृपया स्लाइड भेजिए",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "School and work",
+    "english": "Please repeat the lesson",
+    "hindi": "कृपया पाठ दोबारा समझाइए",
+    "priority": 3
+  },
+  {
+    "letter": "P",
+    "category": "School and work",
+    "english": "Please send it in writing",
+    "hindi": "कृपया लिखित में भेजिए",
+    "priority": 3
+  },
+  {
+    "letter": "Q",
+    "category": "Emergency",
+    "english": "Quickly please",
+    "hindi": "कृपया जल्दी कीजिए",
+    "priority": 1
+  },
+  {
+    "letter": "Q",
+    "category": "Questions",
+    "english": "Question",
+    "hindi": "प्रश्न",
+    "priority": 2
+  },
+  {
+    "letter": "Q",
+    "category": "Replies",
+    "english": "Quiet please",
+    "hindi": "कृपया शांत रहिए",
+    "priority": 2
+  },
+  {
+    "letter": "Q",
+    "category": "Shopping and money",
+    "english": "Quantity",
+    "hindi": "मात्रा",
+    "priority": 3
+  },
+  {
+    "letter": "R",
+    "category": "Emergency",
+    "english": "Run to a safe place",
+    "hindi": "सुरक्षित जगह जाइए",
+    "priority": 1
+  },
+  {
+    "letter": "R",
+    "category": "Travel",
+    "english": "Road",
+    "hindi": "सड़क",
+    "priority": 2
+  },
+  {
+    "letter": "R",
+    "category": "Replies",
+    "english": "Right",
+    "hindi": "सही",
+    "priority": 2
+  },
+  {
+    "letter": "R",
+    "category": "Food",
+    "english": "Rice",
+    "hindi": "चावल",
+    "priority": 3
+  },
+  {
+    "letter": "R",
+    "category": "Home and places",
+    "english": "Room",
+    "hindi": "कमरा",
+    "priority": 3
+  },
+  {
+    "letter": "R",
+    "category": "Food",
+    "english": "Roti",
+    "hindi": "रोटी",
+    "priority": 3
+  },
+  {
+    "letter": "R",
+    "category": "School and work",
+    "english": "Result",
+    "hindi": "परिणाम",
+    "priority": 3
+  },
+  {
+    "letter": "R",
+    "category": "Shopping and money",
+    "english": "Receipt",
+    "hindi": "रसीद",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Emergency",
+    "english": "Stay with me",
+    "hindi": "मेरे साथ रहिए",
+    "priority": 1
+  },
+  {
+    "letter": "S",
+    "category": "Emergency",
+    "english": "Someone is following me",
+    "hindi": "कोई मेरा पीछा कर रहा है",
+    "priority": 1
+  },
+  {
+    "letter": "S",
+    "category": "Replies",
+    "english": "Stop",
+    "hindi": "रुकिए",
+    "priority": 2
+  },
+  {
+    "letter": "S",
+    "category": "Replies",
+    "english": "Small",
+    "hindi": "छोटा",
+    "priority": 2
+  },
+  {
+    "letter": "S",
+    "category": "Greetings",
+    "english": "Sorry",
+    "hindi": "माफ़ कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "S",
+    "category": "Replies",
+    "english": "Slowly",
+    "hindi": "धीरे",
+    "priority": 2
+  },
+  {
+    "letter": "S",
+    "category": "Greetings",
+    "english": "See you later",
+    "hindi": "फिर मिलेंगे",
+    "priority": 2
+  },
+  {
+    "letter": "S",
+    "category": "Numbers",
+    "english": "Six",
+    "hindi": "छह",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Family and people",
+    "english": "Son",
+    "hindi": "बेटा",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Food",
+    "english": "Salt",
+    "hindi": "नमक",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Shopping and money",
+    "english": "Shop",
+    "hindi": "दुकान",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Numbers",
+    "english": "Seven",
+    "hindi": "सात",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Food",
+    "english": "Spoon",
+    "hindi": "चम्मच",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Food",
+    "english": "Sugar",
+    "hindi": "चीनी",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Shopping and money",
+    "english": "Salary",
+    "hindi": "वेतन",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "School and work",
+    "english": "School",
+    "hindi": "स्कूल",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Family and people",
+    "english": "Sister",
+    "hindi": "बहन",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Home and places",
+    "english": "Stairs",
+    "hindi": "सीढ़ियाँ",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Time and days",
+    "english": "Sunday",
+    "hindi": "रविवार",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Time and days",
+    "english": "Saturday",
+    "hindi": "शनिवार",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Time and days",
+    "english": "Sometimes",
+    "hindi": "कभी-कभी",
+    "priority": 3
+  },
+  {
+    "letter": "S",
+    "category": "Shopping and money",
+    "english": "Show me another one",
+    "hindi": "कोई और दिखाइए",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Emergency",
+    "english": "There is a fire",
+    "hindi": "आग लगी है",
+    "priority": 1
+  },
+  {
+    "letter": "T",
+    "category": "Travel",
+    "english": "Taxi",
+    "hindi": "टैक्सी",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Travel",
+    "english": "Train",
+    "hindi": "ट्रेन",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Greetings",
+    "english": "Take care",
+    "hindi": "अपना ख्याल रखिए",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Greetings",
+    "english": "Thank you",
+    "hindi": "धन्यवाद",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Travel",
+    "english": "Turn left",
+    "hindi": "बाएँ मुड़िए",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Travel",
+    "english": "Turn right",
+    "hindi": "दाएँ मुड़िए",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Replies",
+    "english": "That is fine",
+    "hindi": "कोई बात नहीं",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Travel",
+    "english": "Ticket counter",
+    "hindi": "टिकट खिड़की",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Greetings",
+    "english": "Thank you very much",
+    "hindi": "बहुत धन्यवाद",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Daily conversation",
+    "english": "Thanks for your help",
+    "hindi": "आपकी मदद के लिए धन्यवाद",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Travel",
+    "english": "Take me to this address",
+    "hindi": "मुझे इस पते पर ले चलिए",
+    "priority": 2
+  },
+  {
+    "letter": "T",
+    "category": "Numbers",
+    "english": "Ten",
+    "hindi": "दस",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Numbers",
+    "english": "Two",
+    "hindi": "दो",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Time and days",
+    "english": "Time",
+    "hindi": "समय",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Home and places",
+    "english": "Table",
+    "hindi": "मेज़",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Numbers",
+    "english": "Three",
+    "hindi": "तीन",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Time and days",
+    "english": "Today",
+    "hindi": "आज",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Home and places",
+    "english": "Temple",
+    "hindi": "मंदिर",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Home and places",
+    "english": "Toilet",
+    "hindi": "शौचालय",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Food",
+    "english": "Tomato",
+    "hindi": "टमाटर",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Numbers",
+    "english": "Twenty",
+    "hindi": "बीस",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "School and work",
+    "english": "Teacher",
+    "hindi": "शिक्षक",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Time and days",
+    "english": "Tuesday",
+    "hindi": "मंगलवार",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Numbers",
+    "english": "Thousand",
+    "hindi": "हज़ार",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Time and days",
+    "english": "Thursday",
+    "hindi": "गुरुवार",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Time and days",
+    "english": "Tomorrow",
+    "hindi": "आने वाला कल",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Food",
+    "english": "The bill please",
+    "hindi": "कृपया बिल दीजिए",
+    "priority": 3
+  },
+  {
+    "letter": "T",
+    "category": "Food",
+    "english": "The food is delicious",
+    "hindi": "खाना स्वादिष्ट है",
+    "priority": 3
+  },
+  {
+    "letter": "U",
+    "category": "Emergency",
+    "english": "Urgent",
+    "hindi": "ज़रूरी",
+    "priority": 1
+  },
+  {
+    "letter": "U",
+    "category": "Deaf communication",
+    "english": "Use gestures please",
+    "hindi": "कृपया इशारों से बताइए",
+    "priority": 1
+  },
+  {
+    "letter": "U",
+    "category": "Family and people",
+    "english": "Uncle",
+    "hindi": "चाचा",
+    "priority": 3
+  },
+  {
+    "letter": "U",
+    "category": "Home and places",
+    "english": "Umbrella",
+    "hindi": "छाता",
+    "priority": 3
+  },
+  {
+    "letter": "U",
+    "category": "Shopping and money",
+    "english": "UPI payment",
+    "hindi": "यूपीआई भुगतान",
+    "priority": 3
+  },
+  {
+    "letter": "V",
+    "category": "Phone and technology",
+    "english": "Video call me",
+    "hindi": "मुझे वीडियो कॉल कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "V",
+    "category": "Home and places",
+    "english": "Vehicle",
+    "hindi": "वाहन",
+    "priority": 3
+  },
+  {
+    "letter": "V",
+    "category": "Home and places",
+    "english": "Village",
+    "hindi": "गाँव",
+    "priority": 3
+  },
+  {
+    "letter": "V",
+    "category": "Food",
+    "english": "Vegetables",
+    "hindi": "सब्ज़ी",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Medical",
+    "english": "Where is the hospital?",
+    "hindi": "अस्पताल कहाँ है?",
+    "priority": 1
+  },
+  {
+    "letter": "W",
+    "category": "Medical",
+    "english": "Where is the pharmacy?",
+    "hindi": "दवा की दुकान कहाँ है?",
+    "priority": 1
+  },
+  {
+    "letter": "W",
+    "category": "Replies",
+    "english": "Wait",
+    "hindi": "इंतज़ार कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "Who?",
+    "hindi": "कौन?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "Why?",
+    "hindi": "क्यों?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "When?",
+    "hindi": "कब?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Replies",
+    "english": "Wrong",
+    "hindi": "गलत",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "Where?",
+    "hindi": "कहाँ?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Greetings",
+    "english": "Welcome",
+    "hindi": "स्वागत है",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "Which way?",
+    "hindi": "किस तरफ?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Phone and technology",
+    "english": "WhatsApp me",
+    "hindi": "मुझे व्हाट्सऐप कीजिए",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "What is this?",
+    "hindi": "यह क्या है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Daily conversation",
+    "english": "Who is there?",
+    "hindi": "वहाँ कौन है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "What happened?",
+    "hindi": "क्या हुआ?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "What time is it?",
+    "hindi": "क्या समय हुआ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the ATM?",
+    "hindi": "एटीएम कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Greetings",
+    "english": "What is your name?",
+    "hindi": "आपका नाम क्या है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "Where do you live?",
+    "hindi": "आप कहाँ रहते हैं?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Daily conversation",
+    "english": "Where is my phone?",
+    "hindi": "मेरा फोन कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "Where are you going?",
+    "hindi": "आप कहाँ जा रहे हैं?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the market?",
+    "hindi": "बाज़ार कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Basic needs",
+    "english": "Where is the toilet?",
+    "hindi": "शौचालय कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the airport?",
+    "hindi": "हवाई अड्डा कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Which bus goes there?",
+    "hindi": "वहाँ कौन सी बस जाती है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the bus stop?",
+    "hindi": "बस स्टॉप कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the platform?",
+    "hindi": "प्लेटफ़ॉर्म कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Questions",
+    "english": "What is your phone number?",
+    "hindi": "आपका फोन नंबर क्या है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Basic needs",
+    "english": "Where can I wash my hands?",
+    "hindi": "मैं हाथ कहाँ धो सकता हूँ?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the metro station?",
+    "hindi": "मेट्रो स्टेशन कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the police station?",
+    "hindi": "पुलिस स्टेशन कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Travel",
+    "english": "Where is the railway station?",
+    "hindi": "रेलवे स्टेशन कहाँ है?",
+    "priority": 2
+  },
+  {
+    "letter": "W",
+    "category": "Home and places",
+    "english": "Wall",
+    "hindi": "दीवार",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Time and days",
+    "english": "Week",
+    "hindi": "सप्ताह",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Family and people",
+    "english": "Wife",
+    "hindi": "पत्नी",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Home and places",
+    "english": "Water",
+    "hindi": "पानी",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Family and people",
+    "english": "Woman",
+    "hindi": "औरत",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Home and places",
+    "english": "Window",
+    "hindi": "खिड़की",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Time and days",
+    "english": "Wednesday",
+    "hindi": "बुधवार",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Food",
+    "english": "Water bottle",
+    "hindi": "पानी की बोतल",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "Time and days",
+    "english": "What day is today?",
+    "hindi": "आज कौन सा दिन है?",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "School and work",
+    "english": "Where is my class?",
+    "hindi": "मेरी कक्षा कहाँ है?",
+    "priority": 3
+  },
+  {
+    "letter": "W",
+    "category": "School and work",
+    "english": "When is the meeting?",
+    "hindi": "मीटिंग कब है?",
+    "priority": 3
+  },
+  {
+    "letter": "X",
+    "category": "School and work",
+    "english": "Xerox copy",
+    "hindi": "फोटोकॉपी",
+    "priority": 3
+  },
+  {
+    "letter": "Y",
+    "category": "Deaf communication",
+    "english": "Yes I understand",
+    "hindi": "हाँ मैं समझ गया",
+    "priority": 1
+  },
+  {
+    "letter": "Y",
+    "category": "Replies",
+    "english": "Yes",
+    "hindi": "हाँ",
+    "priority": 2
+  },
+  {
+    "letter": "Y",
+    "category": "Replies",
+    "english": "You are right",
+    "hindi": "आप सही हैं",
+    "priority": 2
+  },
+  {
+    "letter": "Y",
+    "category": "Greetings",
+    "english": "You are welcome",
+    "hindi": "आपका स्वागत है",
+    "priority": 2
+  },
+  {
+    "letter": "Y",
+    "category": "Time and days",
+    "english": "Year",
+    "hindi": "साल",
+    "priority": 3
+  },
+  {
+    "letter": "Y",
+    "category": "Time and days",
+    "english": "Yesterday",
+    "hindi": "बीता हुआ कल",
+    "priority": 3
+  },
+  {
+    "letter": "Z",
+    "category": "Phone and technology",
+    "english": "Zoom call",
+    "hindi": "ज़ूम कॉल",
+    "priority": 2
+  },
+  {
+    "letter": "Z",
+    "category": "Travel",
+    "english": "Zebra crossing",
+    "hindi": "ज़ेबरा क्रॉसिंग",
+    "priority": 2
+  },
+  {
+    "letter": "Z",
+    "category": "Numbers",
+    "english": "Zero",
+    "hindi": "शून्य",
+    "priority": 3
+  },
+  {
+    "letter": "Z",
+    "category": "School and work",
+    "english": "Zero marks",
+    "hindi": "शून्य अंक",
+    "priority": 3
+  }
+]
