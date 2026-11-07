@@ -27,9 +27,8 @@ double-blink and index-pointing controls, and chose landmarks-only training.
 - Preserve the current recognition gate: at least 8 training samples, 2
   validation samples, and 2 contributors before the class becomes eligible for
   recognition.
-- If session photos or video are approved, associate them with the relevant
-  sample and gesture, rather than silently treating dictionary reference
-  photos as training examples.
+- Do not save webcam photos or video as training data. Keep dictionary
+  reference photos separate from recognition samples.
 
 ### 3. Optional double-blink controls
 

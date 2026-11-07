@@ -105,7 +105,11 @@ class LandmarkService:
             handedness = hand_result.multi_handedness or []
             for index, landmarks in enumerate(hand_result.multi_hand_landmarks):
                 points = [
-                    {"x": round(point.x, 5), "y": round(point.y, 5)}
+                    {
+                        "x": round(point.x, 5),
+                        "y": round(point.y, 5),
+                        "z": round(point.z, 5),
+                    }
                     for point in landmarks.landmark
                 ]
                 label = "Unknown"

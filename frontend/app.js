@@ -201,9 +201,14 @@ async function startCamera() {
 function stopCamera() {
   clearTimeout(state.timer);
   state.timer = null;
+  clearInterval(countdownTimer);
+  countdownTimer = null;
   state.stream?.getTracks().forEach((track) => track.stop());
   state.stream = null;
   state.busy = false;
+  state.currentFeatures = null;
+  state.allHands = [];
+  state.sequence = [];
 
   const videos = [$("#camera-video"), $("#learning-camera-video")].filter(Boolean);
   videos.forEach(v => { v.srcObject = null; });
@@ -614,14 +619,20 @@ function handleOptInCameraControls(result) {
     return;
   }
   const points = result.hands?.[0]?.landmarks;
-  if (!points || points.length < 21) {
+  if (!points || points.length < 21 || typeof points[8].z !== "number") {
     state.pointAnchorX = null;
     return;
   }
-  const indexExtended = points[8].y < points[6].y - 0.04;
-  const otherFingersFolded = [ [12, 10], [16, 14], [20, 18] ]
-    .every(([tip, pip]) => points[tip].y > points[pip].y);
-  if (!indexExtended || !otherFingersFolded) {
+  const indexPointingAtCamera = points[8].z < points[6].z - 0.025;
+  const wrist = points[0];
+  const distanceFromWrist = (index) => Math.hypot(
+    points[index].x - wrist.x,
+    points[index].y - wrist.y,
+    points[index].z - wrist.z
+  );
+  const otherFingersFolded = [[12, 10], [16, 14], [20, 18]]
+    .every(([tip, pip]) => distanceFromWrist(tip) < distanceFromWrist(pip) * 1.12);
+  if (!indexPointingAtCamera || !otherFingersFolded) {
     state.pointAnchorX = null;
     return;
   }
@@ -678,9 +689,11 @@ async function recordSample() {
   const targetHand = $("#sample-target-hand")?.value || "any";
   let chosenHand = state.allHands[0];
   if (targetHand === "Left") {
-    chosenHand = state.allHands.find(h => h.handedness === "Left") || state.allHands[0];
+    chosenHand = state.allHands.find(h => h.handedness === "Left");
   } else if (targetHand === "Right") {
-    chosenHand = state.allHands.find(h => h.handedness === "Right") || state.allHands[0];
+    chosenHand = state.allHands.find(h => h.handedness === "Right");
+  } else if (targetHand === "Both" && state.allHands.length < 2) {
+    return toast("Show both hands before recording this sample.");
   }
 
   const features = gesture.kind === "dynamic" ? state.sequence.slice(-20) : chosenHand?.features;
@@ -990,9 +1003,6 @@ async function loadIslReference() {
     if (typeof glRenderPills === "function") glRenderPills();
   }
   renderDictContent();
-  if (typeof renderDictContent === "function") {
-    renderDictContent();
-  }
 }
 
 function renderIslCategories() {
@@ -1000,9 +1010,9 @@ function renderIslCategories() {
   if (!container) return;
   const categories = ["All", ...new Set(ISL_REFERENCE.map((g) => g.category || "Common"))];
   container.innerHTML = categories.map((cat) =>
-    `<button class="isl-pill ${cat === islState.activeCategory ? "active" : ""}" data-cat="${cat}">${cat}</button>`
+    `<button class="isl-pill ${cat === islState.activeCategory ? "active" : ""}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
   ).join("");
-  $$(".isl-pill").forEach((btn) => btn.addEventListener("click", () => {
+  container.querySelectorAll(".isl-pill").forEach((btn) => btn.addEventListener("click", () => {
     islState.activeCategory = btn.dataset.cat;
     $$(".isl-pill").forEach((b) => b.classList.toggle("active", b === btn));
     renderIslGrid();
@@ -1026,7 +1036,7 @@ function renderIslGrid() {
         ${g.photos?.length
           ? `<img class="isl-card-photo" src="${escapeHtml(g.photos[0].url)}" alt="${escapeHtml(g.label)} gesture reference" loading="lazy">`
           : `<span class="isl-symbol">${escapeHtml(g.symbol || "✋")}</span>`}
-        <span class="isl-cat-tag">${g.category || "Common"} · ${g.kind || "static"}</span>
+        <span class="isl-cat-tag">${escapeHtml(g.category || "Common")} · ${escapeHtml(g.kind || "static")}</span>
       </div>
       <div class="isl-card-meta">
         <h3>${escapeHtml(g.label)}</h3>
@@ -1345,11 +1355,12 @@ const glState = {
 };
 
 function glBuildDeck(cat){
+  const activeId = glState.deck[glState.index]?.id;
   glState.activeCategory = cat;
   glState.deck = cat==='All' ? [...ISL_REFERENCE]
     : ISL_REFERENCE.filter(g=>g.category===cat);
-  glState.index = 0;
-  glState.score = {correct:0,wrong:0,total:0};
+  const activeIndex = glState.deck.findIndex(g=>g.id === activeId);
+  glState.index = activeIndex >= 0 ? activeIndex : 0;
 }
 
 function glQ(id){ return document.getElementById(id); }
@@ -1534,7 +1545,7 @@ function glRenderPills(){
   const cats=['All',...new Set(ISL_REFERENCE.map(g=>g.category))];
   container.innerHTML=cats.map(cat=>{
     const count=cat==='All'?ISL_REFERENCE.length:ISL_REFERENCE.filter(g=>g.category===cat).length;
-    return `<button class="isl-pill${cat===glState.activeCategory?' active':''}" data-glcat="${cat}">${cat} <span style="opacity:.7;font-size:9px">${count}</span></button>`;
+    return `<button class="isl-pill${cat===glState.activeCategory?' active':''}" data-glcat="${escapeHtml(cat)}">${escapeHtml(cat)} <span style="opacity:.7;font-size:9px">${count}</span></button>`;
   }).join('');
   container.querySelectorAll('[data-glcat]').forEach(btn=>btn.addEventListener('click',()=>{
     glBuildDeck(btn.dataset.glcat);
