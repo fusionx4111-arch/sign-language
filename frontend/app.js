@@ -7,18 +7,21 @@ const HAND_CONNECTIONS = [
   [9, 13], [13, 14], [14, 15], [15, 16],
   [13, 17], [0, 17], [17, 18], [18, 19], [19, 20]
 ];
-const ALPHABET_COMMIT_CONFIDENCE = 0.5;
 const state = {
   stream: null, timer: null, busy: false, currentFeatures: null, currentHandedness: "Unknown", sequence: [],
   gestureClasses: [], history: [], recognition: null, lastAppended: null,
   stableLabel: null, stableCount: 0, serviceUnavailable: false,
-  alphabetReady: false, alphabetError: null,
   stableLetter: null, stableLetterCount: 0, lastAppendedLetter: null,
   selectedEmergency: null, customPhrases: [],
   phraseCache: new Map(), phraseSuggestions: [], selectedPhraseIndex: -1,
+  phraseMode: "offline",
   phraseLetter: null, phraseRequestId: 0, recognizedLetter: null,
   blinkClosedAt: null, lastBlinkAt: null, blinkCooldownUntil: 0,
-  pointAnchorX: null, pointCooldownUntil: 0
+  pointAnchorX: null, pointCooldownUntil: 0,
+  gazeDirection: null, gazeCooldownUntil: 0,
+  eyeOpenRatio: null, eyeClosedRatio: null, eyeClosedThreshold: null, eyeGazeCenter: null,
+  eyeCalibrationCapture: null, blinkPracticeCount: 0,
+  pointPracticeCounts: { left: 0, right: 0 }
 };
 const defaultPhrases = [
   "I need help.", "Please call a doctor.", "I need water.", "Call my family.",
@@ -82,6 +85,24 @@ function speak(text) {
   window.speechSynthesis.speak(utterance);
 }
 
+function speakSuggestedSentence(text) {
+  if (!text.trim()) return toast("There is no sentence to speak.");
+  if (!("speechSynthesis" in window)) return toast("Text-to-speech is not supported by this browser.");
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = speechLanguage();
+  utterance.rate = 0.88;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const languagePrefix = utterance.lang.slice(0, 2).toLowerCase();
+  const match = voices.find((voice) => voice.lang.toLowerCase() === utterance.lang.toLowerCase())
+    || voices.find((voice) => voice.lang.toLowerCase().startsWith(languagePrefix));
+  if (match) utterance.voice = match;
+  utterance.onerror = (event) => toast(`Speech playback failed: ${event.error}`);
+  window.speechSynthesis.speak(utterance);
+}
+
 function toggleSpeechPause() {
   if (!("speechSynthesis" in window)) return toast("Text-to-speech is not supported by this browser.");
   if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) window.speechSynthesis.pause();
@@ -107,9 +128,6 @@ async function refreshStats() {
     $("#service-status").textContent = health.database !== "connected"
       ? "Database connection unavailable"
       : health.vision_available ? "Local AI service ready" : "Vision dependencies unavailable";
-    state.alphabetReady = health.alphabet_ready === true;
-    state.alphabetError = health.alphabet_error || null;
-    updateAlphabetRecognition(null);
     $("#system-status").textContent = health.vision_available
       ? `MySQL connected. ${health.recognition}`
       : `MySQL connected; camera analysis is unavailable: ${health.vision_error || "install requirements first."}`;
@@ -159,6 +177,14 @@ async function startCamera() {
       video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
       audio: false
     });
+    for (const track of state.stream.getTracks()) {
+      track.addEventListener("ended", () => {
+        if (state.stream?.getTracks().includes(track)) {
+          stopCamera();
+          toast("Camera disconnected. Your sentence and ready-to-speak suggestions are still available.");
+        }
+      }, { once: true });
+    }
 
     const videos = [$("#camera-video"), $("#learning-camera-video")].filter(Boolean);
     for (const v of videos) {
@@ -201,14 +227,14 @@ async function startCamera() {
 function stopCamera() {
   clearTimeout(state.timer);
   state.timer = null;
-  clearInterval(countdownTimer);
-  countdownTimer = null;
+  cancelRecordCountdown();
   state.stream?.getTracks().forEach((track) => track.stop());
   state.stream = null;
   state.busy = false;
   state.currentFeatures = null;
   state.allHands = [];
   state.sequence = [];
+  state.eyeCalibrationCapture = null;
 
   const videos = [$("#camera-video"), $("#learning-camera-video")].filter(Boolean);
   videos.forEach(v => { v.srcObject = null; });
@@ -234,6 +260,8 @@ function stopCamera() {
     $("#learning-camera-badge").style.color = "";
   }
   if ($("#learning-hand-status")) $("#learning-hand-status").textContent = "No hand detected";
+  if ($("#eye-calibration-status")) $("#eye-calibration-status").textContent = "Start the camera and face it to begin.";
+  if ($("#point-practice-status")) $("#point-practice-status").textContent = "Waiting for a hand.";
   if ($("#sample-hand-indicator")) $("#sample-hand-indicator").textContent = "Camera off";
 
   $("#stat-camera").textContent = "Off";
@@ -242,6 +270,18 @@ function stopCamera() {
   $("#compact-camera-state").textContent = "Start camera from Live recognition to begin.";
   if ($("#record-sample")) $("#record-sample").disabled = true;
   if ($("#record-countdown-btn")) $("#record-countdown-btn").disabled = true;
+  if ($("#recognized-word")) {
+    $("#recognized-word").textContent = "Camera is offline";
+    $("#recognition-detail").textContent = "Your sentence remains on screen. Choose a suggested sentence to add it and hear it spoken.";
+    $("#confidence-value").textContent = "—";
+    $("#confidence-bar").style.width = "0%";
+  }
+  state.recognizedLetter = null;
+  state.stableLetter = null;
+  state.stableLetterCount = 0;
+  state.lastAppendedLetter = null;
+  updateLearnedLetter();
+  renderOfflineSuggestions();
 }
 
 function drawLandmarksOnCanvas(canvas, video, result) {
@@ -295,6 +335,42 @@ function drawLandmarksOnCanvas(canvas, video, result) {
       context.shadowBlur = 0;
     }
   });
+
+  const eyes = result.eye_landmarks;
+  if (eyes?.contours?.length) {
+    eyes.contours.forEach((contour) => {
+      if (!contour.length) return;
+      context.beginPath();
+      contour.forEach((point, index) => {
+        const x = point.x * canvas.width;
+        const y = point.y * canvas.height;
+        if (index === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      });
+      context.closePath();
+      context.strokeStyle = "#ffd166";
+      context.lineWidth = Math.max(2, canvas.width / 400);
+      context.shadowColor = "rgba(10, 24, 35, 0.9)";
+      context.shadowBlur = 4;
+      context.stroke();
+      context.shadowBlur = 0;
+      contour.forEach((point) => {
+        context.beginPath();
+        context.arc(point.x * canvas.width, point.y * canvas.height, Math.max(2, canvas.width / 400), 0, Math.PI * 2);
+        context.fillStyle = "#ffffff";
+        context.fill();
+      });
+    });
+    (eyes.irises || []).forEach((point) => {
+      context.beginPath();
+      context.arc(point.x * canvas.width, point.y * canvas.height, Math.max(4, canvas.width / 180), 0, Math.PI * 2);
+      context.fillStyle = "#ff6b7a";
+      context.strokeStyle = "#ffffff";
+      context.lineWidth = Math.max(2, canvas.width / 400);
+      context.fill();
+      context.stroke();
+    });
+  }
 }
 
 function drawLandmarks(result) {
@@ -347,6 +423,7 @@ async function analyzeFrame() {
     $("#hand-status").textContent = handDesc;
     if ($("#learning-hand-status")) $("#learning-hand-status").textContent = handDesc;
     if ($("#face-status")) $("#face-status").textContent = result.face_detected ? "Face landmarks: detected" : "Face landmarks: not detected";
+    updateEyePractice(result);
 
     state.currentFeatures = result.hands[0]?.features || null;
     state.currentHandedness = result.hands[0]?.handedness || "Unknown";
@@ -367,7 +444,9 @@ async function analyzeFrame() {
     }
 
     if ($("#record-sample")) $("#record-sample").disabled = !readyToRecord;
-    if ($("#record-countdown-btn")) $("#record-countdown-btn").disabled = !readyToRecord;
+    if ($("#record-countdown-btn") && !countdownTimer && !countdownResetTimer) {
+      $("#record-countdown-btn").disabled = !readyToRecord;
+    }
     if ($("#learning-camera-message")) {
       $("#learning-camera-message").textContent = readyToRecord
         ? `Hands ready (${handDesc}). Click Record or Countdown.`
@@ -380,7 +459,7 @@ async function analyzeFrame() {
     }
 
     updateRecognition(result.gesture, result.gestures);
-    updateAlphabetRecognition(result.alphabet);
+    updateLearnedLetter();
     handleOptInCameraControls(result);
   } catch (error) {
     $("#recognized-word").textContent = "Analysis unavailable";
@@ -389,7 +468,12 @@ async function analyzeFrame() {
     $("#service-status").textContent = "Local service unavailable";
     state.currentFeatures = null;
     state.sequence = [];
+    state.eyeCalibrationCapture = null;
     $("#record-sample").disabled = true;
+    $("#record-countdown-btn").disabled = true;
+    if ($("#eye-calibration-status")) {
+      $("#eye-calibration-status").textContent = "Camera analysis unavailable. Restart the local service and try again.";
+    }
     $("#learning-camera-message").textContent = "Start the local service to analyze camera frames.";
     drawLandmarks({ hands: [] });
     if (!state.serviceUnavailable) toast(error.message);
@@ -405,7 +489,8 @@ async function analyzeFrame() {
 function updateRecognition(gesture, gestures = []) {
   const recognizedGestures = (gestures || []).filter(g => g && g.recognized);
   const recognized = gesture?.recognized || recognizedGestures.length > 0;
-  const activeGesture = gesture?.recognized ? gesture : recognizedGestures[0];
+  const letterGesture = recognizedGestures.find(g => /^[A-Z]$/i.test(g.label || ""));
+  const activeGesture = letterGesture || (gesture?.recognized ? gesture : recognizedGestures[0]);
   state.recognizedLetter = recognized && /^[A-Z]$/i.test(activeGesture?.label || "")
     ? activeGesture.label.toUpperCase()
     : null;
@@ -426,9 +511,16 @@ function updateRecognition(gesture, gestures = []) {
     detail = "Keep your hand centered in the camera frame.";
   } else {
     const totalSamples = state.gestureClasses.reduce((sum, c) => sum + (c.sample_count || 0), 0);
+    const totalTrainingSamples = state.gestureClasses.reduce((sum, c) => sum + (c.train_count || 0), 0);
     if (totalSamples === 0) {
       $("#recognized-word").textContent = "No gesture samples recorded";
       detail = "Go to AI Learning Mode and record at least 1 sample for a gesture to recognize it.";
+    } else if (totalTrainingSamples === 0) {
+      $("#recognized-word").textContent = "No training examples saved";
+      detail = "Validation examples are held out of live matching. Select Training sample in AI Learning Mode and record examples for this class.";
+    } else if (readyClasses === 0) {
+      $("#recognized-word").textContent = "Matching saved training examples";
+      detail = "This class is not fully validated yet. For better testing, collect at least 8 training samples, 2 validation samples, and samples from 2 contributors.";
     } else {
       $("#recognized-word").textContent = "Hold gesture steady";
       detail = gesture?.reason === "low_confidence_or_ambiguous"
@@ -445,7 +537,8 @@ function updateRecognition(gesture, gestures = []) {
   if (recognized) {
     if (state.stableLabel === gesture.meaning) state.stableCount += 1;
     else { state.stableLabel = gesture.meaning; state.stableCount = 1; }
-    if (state.stableCount >= 3 && $("#auto-add").checked && state.lastAppended !== gesture.meaning) {
+    const addAsLetter = /^[A-Z]$/i.test(gesture.label || "") && $("#auto-add-letters").checked;
+    if (state.stableCount >= 3 && $("#auto-add").checked && !addAsLetter && state.lastAppended !== gesture.meaning) {
       appendSentence(gesture.meaning);
       state.lastAppended = gesture.meaning;
       saveHistory("sign", gesture.meaning, confidence);
@@ -457,30 +550,15 @@ function updateRecognition(gesture, gestures = []) {
   }
 }
 
-function updateAlphabetRecognition(result) {
-  const letter = result?.letter;
-  const confidence = result?.confidence || 0;
-  const recognized = state.alphabetReady && result?.recognized === true && /^[A-Z]$/.test(letter || "");
-  const stable = recognized && confidence >= ALPHABET_COMMIT_CONFIDENCE;
+function updateLearnedLetter() {
+  const letter = state.recognizedLetter;
   const output = $("#alphabet-word");
   const detail = $("#alphabet-detail");
-
-  if (!state.alphabetReady) {
-    output.textContent = "Unavailable";
-    detail.textContent = state.alphabetError
-      ? `${state.alphabetError} Follow the ISL alphabet setup instructions in README.md.`
-      : "The ISL letter model is not installed. Follow the setup instructions in README.md.";
-  } else if (recognized) {
-    output.textContent = letter;
-    detail.textContent = `${Math.round(confidence * 100)}% model score${stable ? " · hold the sign steady" : " · low score, try a clearer pose"}`;
-  } else {
-    output.textContent = "—";
-    detail.textContent = result?.reason === "no_hand"
-      ? "Show a clear ISL alphabet sign to the camera."
-      : "No clear alphabet letter was recognized.";
-  }
-
-  updatePhraseSuggestions(stable ? letter : state.recognizedLetter);
+  const stable = Boolean(letter);
+  output.textContent = letter || "—";
+  detail.textContent = letter
+    ? "Matched from your saved AI Learning Mode samples."
+    : "Train a letter in AI Learning Mode to recognize it here.";
 
   if (stable) {
     if (state.stableLetter === letter) state.stableLetterCount += 1;
@@ -499,19 +577,23 @@ function updateAlphabetRecognition(result) {
     state.stableLetterCount = 0;
     state.lastAppendedLetter = null;
   }
+  updatePhraseSuggestions(stable && state.stableLetterCount >= 3 ? letter : null);
 }
 
 async function updatePhraseSuggestions(letter) {
   const normalized = /^[A-Z]$/i.test(letter || "") ? letter.toUpperCase() : null;
-  if (normalized === state.phraseLetter) return;
+  if (!normalized) {
+    if (state.phraseMode !== "offline") {
+      state.phraseRequestId += 1;
+      renderOfflineSuggestions();
+    }
+    return;
+  }
+  if (normalized === state.phraseLetter && state.phraseMode === "letter") return;
+  state.phraseMode = "letter";
   state.phraseLetter = normalized;
   state.selectedPhraseIndex = -1;
   const requestId = ++state.phraseRequestId;
-  if (!normalized) {
-    state.phraseSuggestions = [];
-    renderPhraseSuggestions("Show a recognized A–Z letter to see matching ideas.");
-    return;
-  }
   const cached = state.phraseCache.get(normalized);
   if (cached) {
     state.phraseSuggestions = cached;
@@ -538,9 +620,12 @@ function renderPhraseSuggestions(status = null) {
   const list = $("#phrase-list");
   if (!list) return;
   const items = state.phraseSuggestions;
-  $("#phrase-status").textContent = status || (items.length
-    ? `Priority-ranked ideas for letter ${state.phraseLetter}. Suggestions are not translations; confirm one before using it.`
-    : `No phrase ideas found for ${state.phraseLetter || "this letter"}.`);
+  const cameraActive = state.stream?.getVideoTracks().some((track) => track.readyState === "live");
+  $("#phrase-status").textContent = status || (state.phraseMode === "offline"
+    ? `${cameraActive ? "No stable letter is recognized yet." : "Camera is off."} Click a suggested sentence to add it to your sentence and hear it spoken.`
+    : items.length
+      ? `Priority-ranked ideas for letter ${state.phraseLetter}. Suggestions are not translations; click one to add and speak it.`
+      : `No phrase ideas found for ${state.phraseLetter || "this letter"}.`);
   list.innerHTML = items.map((item, index) => `
     <button class="phrase-option${index === state.selectedPhraseIndex ? " selected" : ""}"
       type="button" data-phrase-index="${index}" aria-pressed="${index === state.selectedPhraseIndex}">
@@ -554,6 +639,22 @@ function renderPhraseSuggestions(status = null) {
   $("#phrase-use").disabled = !hasSelection;
 }
 
+function renderOfflineSuggestions() {
+  state.phraseMode = "offline";
+  state.phraseLetter = null;
+  state.phraseSuggestions = [
+    { category: "Quick phrase", priority: 1, english: "Please help me.", hindi: "कृपया मेरी मदद करें।" },
+    { category: "Quick phrase", priority: 2, english: "Could you please call a doctor?", hindi: "क्या आप कृपया डॉक्टर को बुला सकते हैं?" },
+    { category: "Quick phrase", priority: 3, english: "May I please have some water?", hindi: "क्या मुझे कृपया थोड़ा पानी मिल सकता है?" },
+    { category: "Quick phrase", priority: 4, english: "Could you please call my family?", hindi: "क्या आप कृपया मेरे परिवार को बुला सकते हैं?" },
+    { category: "Quick phrase", priority: 5, english: "I am feeling unwell. Could you please help me?", hindi: "मेरी तबीयत ठीक नहीं है। क्या आप कृपया मेरी मदद कर सकते हैं?" },
+    { category: "Quick phrase", priority: 6, english: "Could you please assist me?", hindi: "क्या आप कृपया मेरी सहायता कर सकते हैं?" },
+    { category: "Quick phrase", priority: 7, english: "Please give me a moment.", hindi: "कृपया मुझे थोड़ा समय दें।" }
+  ];
+  state.selectedPhraseIndex = 0;
+  renderPhraseSuggestions();
+}
+
 function changePhraseSelection(direction) {
   const next = state.selectedPhraseIndex + direction;
   if (next < 0 || next >= state.phraseSuggestions.length) return;
@@ -562,13 +663,15 @@ function changePhraseSelection(direction) {
   $("#phrase-list").querySelector(`[data-phrase-index="${next}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 
-function useSelectedPhrase() {
-  const phrase = state.phraseSuggestions[state.selectedPhraseIndex];
+function useSelectedPhrase(index = state.selectedPhraseIndex) {
+  const phrase = state.phraseSuggestions[index];
   if (!phrase) return toast("Select a phrase idea first.");
   const text = speechLanguage().toLowerCase().startsWith("hi") ? phrase.hindi : phrase.english;
   if (!text) return toast("The selected phrase is not available in that language.");
+  state.selectedPhraseIndex = index;
+  renderPhraseSuggestions();
   appendSentence(text);
-  speak(text);
+  speakSuggestedSentence(text);
   saveHistory("sign", text);
 }
 
@@ -578,8 +681,8 @@ function activePageIs(id) {
 
 function cameraControlEnabled() {
   return (activePageIs("recognition") &&
-      ($("#pointing-controls").checked || $("#phrase-blink-controls").checked)) ||
-    (activePageIs("learning") && $("#learning-blink-controls").checked);
+      ($("#pointing-controls").checked || $("#gaze-controls").checked || $("#phrase-blink-controls").checked)) ||
+    activePageIs("learning");
 }
 
 function detectDoubleBlink(result) {
@@ -589,7 +692,8 @@ function detectDoubleBlink(result) {
     state.lastBlinkAt = null;
     return false;
   }
-  if (result.eyes_closed) {
+  const eyesClosed = bothEyesClosed(result);
+  if (eyesClosed) {
     if (state.blinkClosedAt === null) state.blinkClosedAt = now;
     return false;
   }
@@ -606,24 +710,123 @@ function detectDoubleBlink(result) {
   return false;
 }
 
-function handleOptInCameraControls(result) {
-  if (detectDoubleBlink(result)) {
-    if (activePageIs("learning") && $("#learning-blink-controls").checked) {
-      void recordSample();
-    } else if (activePageIs("recognition") && $("#phrase-blink-controls").checked) {
-      useSelectedPhrase();
+function bothEyesClosed(result) {
+  if (Array.isArray(result.eye_aspect_ratios) && result.eye_aspect_ratios.length === 2) {
+    const threshold = state.eyeClosedThreshold ?? 0.19;
+    return result.eye_aspect_ratios.every((ratio) => ratio <= threshold);
+  }
+  return Number.isFinite(result.eye_aspect_ratio) && state.eyeClosedThreshold !== null
+    ? result.eye_aspect_ratio <= state.eyeClosedThreshold
+    : result.eyes_closed === true;
+}
+
+function median(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
+function updateEyePractice(result) {
+  const status = $("#eye-calibration-status");
+  if (!status) return;
+  const gaze = eyeGazeDirection(result.eye_gaze_x);
+  const eyeState = bothEyesClosed(result) ? "both eyes closed" : "eyes open";
+  status.textContent = result.face_detected
+    ? `Face detected · ${eyeState} · gaze ${gaze || "center"} · eye ratio ${Number(result.eye_aspect_ratio).toFixed(3)}`
+    : "Face not detected. Move into the camera view.";
+
+  const capture = state.eyeCalibrationCapture;
+  if (!capture) return;
+  if (result.face_detected && Number.isFinite(result.eye_aspect_ratio)) {
+    capture.ratios.push(result.eye_aspect_ratio);
+    if (capture.kind === "open" && !bothEyesClosed(result) && Number.isFinite(result.eye_gaze_x)) {
+      capture.gazeValues.push(result.eye_gaze_x);
     }
+    status.textContent =
+      `Capturing ${capture.kind === "open" ? "open-eye" : "closed-eye"} reading (${capture.ratios.length}/6)…`;
+  } else {
+    status.textContent = "Waiting for a clear face reading…";
   }
-  if (!activePageIs("recognition") || !$("#pointing-controls").checked || !state.phraseSuggestions.length) {
-    state.pointAnchorX = null;
+  if (capture.ratios.length >= 6) {
+    finishEyeCalibrationCapture();
+  } else if (performance.now() - capture.startedAt >= 4000) {
+    finishEyeCalibrationCapture();
+  }
+}
+
+function startEyeCalibrationCapture(kind) {
+  if (!state.stream) return toast("Start the camera before calibrating eye detection.");
+  state.eyeCalibrationCapture = { kind, ratios: [], gazeValues: [], startedAt: performance.now() };
+  $("#eye-calibration-status").textContent = kind === "open"
+    ? "Look at the camera with both eyes open while readings are captured…"
+    : "Close your eyes comfortably while readings are captured…";
+}
+
+function finishEyeCalibrationCapture() {
+  const capture = state.eyeCalibrationCapture;
+  if (!capture) return;
+  state.eyeCalibrationCapture = null;
+  if (capture.ratios.length < 3) {
+    $("#eye-calibration-status").textContent = "Not enough face readings. Check the lighting and try again.";
     return;
   }
+  const ratio = median(capture.ratios);
+  if (capture.kind === "open") {
+    state.eyeOpenRatio = ratio;
+    if (capture.gazeValues.length >= 3) state.eyeGazeCenter = median(capture.gazeValues);
+  }
+  else state.eyeClosedRatio = ratio;
+  $("#eye-calibration-status").textContent =
+    `${capture.kind === "open" ? "Open-eye" : "Closed-eye"} reading captured (${ratio.toFixed(3)}).`;
+
+  const readings = [];
+  if (state.eyeOpenRatio !== null) readings.push(`open ${state.eyeOpenRatio.toFixed(3)}`);
+  if (state.eyeClosedRatio !== null) readings.push(`closed ${state.eyeClosedRatio.toFixed(3)}`);
+  if (state.eyeOpenRatio !== null && state.eyeClosedRatio !== null) {
+    if (state.eyeOpenRatio <= state.eyeClosedRatio + 0.03) {
+      state.eyeClosedThreshold = null;
+      $("#eye-calibration-result").textContent =
+        "The readings are too close. Capture open and closed eyes again in steady lighting.";
+    } else {
+      state.eyeClosedThreshold = (state.eyeOpenRatio + state.eyeClosedRatio) / 2;
+      state.blinkClosedAt = null;
+      state.lastBlinkAt = null;
+      $("#eye-calibration-result").textContent =
+        `Personalized blink threshold active (${state.eyeClosedThreshold.toFixed(3)}). Readings: ${readings.join(", ")}.`;
+    }
+  } else {
+    $("#eye-calibration-result").textContent =
+      `Waiting for the other reading. Captured: ${readings.join(", ")}.`;
+  }
+  if (state.eyeGazeCenter !== null) {
+    $("#eye-calibration-result").textContent +=
+      ` Neutral gaze calibrated (${state.eyeGazeCenter.toFixed(3)}); look left/right to browse ideas.`;
+  }
+}
+
+function resetEyeCalibration() {
+  state.eyeOpenRatio = null;
+  state.eyeClosedRatio = null;
+  state.eyeClosedThreshold = null;
+  state.eyeGazeCenter = null;
+  state.eyeCalibrationCapture = null;
+  state.blinkClosedAt = null;
+  state.lastBlinkAt = null;
+  $("#eye-calibration-status").textContent = state.stream
+    ? "Calibration reset. Capture both eye positions to begin."
+    : "Start the camera and face it to begin.";
+  $("#eye-calibration-result").textContent =
+    "Using standard blink detection until both readings are calibrated.";
+}
+
+function updateBlinkPracticeCount() {
+  $("#blink-practice-count").textContent = `Double blinks detected: ${state.blinkPracticeCount}`;
+}
+
+function indexPointingX(result) {
   const points = result.hands?.[0]?.landmarks;
-  if (!points || points.length < 21 || typeof points[8].z !== "number") {
-    state.pointAnchorX = null;
-    return;
-  }
-  const indexPointingAtCamera = points[8].z < points[6].z - 0.025;
+  if (!points || points.length < 21 || typeof points[8].z !== "number") return null;
+  if (points[8].z >= points[6].z - 0.025) return null;
   const wrist = points[0];
   const distanceFromWrist = (index) => Math.hypot(
     points[index].x - wrist.x,
@@ -632,20 +835,99 @@ function handleOptInCameraControls(result) {
   );
   const otherFingersFolded = [[12, 10], [16, 14], [20, 18]]
     .every(([tip, pip]) => distanceFromWrist(tip) < distanceFromWrist(pip) * 1.12);
-  if (!indexPointingAtCamera || !otherFingersFolded) {
+  return otherFingersFolded ? points[8].x : null;
+}
+
+function detectPointSwipe(result) {
+  const x = indexPointingX(result);
+  if (x === null) {
+    state.pointAnchorX = null;
+    return null;
+  }
+  if (state.pointAnchorX === null) {
+    state.pointAnchorX = x;
+    return null;
+  }
+  const delta = x - state.pointAnchorX;
+  if (Math.abs(delta) < 0.14 || performance.now() < state.pointCooldownUntil) return null;
+  state.pointAnchorX = x;
+  state.pointCooldownUntil = performance.now() + 900;
+  return delta > 0 ? "left" : "right";
+}
+
+function eyeGazeDirection(gazeX) {
+  if (!Number.isFinite(gazeX)) return null;
+  const center = state.eyeGazeCenter ?? 0.5;
+  if (gazeX >= center + 0.12) return "left";
+  if (gazeX <= center - 0.12) return "right";
+  return null;
+}
+
+function detectEyeGazeMovement(result) {
+  if (!result.face_detected || bothEyesClosed(result)) return null;
+  const direction = eyeGazeDirection(result.eye_gaze_x);
+  if (!direction) {
+    const center = state.eyeGazeCenter ?? 0.5;
+    if (Number.isFinite(result.eye_gaze_x) &&
+        result.eye_gaze_x > center - 0.06 && result.eye_gaze_x < center + 0.06) {
+      state.gazeDirection = null;
+    }
+    return null;
+  }
+  if (direction === state.gazeDirection || performance.now() < state.gazeCooldownUntil) return null;
+  state.gazeDirection = direction;
+  state.gazeCooldownUntil = performance.now() + 700;
+  return direction;
+}
+
+function handleOptInCameraControls(result) {
+  if (detectDoubleBlink(result)) {
+    if (activePageIs("learning")) {
+      state.blinkPracticeCount++;
+      updateBlinkPracticeCount();
+    }
+    if (activePageIs("learning") && $("#learning-blink-controls").checked) {
+      void recordSample();
+    } else if (activePageIs("recognition") && $("#phrase-blink-controls").checked &&
+        state.phraseSuggestions.length) {
+      useSelectedPhrase();
+    }
+  }
+  const learningPractice = activePageIs("learning");
+  if (activePageIs("recognition") && $("#gaze-controls").checked && state.phraseSuggestions.length) {
+    const gazeDirection = detectEyeGazeMovement(result);
+    if (gazeDirection) {
+      changePhraseSelection(gazeDirection === "left" ? -1 : 1);
+      return;
+    }
+  } else {
+    state.gazeDirection = null;
+  }
+  const phraseNavigation = activePageIs("recognition") &&
+    $("#pointing-controls").checked && state.phraseSuggestions.length;
+  if (!learningPractice && !phraseNavigation) {
     state.pointAnchorX = null;
     return;
   }
-  const x = points[8].x;
-  if (state.pointAnchorX === null) {
-    state.pointAnchorX = x;
+  const direction = detectPointSwipe(result);
+  if (!direction) {
+    if (learningPractice) {
+      $("#point-practice-status").textContent = !result.hands?.length
+        ? "Waiting for a hand."
+        : indexPointingX(result) === null
+          ? "Point your index finger toward the camera with other fingers curled."
+          : "Index point detected. Move your finger left or right.";
+    }
     return;
   }
-  const delta = x - state.pointAnchorX;
-  if (Math.abs(delta) < 0.14 || performance.now() < state.pointCooldownUntil) return;
-  state.pointAnchorX = x;
-  state.pointCooldownUntil = performance.now() + 900;
-  changePhraseSelection(delta > 0 ? -1 : 1);
+  if (learningPractice) {
+    state.pointPracticeCounts[direction]++;
+    $("#point-left-count").textContent = state.pointPracticeCounts.left;
+    $("#point-right-count").textContent = state.pointPracticeCounts.right;
+    $("#point-practice-status").textContent = `Swipe detected: ${direction}. Keep practicing in both directions.`;
+    return;
+  }
+  changePhraseSelection(direction === "left" ? -1 : 1);
 }
 
 function appendSentence(word) {
@@ -721,10 +1003,22 @@ async function recordSample() {
 }
 
 let countdownTimer = null;
+let countdownResetTimer = null;
+function cancelRecordCountdown() {
+  clearInterval(countdownTimer);
+  clearTimeout(countdownResetTimer);
+  countdownTimer = null;
+  countdownResetTimer = null;
+  if ($("#sample-countdown")) $("#sample-countdown").textContent = "";
+  if ($("#record-countdown-btn")) {
+    $("#record-countdown-btn").disabled = $("#record-sample")?.disabled !== false;
+  }
+}
+
 function startRecordCountdown() {
   const cdEl = $("#sample-countdown");
   const btn = $("#record-countdown-btn");
-  if (!cdEl || !btn) return;
+  if (!cdEl || !btn || btn.disabled || countdownTimer) return;
   let sec = 3;
   btn.disabled = true;
   cdEl.textContent = `Recording in ${sec}s...`;
@@ -734,11 +1028,13 @@ function startRecordCountdown() {
       cdEl.textContent = `Recording in ${sec}s...`;
     } else {
       clearInterval(countdownTimer);
+      countdownTimer = null;
       cdEl.textContent = "📸 Captured!";
-      recordSample();
-      setTimeout(() => {
+      void recordSample();
+      countdownResetTimer = setTimeout(() => {
         cdEl.textContent = "";
-        btn.disabled = false;
+        btn.disabled = $("#record-sample")?.disabled !== false;
+        countdownResetTimer = null;
       }, 1500);
     }
   }, 1000);
@@ -764,7 +1060,7 @@ function renderGestures(gestures) {
     <tr><td><strong>${escapeHtml(item.label)}</strong><br><span class="muted">${escapeHtml(item.meaning)}</span></td>
     <td>${escapeHtml(item.kind)}</td><td>${item.sample_count}</td>
     <td>${item.train_count} / ${item.validation_count}</td><td>${item.signer_count}</td>
-    <td><span class="table-status ${item.ready ? "ready" : "collecting"}">${item.ready ? "Validated (8+2; 2 contributors)" : (item.sample_count > 0 ? `Collecting examples (${item.sample_count} samples)` : "No samples")}</span></td>
+    <td><span class="table-status ${item.ready ? "ready" : "collecting"}">${escapeHtml(gestureDatasetStatus(item))}</span></td>
     <td><button class="table-action" data-delete-gesture="${item.id}" aria-label="Delete ${escapeHtml(item.label)}">Delete</button></td></tr>`
   ).join("") : '<tr><td colspan="7" class="empty-state">No gesture classes collected yet.</td></tr>';
   const dictionary = $("#dictionary-grid");
@@ -785,6 +1081,18 @@ function renderGestures(gestures) {
     try { await api(`/api/gestures/${button.dataset.deleteGesture}`, { method: "DELETE" }); await loadGestures(); }
     catch (error) { toast(error.message); }
   }));
+}
+
+function gestureDatasetStatus(item) {
+  if (item.ready) return "Dataset complete";
+  const missing = [];
+  if (item.train_count < 8) missing.push(`${8 - item.train_count} training`);
+  if (item.validation_count < 2) missing.push(`${2 - item.validation_count} validation`);
+  if (item.signer_count < 2) missing.push("1 more contributor");
+  const status = item.train_count > 0
+    ? "Training samples match live · missing "
+    : "No training examples · missing ";
+  return `${status}${missing.join(", ")}`;
 }
 
 async function loadHistory(query = "") {
@@ -884,10 +1192,13 @@ function setupEvents() {
   $("#phrase-list").addEventListener("click", (event) => {
     const option = event.target.closest("[data-phrase-index]");
     if (!option) return;
-    state.selectedPhraseIndex = Number(option.dataset.phraseIndex);
-    renderPhraseSuggestions();
+    useSelectedPhrase(Number(option.dataset.phraseIndex));
   });
   $("#pointing-controls").addEventListener("change", () => { state.pointAnchorX = null; });
+  $("#gaze-controls").addEventListener("change", () => {
+    state.gazeDirection = null;
+    state.gazeCooldownUntil = 0;
+  });
   $("#phrase-blink-controls").addEventListener("change", () => {
     state.lastBlinkAt = null;
     state.blinkClosedAt = null;
@@ -938,6 +1249,9 @@ function setupEvents() {
     state.lastBlinkAt = null;
     state.blinkClosedAt = null;
   });
+  $("#calibrate-eyes-open")?.addEventListener("click", () => startEyeCalibrationCapture("open"));
+  $("#calibrate-eyes-closed")?.addEventListener("click", () => startEyeCalibrationCapture("closed"));
+  $("#reset-eye-calibration")?.addEventListener("click", resetEyeCalibration);
   $("#sample-target-hand")?.addEventListener("change", () => {
     const targetHand = $("#sample-target-hand")?.value || "any";
     const handCount = state.allHands.length;
@@ -948,7 +1262,9 @@ function setupEvents() {
       else ready = state.allHands.some(h => h.handedness === targetHand);
     }
     if ($("#record-sample")) $("#record-sample").disabled = !ready;
-    if ($("#record-countdown-btn")) $("#record-countdown-btn").disabled = !ready;
+    if ($("#record-countdown-btn") && !countdownTimer && !countdownResetTimer) {
+      $("#record-countdown-btn").disabled = !ready;
+    }
   });
 
   // ISL Reference Add/Edit/Reset
@@ -975,6 +1291,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderEmergencyPhrases();
   refreshStats();
   updateSentenceCount();
+  renderOfflineSuggestions();
   // Load dynamic public ISL reference from database
   loadIslReference();
 });
@@ -983,15 +1300,45 @@ window.addEventListener("beforeunload", stopCamera);
 // ─── ISL Reference Dictionary (Public & Dynamic) ─────────────────────────────
 
 let ISL_REFERENCE = [];
+let GESTURE_GUIDES = null;
 const islState = { activeCategory: "All", filtered: [] };
 let islCurrentViewingId = null;
 
 async function loadIslReference() {
   try {
     const data = await api("/api/isl-reference");
-    if (Array.isArray(data)) ISL_REFERENCE = data;
+    try {
+      GESTURE_GUIDES = await api("/api/gesture-guides");
+    } catch (error) {
+      GESTURE_GUIDES = null;
+      console.error("Could not load alphabet and number guide files:", error);
+      toast(`Could not load alphabet/number instructions: ${error.message}`);
+    }
+    if (Array.isArray(data)) {
+      ISL_REFERENCE = data.map((gesture) => {
+        const source = gesture.category === "Alphabet"
+          ? GESTURE_GUIDES?.alphabet
+          : gesture.category === "Number"
+            ? GESTURE_GUIDES?.number
+            : null;
+        if (!["Alphabet", "Number"].includes(gesture.category)) return gesture;
+        const guideSteps = source?.gestures?.[gesture.label] || [];
+        return {
+          ...gesture,
+          steps: [
+            ...(source?.general ? [`General guidance: ${source.general}`] : []),
+            ...(gesture.category === "Number" && Number(gesture.label) >= 6 && source?.two_hand_rule
+              ? [source.two_hand_rule]
+              : []),
+            ...guideSteps
+          ],
+          tip: ""
+        };
+      });
+    }
   } catch (err) {
-    console.warn("Could not load ISL reference from API, keeping current data:", err);
+    console.error("Could not load gesture guides and ISL reference:", err);
+    toast(`Could not load gesture guides: ${err.message}`);
   }
   renderIslCategories();
   renderIslGrid();
@@ -1385,7 +1732,9 @@ function glRenderCard(){
   const photoEl = glQ('gl-photo');
   const photoUrl = g.photos?.[0]?.url;
   if(emojiEl) {
-    emojiEl.textContent = g.symbol;
+    const useLabel = !photoUrl && ['Alphabet', 'Number'].includes(g.category);
+    emojiEl.textContent = useLabel ? g.label : g.symbol;
+    emojiEl.classList.toggle('gl-text-placeholder', useLabel);
     emojiEl.hidden = Boolean(photoUrl);
   }
   if(photoEl) {
@@ -1413,7 +1762,10 @@ function glRenderCard(){
 
   /* ---- BACK ---- */
   const beEl = glQ('gl-back-emoji');
-  if(beEl) beEl.textContent = g.symbol;
+  if(beEl) {
+    beEl.textContent = g.symbol;
+    beEl.hidden = Boolean(photoUrl);
+  }
   const backPhotoEl = glQ('gl-back-photo');
   if(backPhotoEl) {
     backPhotoEl.hidden = !photoUrl;
@@ -1431,7 +1783,7 @@ function glRenderCard(){
 
   const stepsEl = glQ('gl-back-steps');
   if(stepsEl) stepsEl.innerHTML = g.steps.map((s,i)=>
-    `<li><span class="gl-step-num" style="background:${col.accent}">${i+1}</span><span>${s}</span></li>`
+    `<li><span class="gl-step-num" style="background:${col.accent}">${i+1}</span><span>${escapeHtml(s)}</span></li>`
   ).join('');
 
   const tipEl = glQ('gl-tip');
@@ -1558,8 +1910,12 @@ function glRenderStrip(){
   const strip=glQ('gl-strip'); if(!strip) return;
   strip.innerHTML=glState.deck.map((g,i)=>{
     const col=glColor(g.category);
+    const photoUrl=g.photos?.[0]?.url;
+    const visual=photoUrl
+      ? `<img class="gl-thumb-photo" src="${escapeHtml(photoUrl)}" alt="${escapeHtml(g.label)} gesture" loading="lazy">`
+      : `<span class="${['Alphabet','Number'].includes(g.category)?'gl-thumb-label':''}">${escapeHtml(['Alphabet','Number'].includes(g.category)?g.label:g.symbol)}</span>`;
     return `<button class="gl-thumb${i===glState.index?' active':''}" data-gi="${i}" title="${g.label} — ${g.meaning}" style="border-color:${i===glState.index?col.accent:''}">
-      <span style="font-size:20px;line-height:1">${g.symbol}</span>
+      ${visual}
       <span style="font-size:8px;color:#7c8499;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;width:100%;text-align:center">${g.label}</span>
     </button>`;
   }).join('');

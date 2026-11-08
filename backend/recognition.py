@@ -43,12 +43,12 @@ def predict(
     features: list[float],
     sequence: list[list[float]],
     samples: Iterable[dict],
-    ready_gesture_ids: set[int],
+    active_gesture_ids: set[int],
     handedness: str = "Unknown",
 ) -> dict | None:
     best_by_gesture = {}
     for sample in samples:
-        if sample["id"] not in ready_gesture_ids:
+        if sample["id"] not in active_gesture_ids:
             continue
         sample_handedness = sample.get("handedness", "any")
         if sample_handedness not in ("any", handedness):

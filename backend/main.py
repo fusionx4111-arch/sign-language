@@ -2,6 +2,7 @@ import base64
 import binascii
 from io import BytesIO
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -14,16 +15,15 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from backend.alphabet import ISLAlphabetRecognizer
 from backend import database
 from backend.recognition import FEATURE_SIZE, predict, valid_feature_vector
 from backend.vision import LandmarkService
 
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+PROJECT_DIR = FRONTEND_DIR.parent
 landmarks = LandmarkService()
-alphabet = ISLAlphabetRecognizer()
-app = FastAPI(title="SignBridge ISL", version="0.1.0")
+app = FastAPI(title="Signova ISL", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://127.0.0.1:8000", "http://localhost:8000"],
@@ -91,10 +91,7 @@ def health() -> dict:
         "database": database_status,
         "vision_available": landmarks.available,
         "vision_error": landmarks.import_error,
-        "alphabet_ready": alphabet.available,
-        "alphabet_error": alphabet.error,
-        "alphabet_validation_accuracy": alphabet.validation_accuracy,
-        "recognition": "ISL fingerspelling uses the pinned local alphabet classifier; custom gesture classes require labelled examples.",
+        "recognition": "Live recognition matches saved training samples; validation examples are held out and dataset readiness is tracked separately.",
     }
 
 
@@ -117,18 +114,16 @@ def analyze(payload: AnalyzeInput) -> dict:
         raise HTTPException(status_code=400, detail=f"Each sequence frame must contain {FEATURE_SIZE} finite values")
     result["gesture"] = None
     result["gestures"] = []
-    result["alphabet"] = alphabet.predict_hands(result["hands"])
     if result["hands"]:
         with database.connect() as db:
-            rows = database.gesture_rows(db)
-            ready_ids = {row["id"] for row in rows if row["ready"]}
             samples = database.training_samples(db)
+            train_ids = {sample["id"] for sample in samples}
             for hand in result["hands"]:
                 hand_gesture = predict(
                     hand["features"],
                     sequence,
                     samples,
-                    ready_ids,
+                    train_ids,
                     hand["handedness"],
                 )
                 hand["gesture"] = hand_gesture
@@ -160,6 +155,87 @@ def get_phrase_suggestions(letter: str, limit: int = 8) -> list[dict]:
     return matching[:limit]
 
 
+def _read_guide_text(filename: str) -> str:
+    path = PROJECT_DIR / filename
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError as error:
+        raise HTTPException(
+            status_code=503,
+            detail=f"The gesture guide {filename} could not be loaded: {error}",
+        ) from error
+
+
+def _parse_alphabet_guide(content: str) -> dict:
+    general_match = re.search(
+        r"(?ms)^GENERAL SETUP\s*\n(.*?)(?=^[A-Z]\s*$)",
+        content,
+    )
+    general = " ".join(general_match.group(1).split()) if general_match else ""
+    headings = list(re.finditer(r"(?m)^([A-Z])\s*$", content))
+    gestures = {}
+    for index, heading in enumerate(headings):
+        end = headings[index + 1].start() if index + 1 < len(headings) else len(content)
+        section = content[heading.end():end]
+        steps = re.findall(r"(?m)^\d+\.\s*(.+?)\s*$", section)
+        if steps:
+            gestures[heading.group(1)] = steps
+    return {"general": general, "gestures": gestures}
+
+
+def _parse_number_guide(content: str) -> dict:
+    general_match = re.search(
+        r"(?ms)^General rule:\s*(.*?)(?=^GESTURE\s+\d+)",
+        content,
+    )
+    general_text = " ".join(general_match.group(1).split()) if general_match else ""
+    general_parts = re.match(r"(.+?\.)\s*(.*)", general_text)
+    general = general_parts.group(1) if general_parts else general_text
+    two_hand_rule = general_parts.group(2) if general_parts else ""
+    headings = list(
+        re.finditer(r"(?m)^GESTURE\s+(\d+)(?:\s+\(two hands\))?\s*$", content)
+    )
+    gestures = {}
+    for index, heading in enumerate(headings):
+        end = headings[index + 1].start() if index + 1 < len(headings) else content.find("QUICK SUMMARY", heading.end())
+        if end < 0:
+            end = len(content)
+        section = content[heading.end():end]
+        group = ""
+        steps = []
+        for line in section.splitlines():
+            stripped = line.strip()
+            if stripped in ("First hand:", "Second hand:"):
+                group = stripped[:-1]
+                continue
+            step = re.match(r"Step\s+\d+:\s*(.+)", stripped)
+            if step:
+                text = step.group(1)
+                steps.append(f"{group}: {text}" if group else text)
+        if steps:
+            gestures[heading.group(1)] = steps
+    return {"general": general, "two_hand_rule": two_hand_rule, "gestures": gestures}
+
+
+@app.get("/api/gesture-guides")
+def get_gesture_guides() -> dict:
+    alphabet = _parse_alphabet_guide(
+        _read_guide_text("isl_alphabet_gestures.txt")
+    )
+    numbers = _parse_number_guide(
+        _read_guide_text("number_gestures_steps.txt")
+    )
+    if len(alphabet["gestures"]) != 26 or len(numbers["gestures"]) != 9:
+        raise HTTPException(
+            status_code=503,
+            detail="The uploaded alphabet or number guide is incomplete.",
+        )
+    return {
+        "alphabet": alphabet,
+        "number": numbers,
+    }
+
+
 @app.get("/api/gestures")
 def get_gestures() -> list[dict]:
     with database.connect() as db:
@@ -180,7 +256,10 @@ def add_gesture(payload: GestureInput) -> dict:
             gesture_id = cursor.lastrowid
     except IntegrityError as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
-    return {"id": gesture_id, "message": "Gesture class created; it is not active until dataset requirements are met."}
+    return {
+        "id": gesture_id,
+        "message": "Gesture class created. Save training examples for live matching; validation status is tracked separately.",
+    }
 
 
 @app.post("/api/gestures/{gesture_id}/samples", status_code=201)

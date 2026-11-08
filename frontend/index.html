@@ -3,14 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Primary SEO Meta Tags -->
+  <title>Signova — AI Indian Sign Language (ISL) Recognition &amp; Communication</title>
+  <meta name="title" content="Signova — AI Indian Sign Language (ISL) Recognition &amp; Communication">
+  <meta name="description" content="Signova is an AI-powered Indian Sign Language (ISL) recognition and communication platform. Real-time dual-hand tracking, user-trained gestures, speech synthesis, and accessible two-way communication.">
+  <meta name="keywords" content="Indian Sign Language, ISL recognition, sign language translator, AI sign language, user-trained gestures, deaf accessibility, hand gesture tracking, MediaPipe, speech to sign, sign to speech">
+  <meta name="author" content="Signova">
+  <meta name="robots" content="index, follow">
+
+  <!-- Mobile & Device Web App Capabilities -->
   <meta name="theme-color" content="#10172b">
-  <title>SignBridge — ISL Communication</title>
-  <link rel="stylesheet" href="/styles.css?v=20261106_2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Signova">
+  <meta name="application-name" content="Signova">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Signova">
+  <meta property="og:title" content="Signova — AI Indian Sign Language (ISL) Recognition &amp; Communication">
+  <meta property="og:description" content="Real-time Indian Sign Language recognition using your saved gesture samples, with speech and accessible communication tools.">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Signova — AI Indian Sign Language (ISL) Recognition &amp; Communication">
+  <meta name="twitter:description" content="Real-time Indian Sign Language recognition using user-trained gesture samples and accessible two-way communication.">
+
+  <!-- JSON-LD Structured Data Schema for Search Engines & Device Crawlers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Signova",
+    "alternateName": "Signova ISL",
+    "applicationCategory": "AccessibilityApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires WebRTC and Camera access",
+    "inLanguage": ["en", "hi"],
+    "isAccessibleForFree": true,
+    "description": "Real-time Indian Sign Language recognition using saved user-trained gestures and accessible communication tools.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    },
+    "featureList": [
+      "Real-time dual-hand ISL recognition",
+      "Recognition from user-trained gesture samples",
+      "Single-screen live sign cockpit with live sentence builder",
+      "Browser text-to-speech voice synthesis",
+      "Two-way speech-to-caption communication",
+      "Public ISL gesture reference library"
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/styles.css?v=20261108_7">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="#" aria-label="SignBridge home"><span class="brand-mark">S</span><span>sign<span class="brand-accent">bridge</span><small>ISL COMMUNICATION</small></span></a>
+      <a class="brand" href="#" aria-label="Signova home"><span class="brand-mark">S</span><span>Sign<span class="brand-accent">ova</span><small>ISL COMMUNICATION</small></span></a>
       <nav class="navigation" aria-label="Main navigation">
         <button class="nav-link active" data-page="dashboard"><span>⌂</span> Dashboard</button>
         <button class="nav-link" data-page="recognition"><span>◉</span> Live recognition</button>
@@ -42,10 +100,10 @@
           <div><p class="eyebrow">YOUR ACCESSIBLE COMMUNICATION SPACE</p><h1>Good day <span class="wave">✦</span></h1><p class="muted">A bridge between Indian Sign Language and spoken communication.</p></div>
           <button class="button button-primary" data-go="recognition">Start a conversation <span>→</span></button>
         </div>
-        <div class="notice"><span>ⓘ</span><div><strong>Transparent recognition</strong><p>Sign recognition starts with an empty, user-managed dataset. It only identifies gestures after sufficient labelled examples are collected and validated.</p></div><button class="text-button" data-go="learning">Build your dataset →</button></div>
+        <div class="notice"><span>ⓘ</span><div><strong>Transparent recognition</strong><p>Live matching uses only your saved training examples. Validation examples and contributor coverage are tracked separately to show how complete each class is.</p></div><button class="text-button" data-go="learning">Build your dataset →</button></div>
         <div class="stats-grid">
           <article class="stat-card"><span class="stat-icon blue">◉</span><div><span class="muted">Gesture classes</span><strong id="stat-gestures">—</strong><small>in your local dictionary</small></div></article>
-          <article class="stat-card"><span class="stat-icon purple">✓</span><div><span class="muted">Validated classes</span><strong id="stat-ready">—</strong><small>eligible for recognition</small></div></article>
+          <article class="stat-card"><span class="stat-icon purple">✓</span><div><span class="muted">Validated classes</span><strong id="stat-ready">—</strong><small>complete dataset checks</small></div></article>
           <article class="stat-card"><span class="stat-icon green">◷</span><div><span class="muted">Saved conversations</span><strong id="stat-history">—</strong><small>stored on this device</small></div></article>
           <article class="stat-card"><span class="stat-icon amber">◎</span><div><span class="muted">Camera status</span><strong id="stat-camera">Off</strong><small>permission required</small></div></article>
         </div>
@@ -60,22 +118,148 @@
       </section>
 
       <section class="page" id="page-recognition">
-        <div class="page-heading"><div><p class="eyebrow">CAMERA-BASED LANDMARK ANALYSIS</p><h1>Live sign recognition</h1><p class="muted">Frame-by-frame hand tracking with confidence-gated, locally collected gesture samples.</p></div><span id="camera-badge" class="status-badge">● Camera off</span></div>
-        <div class="recognition-layout">
-          <article class="panel camera-panel"><div class="panel-heading"><div><h2>Live camera</h2><p>Center your hands in the frame</p></div><span id="hand-status" class="status-badge">No hand detected</span></div><div class="camera-frame"><video id="camera-video" playsinline muted></video><canvas id="landmark-canvas"></canvas><div class="camera-placeholder" id="camera-placeholder"><span>◉</span><strong>Camera preview</strong><small>Allow camera access to start landmark tracking.</small></div><div class="camera-overlay"><span id="face-status">Face landmarks: waiting</span><span>LOCAL PROCESSING</span></div></div><div class="camera-controls"><button id="camera-start" class="button button-primary">Start camera</button><button id="camera-stop" class="button button-secondary" disabled>Stop camera</button><span class="muted small">A connected hand diagram appears when detected. Gesture names require validated examples.</span></div></article>
-          <article class="panel result-panel"><div class="panel-heading"><div><h2>Recognition result</h2><p>Uncertain predictions are not shown as confirmed.</p></div><span class="confidence-label">AI confidence</span></div><div class="result-box"><span id="recognition-icon" class="result-symbol">✳</span><strong id="recognized-word">Gesture not recognised</strong><span id="recognition-detail">Create and validate gesture samples in AI Learning Mode.</span></div><div class="alphabet-output"><div><span class="eyebrow">ISL FINGERSPELLING</span><strong id="alphabet-word">Checking model…</strong><p id="alphabet-detail">Loading the local alphabet recognizer.</p></div><label class="check-option"><input id="auto-add-letters" type="checkbox" checked> Add stable letters to sentence</label></div><button class="text-button" data-go="learning">Set up gesture labels →</button><div class="confidence-row"><span>Confidence</span><strong id="confidence-value">—</strong></div><div class="confidence-track"><span id="confidence-bar"></span></div>          <div class="recognition-controls"><label class="check-option"><input id="auto-add" type="checkbox" checked> Add stable signs to sentence</label><div class="button-row"><button id="speak-sentence" class="button button-primary">▶ Speak</button><button id="pause-speech" class="button button-secondary">Ⅱ Pause</button><button id="replay-speech" class="button button-secondary">↻ Replay</button></div></div><p class="privacy-small">Confidence is a similarity score, not a calibrated probability. Recognition requires 8 training samples, 2 validation samples, and 2 contributors per gesture.</p></article>
-        </div>
-        <article class="panel phrase-panel" id="phrase-panel" aria-live="polite">
-          <div class="panel-heading"><div><h2>Phrase ideas</h2><p id="phrase-status">Show a recognized A–Z letter to see matching ideas. These are suggestions, not translations.</p></div></div>
-          <div class="phrase-list" id="phrase-list"></div>
-          <div class="phrase-controls">
-            <label class="check-option"><input id="pointing-controls" type="checkbox"> Enable index-pointing navigation</label>
-            <label class="check-option"><input id="phrase-blink-controls" type="checkbox"> Double-blink to select and speak</label>
-            <div class="button-row"><button id="phrase-prev" class="button button-secondary" disabled>← Previous idea</button><button id="phrase-next" class="button button-secondary" disabled>Next idea →</button><button id="phrase-use" class="button button-primary" disabled>Use &amp; speak selected</button></div>
-            <span class="privacy-small">Hands-free controls are off until enabled. Arrow keys and these buttons remain available. Eye data is analyzed locally and not saved.</span>
+        <div class="page-heading recognition-header">
+          <div>
+            <p class="eyebrow">REAL-TIME MULTI-MODAL ISL ENGINE</p>
+            <h1>Live sign recognition</h1>
+            <p class="muted">Live recognition uses gesture samples you record and validate in AI Learning Mode.</p>
           </div>
-        </article>
-        <article class="panel sentence-panel"><div class="panel-heading"><div><h2>Build your sentence</h2><p>Edit the recognized words before sharing.</p></div><span class="sentence-count" id="sentence-count">0 characters</span></div><textarea id="sentence-text" rows="3" placeholder="Recognized words will appear here. You can also type or edit a sentence."></textarea><div class="sentence-actions"><button id="copy-sentence" class="button button-secondary">Copy text</button><button id="clear-sentence" class="button button-quiet">Clear</button><button id="save-sentence" class="button button-quiet">Save conversation</button></div></article>
+          <span id="camera-badge" class="status-badge">● Camera off</span>
+        </div>
+
+        <div class="recognition-layout single-page-cockpit">
+          <!-- Left Column: Camera Feed & Phrase Ideas -->
+          <div class="recognition-col-primary">
+            <article class="panel camera-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Live camera</h2>
+                  <p>Center your hands in the frame</p>
+                </div>
+                <span id="hand-status" class="status-badge">No hand detected</span>
+              </div>
+              <div class="camera-frame">
+                <video id="camera-video" playsinline muted></video>
+                <canvas id="landmark-canvas"></canvas>
+                <div class="camera-placeholder" id="camera-placeholder">
+                  <span>◉</span>
+                  <strong>Camera preview</strong>
+                  <small>Allow camera access to start landmark tracking.</small>
+                </div>
+                <div class="camera-overlay">
+                  <span id="face-status">Face landmarks: waiting</span>
+                  <span>LOCAL PROCESSING</span>
+                </div>
+              </div>
+              <div class="camera-controls">
+                <div class="button-row">
+                  <button id="camera-start" class="button button-primary">Start camera</button>
+                  <button id="camera-stop" class="button button-secondary" disabled>Stop camera</button>
+                </div>
+                <span class="muted small">A connected hand diagram appears when detected.</span>
+              </div>
+            </article>
+
+            <!-- Phrase ideas placed compactly directly under camera -->
+            <article class="panel phrase-panel" id="phrase-panel" aria-live="polite">
+              <div class="panel-heading">
+                <div>
+                  <h2>Phrase ideas</h2>
+                  <p id="phrase-status">Ready-to-speak suggestions are available while the camera is off. Click one to add it to your sentence and hear it spoken.</p>
+                </div>
+              </div>
+              <div class="phrase-list" id="phrase-list"></div>
+              <div class="phrase-controls">
+                <div class="phrase-toggles-row">
+                  <label class="check-option"><input id="pointing-controls" type="checkbox"> Pointing</label>
+                  <label class="check-option"><input id="gaze-controls" type="checkbox"> Gaze nav</label>
+                  <label class="check-option"><input id="phrase-blink-controls" type="checkbox"> Double-blink</label>
+                </div>
+                <div class="button-row">
+                  <button id="phrase-prev" class="button button-secondary" disabled>← Prev</button>
+                  <button id="phrase-next" class="button button-secondary" disabled>Next →</button>
+                  <button id="phrase-use" class="button button-primary" disabled>Use &amp; speak</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Right Column: Recognition Result + Live Sentence Builder -->
+          <div class="recognition-col-secondary">
+            <article class="panel result-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Recognition result</h2>
+                  <p>Uncertain predictions are not shown as confirmed.</p>
+                </div>
+                <span class="confidence-label">AI confidence</span>
+              </div>
+              <div class="result-box">
+                <span id="recognition-icon" class="result-symbol">✳</span>
+                <strong id="recognized-word">Gesture not recognised</strong>
+                <span id="recognition-detail">Saved training samples are used for matching; validation samples are kept separate.</span>
+              </div>
+              <div class="alphabet-output">
+                <div>
+                  <span class="eyebrow">LEARNED LETTER</span>
+                  <strong id="alphabet-word">—</strong>
+                  <p id="alphabet-detail">Train a letter in AI Learning Mode to recognize it here.</p>
+                </div>
+                <label class="check-option"><input id="auto-add-letters" type="checkbox" checked> Add learned letters</label>
+              </div>
+
+              <div class="rec-toggles-row">
+                <button class="text-button" data-go="learning">Set up gesture labels →</button>
+                <label class="check-option"><input id="auto-add" type="checkbox" checked> Add stable signs to sentence</label>
+              </div>
+
+              <div class="confidence-row">
+                <span>Confidence</span>
+                <strong id="confidence-value">—</strong>
+              </div>
+              <div class="confidence-track">
+                <span id="confidence-bar"></span>
+              </div>
+            </article>
+
+            <!-- Build your sentence placed right here at eye-level alongside camera -->
+            <article class="panel sentence-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Build your sentence</h2>
+                  <p>Real-time sentence stream</p>
+                </div>
+                <span class="sentence-count" id="sentence-count">0 characters</span>
+              </div>
+              <textarea id="sentence-text" rows="3" placeholder="Recognized words will appear here. You can also type or edit a sentence."></textarea>
+              <div class="sentence-actions-compact">
+                <div class="button-row speech-row">
+                  <button id="speak-sentence" class="button button-primary">▶ Speak</button>
+                  <button id="pause-speech" class="button button-secondary">Ⅱ Pause</button>
+                  <button id="replay-speech" class="button button-secondary">↻ Replay</button>
+                </div>
+                <div class="button-row text-actions-row">
+                  <button id="copy-sentence" class="button button-secondary">Copy</button>
+                  <button id="clear-sentence" class="button button-quiet">Clear</button>
+                  <button id="save-sentence" class="button button-quiet">Save conversation</button>
+                </div>
+              </div>
+            </article>
+          </div>
+          <article class="panel recognition-help">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">LIVE RECOGNITION GUIDE</p>
+                <h2>Start, build and speak</h2>
+              </div>
+            </div>
+            <div class="recognition-help-grid">
+              <p><strong>1. Start the camera.</strong> Allow access and keep your hands clearly inside the frame.</p>
+              <p><strong>2. Train your signs.</strong> Save examples in AI Learning Mode; live matching uses those saved samples.</p>
+              <p><strong>3. Build your sentence.</strong> Click a phrase suggestion to add it and hear it spoken, even when the camera is off.</p>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="page" id="page-communication">
@@ -176,9 +360,43 @@
             <div class="sample-status-box" id="sample-status-box" style="margin-top:12px;padding:8px 12px;background:var(--surface-soft);border-radius:8px;font-size:11px;color:var(--muted)">
               Hand status: <strong id="sample-hand-indicator">Camera off</strong>
             </div>
-            <p class="privacy-small">Only hand landmarks are saved; no camera photos or video are recorded. Requires 8 training samples, 2 validation samples, and 2 unique contributors before a class becomes eligible for recognition.</p>
+            <p class="privacy-small">Only hand landmarks are saved; no camera photos or video are recorded. Live matching starts with saved training examples. For a more complete dataset, record 8 training samples, 2 validation samples, and use at least 2 contributor IDs.</p>
           </article>
         </div>
+
+        <article class="panel control-practice-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Hands-free control practice</h2>
+              <p>Calibrate blink detection and practice index-finger navigation with live feedback.</p>
+            </div>
+            <span class="quick-icon green">◎</span>
+          </div>
+          <div class="control-training-grid">
+            <section class="control-training-card" aria-labelledby="eye-training-title">
+              <h3 id="eye-training-title">Eye-blink calibration</h3>
+              <p class="muted">Capture open eyes while looking at the camera, then capture closed eyes. Eye landmark dots and connecting lines appear on the preview; calibration stays in memory for this session only.</p>
+              <p id="eye-calibration-status" class="control-training-status" aria-live="polite">Start the camera and face it to begin.</p>
+              <div class="button-row control-training-actions">
+                <button id="calibrate-eyes-open" class="button button-secondary">Capture eyes open</button>
+                <button id="calibrate-eyes-closed" class="button button-secondary">Capture eyes closed</button>
+                <button id="reset-eye-calibration" class="text-button">Reset</button>
+              </div>
+              <p id="eye-calibration-result" class="privacy-small">Using standard blink detection until both readings are calibrated.</p>
+              <p id="blink-practice-count" class="control-training-count">Double blinks detected: 0</p>
+            </section>
+            <section class="control-training-card" aria-labelledby="point-training-title">
+              <h3 id="point-training-title">Index-finger movement</h3>
+              <p class="muted">Point your index finger toward the camera with the other fingers curled, then swipe left and right.</p>
+              <p id="point-practice-status" class="control-training-status" aria-live="polite">Waiting for a hand.</p>
+              <div class="point-practice-counts">
+                <span>← Left <strong id="point-left-count">0</strong></span>
+                <span>Right → <strong id="point-right-count">0</strong></span>
+              </div>
+              <p class="privacy-small">Practice readings are temporary and do not create gesture samples. Enable pointing controls in Live recognition to navigate phrase suggestions.</p>
+            </section>
+          </div>
+        </article>
 
         <!-- Create Gesture Class Form Panel -->
         <article class="panel" style="margin-bottom:15px">
@@ -203,7 +421,7 @@
           <div class="panel-heading">
             <div>
               <h2>Your gesture dataset</h2>
-              <p>Classes become eligible for recognition when requirements are met.</p>
+              <p>Saved training samples can be matched live; validation progress is tracked separately.</p>
             </div>
             <button id="refresh-gestures" class="text-button">↻ Refresh</button>
           </div>
@@ -386,7 +604,7 @@
           <div>
             <p class="eyebrow">INTERACTIVE ISL STUDY</p>
             <h1>Gesture Learning</h1>
-            <p class="muted">Study each ISL sign with its visual, meaning, and audio guide.</p>
+            <p class="muted">Study each gesture with its saved reference photo, source instructions, meaning, and audio guide.</p>
           </div>
           <div class="gl-header-controls">
             <label class="gl-auto-label"><input type="checkbox" id="gl-autoplay"> Auto-advance</label>
@@ -480,6 +698,6 @@
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </main>
   </div>
-  <script src="/app.js?v=20261106_2" defer></script>
+  <script src="/app.js?v=20261108_8" defer></script>
 </body>
 </html>

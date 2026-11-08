@@ -1,6 +1,6 @@
 # Dataset collection guide
 
-SignBridge includes a pinned model for isolated static A–Z fingerspelling. Custom gesture classes and their examples are stored in the configured MySQL database and must be collected locally.
+Signova does not bundle a recognition model or user-collected training samples. It includes a phrase reference dictionary; the alphabet and number instruction guides are in the project root. Custom gesture classes and their examples are stored in the configured MySQL database and must be collected locally.
 
 ## What to collect
 
@@ -15,7 +15,3 @@ The current prototype captures normalized 21-point hand landmarks. Face landmark
 ## Limitations
 
 The included nearest-example and dynamic sequence matching are baseline research/demo methods, not a trained or evaluated general ISL model. The confidence number is a similarity score, not an accuracy estimate or calibrated probability. Test with held-out signers and report per-class precision/recall, overall accuracy, latency, lighting, and user variation before relying on predictions. Do not use this prototype as a substitute for emergency services or a qualified interpreter.
-
-The optional fingerspelling alphabet model recognizes isolated static A–Z
-poses. Its dataset score does not establish performance on live camera users.
-It does not recognize words or movement-dependent signs.

@@ -5,6 +5,9 @@ import threading
 
 
 class LandmarkService:
+    LEFT_EYE_CONTOUR = (33, 160, 159, 158, 133, 153, 145, 144)
+    RIGHT_EYE_CONTOUR = (362, 385, 386, 387, 263, 373, 374, 380)
+
     def __init__(self) -> None:
         self._lock = threading.Lock()
         self._hands = None
@@ -44,7 +47,7 @@ class LandmarkService:
             self._face = self._mp.solutions.face_mesh.FaceMesh(
                 static_image_mode=False,
                 max_num_faces=1,
-                refine_landmarks=False,
+                refine_landmarks=True,
                 min_detection_confidence=0.5,
                 min_tracking_confidence=0.5,
             )
@@ -62,7 +65,7 @@ class LandmarkService:
         points /= scale
         return points.flatten().round(6).tolist()
 
-    def _eye_aspect_ratio(self, landmarks) -> float | None:
+    def _eye_aspect_ratios(self, landmarks) -> tuple[float, float] | None:
         if len(landmarks) < 468:
             return None
 
@@ -78,7 +81,48 @@ class LandmarkService:
         right = (distance(386, 374) + distance(385, 380)) / (2 * right_width)
         if not math.isfinite(left + right):
             return None
-        return (left + right) / 2
+        return left, right
+
+    def _eye_aspect_ratio(self, landmarks) -> float | None:
+        ratios = self._eye_aspect_ratios(landmarks)
+        return sum(ratios) / 2 if ratios is not None else None
+
+    @staticmethod
+    def _both_eyes_closed(ratios: tuple[float, float] | None) -> bool:
+        return ratios is not None and all(value < 0.19 for value in ratios)
+
+    @staticmethod
+    def _point(point) -> dict[str, float]:
+        return {"x": round(point.x, 5), "y": round(point.y, 5)}
+
+    def _eye_landmarks(self, landmarks) -> dict | None:
+        if len(landmarks) < 478:
+            return None
+        return {
+            "contours": [
+                [self._point(landmarks[index]) for index in contour]
+                for contour in (self.LEFT_EYE_CONTOUR, self.RIGHT_EYE_CONTOUR)
+            ],
+            "irises": [
+                self._point(landmarks[468]),
+                self._point(landmarks[473]),
+            ],
+        }
+
+    def _eye_gaze_x(self, landmarks) -> float | None:
+        if len(landmarks) < 478:
+            return None
+        eye_positions = []
+        for first, last, iris_start in ((33, 133, 468), (362, 263, 473)):
+            edge_a = landmarks[first].x
+            edge_b = landmarks[last].x
+            width = abs(edge_b - edge_a)
+            if width < 1e-6:
+                return None
+            iris_x = sum(landmarks[index].x for index in range(iris_start, iris_start + 5)) / 5
+            eye_positions.append((iris_x - min(edge_a, edge_b)) / width)
+        gaze_x = sum(eye_positions) / len(eye_positions)
+        return gaze_x if math.isfinite(gaze_x) else None
 
     def analyze(self, image_data: str) -> dict:
         encoded = image_data.split(",", 1)[-1]
@@ -119,14 +163,25 @@ class LandmarkService:
                     {"handedness": label, "landmarks": points, "features": self._features(landmarks)}
                 )
 
-        eye_ratio = None
+        eye_ratios = None
+        eye_landmarks = None
+        gaze_x = None
         if face_result.multi_face_landmarks:
-            eye_ratio = self._eye_aspect_ratio(
-                face_result.multi_face_landmarks[0].landmark
-            )
+            face_points = face_result.multi_face_landmarks[0].landmark
+            eye_ratios = self._eye_aspect_ratios(face_points)
+            eye_landmarks = self._eye_landmarks(face_points)
+            gaze_x = self._eye_gaze_x(face_points)
+        eye_ratio = sum(eye_ratios) / 2 if eye_ratios is not None else None
         return {
             "hands": hands,
             "face_detected": eye_ratio is not None,
             "eye_aspect_ratio": round(eye_ratio, 4) if eye_ratio is not None else None,
-            "eyes_closed": eye_ratio is not None and eye_ratio < 0.19,
+            "eye_aspect_ratios": (
+                [round(value, 4) for value in eye_ratios]
+                if eye_ratios is not None
+                else None
+            ),
+            "eyes_closed": self._both_eyes_closed(eye_ratios),
+            "eye_gaze_x": round(gaze_x, 4) if gaze_x is not None else None,
+            "eye_landmarks": eye_landmarks,
         }

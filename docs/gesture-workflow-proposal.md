@@ -33,9 +33,9 @@ double-blink and index-pointing controls, and chose landmarks-only training.
 ### 3. Optional double-blink controls
 
 - During a training session, a deliberate double blink could capture/confirm a
-  sample. During sentence suggestions, index-finger pointing could move
-  backward/forward through candidate phrases and a deliberate double blink
-  could select and speak one.
+  sample. During sentence suggestions, opt-in eye gaze or index-finger pointing
+  could move backward/forward through candidate phrases and a deliberate
+  synchronized double blink could select and speak one.
 - Make these hands-free controls opt-in, visibly indicate when they are active,
   add a cooldown and confirmation state, and retain buttons/keyboard controls
   as alternatives. Ordinary blinks must not unexpectedly save data, select a
@@ -72,17 +72,23 @@ double-blink and index-pointing controls, and chose landmarks-only training.
    training routed to the existing gated AI Learning Mode.
 3. Add the approved workbook phrase suggestions with manual selection,
    sentence insertion, and speech.
-4. Add opt-in double-blink and index-pointing controls with manual alternatives
-   and focused tests. Training remains landmarks-only; no sample media is
-   recorded.
+4. Add opt-in double-blink, eye-gaze, and index-pointing controls with visible
+   eye/hand landmarks, manual alternatives, and focused tests. Training remains
+   landmarks-only; no sample media is recorded.
 
 ## Implemented behavior
 
 - The phrase list is served from `/api/phrase-suggestions` and shown for
   recognized A–Z letters with manual selection, arrow-button/key navigation,
   sentence insertion, and speech.
-- Pointing navigation and double-blink selection are opt-in and disabled by
-  default. Training double-blink capture is a separate opt-in control.
+- Pointing navigation, eye-gaze navigation, and synchronized double-blink
+  selection are opt-in and disabled by default. Eye contours and iris markers
+  are overlaid with the hand landmarks. Training double-blink capture is a
+  separate opt-in control.
+- AI Learning Mode includes session-only eye-threshold calibration and
+  index-finger swipe practice. The open-eye calibration also records a neutral
+  gaze center for relative left/right browsing. These readings are not saved
+  as training samples.
 - Training saves only selected hand landmarks; no sample photo or video is
   captured. Reference photos remain separate illustrative dictionary media.
 - Edits and reference photos refresh the ISL Reference, Gesture Learning, and

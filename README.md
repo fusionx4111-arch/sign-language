@@ -1,8 +1,8 @@
-# SignBridge — Indian Sign Language Communication Prototype
+# Signova — Indian Sign Language Communication Prototype
 
-SignBridge is a local-first, exhibition-ready prototype for exploring two-way communication between signers and speakers. It provides browser webcam capture, MediaPipe hand/face landmark detection, an explicitly sample-gated gesture matcher, sentence editing, speech playback, browser speech captions, emergency phrases, dataset collection, dictionary, and local conversation history.
+Signova is a local-first, exhibition-ready prototype for exploring two-way communication between signers and speakers. It provides browser webcam capture, MediaPipe hand/face landmark detection, an explicitly sample-gated gesture matcher, sentence editing, speech playback, browser speech captions, emergency phrases, dataset collection, dictionary, and local conversation history.
 
-> **Scope and safety:** This is not a complete ISL translator and does not ship with a word/sign vocabulary. It includes a static A–Z fingerspelling model; custom gesture predictions are available only for locally collected classes that meet the minimum sample/contributor requirements. Similarity scores and model scores are not calibrated probabilities. Do not rely on this prototype for emergency response or other high-stakes communication.
+> **Scope and safety:** This is not a complete ISL translator and does not ship with a recognition model or training samples. Live predictions use only gesture classes and training examples recorded locally in AI Learning Mode, including letters and numbers you choose to train. Validation samples are kept out of matching and readiness is reported separately. Similarity scores are not calibrated probabilities. Do not rely on this prototype for emergency response or other high-stakes communication.
 
 ## Architecture
 
@@ -16,8 +16,7 @@ Browser dashboard
 FastAPI local service (127.0.0.1:8000)
   ├─ OpenCV decode + MediaPipe Hands / Face Mesh
   ├─ normalized hand landmark extraction
-  ├─ pinned A–Z landmark classifier for static fingerspelling
-  ├─ static nearest-example / dynamic DTW matching
+  ├─ static nearest-example / dynamic DTW matching over saved examples
   ├─ gesture sample, history, dictionary endpoints
   └─ MySQL persistence (local MySQL Server)
 ```
@@ -31,17 +30,16 @@ The modules are separated between API and service logic. Facial landmarks are sh
    `/api/analyze` endpoint.
 2. MediaPipe finds up to two hands. The backend derives wrist-relative features
    and handedness; it does not save the camera frame.
-3. Alphabet recognition scales each hand by its wrist-to-middle-fingertip
-   distance, puts left/right hands into fixed 63-value slots, and zero-fills a
-   missing hand. The pinned StandardScaler/RBF-SVC model scores A–Z and checks
-   both handedness-slot orientations to handle mirrored webcams.
-4. The top letter and its model score are displayed. Three consecutive frames
-   scoring at least 50% are required before the optional automatic sentence
-   insertion. The score is not a calibrated probability.
-5. Custom gesture recognition is separate: static gestures use nearest
-   collected landmark examples, while dynamic gestures use sequence matching.
-   A class is eligible only after its sample and contributor requirements are
-   met. This is not a full ISL word or sentence translator.
+3. Live prediction compares those landmarks only with examples saved for
+   gesture classes in AI Learning Mode. Static gestures use nearest-example
+   matching; dynamic gestures use sequence matching.
+4. Letters and numbers are recognized only after you create their classes and
+   save training samples. The bundled dictionary guides
+   are visual references, not recognition training data.
+5. Saved training examples can be matched live immediately. Validation
+   examples are kept out of live matching and the dashboard separately reports
+   whether each class has enough training, validation, and contributor
+   coverage. This is not a full ISL word or sentence translator.
 
 ## Project structure
 
@@ -57,6 +55,9 @@ frontend/
   app.js            Camera, speech, UI, and API modules
 datasets/
   README.md         Collection, consent, and evaluation guidance
+isl_alphabet_gestures.txt
+number_gestures_steps.txt
+                    Source instructions shown by Gesture Learning
 models/
   README.md         Model artifact and versioning policy
 tests/
@@ -69,7 +70,7 @@ requirements-dev.txt
 
 ## MySQL database setup (Windows)
 
-The application uses a local MySQL Server database. You do not need to create the app tables manually; SignBridge creates them on its first successful start.
+The application uses a local MySQL Server database. You do not need to create the app tables manually; Signova creates them on its first successful start. Existing database names and credentials remain `signbridge` by default, so renaming the website does not require a database migration.
 
 ### 1. Install and start MySQL Server
 
@@ -118,31 +119,29 @@ Run the command from the project root. To start the app directly instead, run `.
 
 On startup, the app connects to MySQL and automatically creates the `gestures`, `samples`, and `history` tables. Open [http://127.0.0.1:8000](http://127.0.0.1:8000). Camera and microphone access require localhost (or HTTPS) and user permission. If PowerShell blocks activation, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` in that terminal, then activate the environment.
 
+To start the website manually on a later day, open PowerShell in this project
+folder and run:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+```
+
+Keep that PowerShell window open while using the site, then visit
+`http://127.0.0.1:8000` in your browser. Press **Ctrl+C** in the PowerShell
+window when you are finished. Start MySQL first if it is not already running.
+The website needs the local server running because the browser uses it for the
+database, camera analysis, and saved gesture data; closing the server stops
+those features until you run the command again.
+
+The interface adapts to phone, tablet, and laptop screen widths. Search-engine
+listing and social previews require publishing the app at a public HTTPS domain;
+`127.0.0.1` is local to your computer and cannot be indexed. Set the canonical,
+Open Graph, and social-card URLs and publish a sitemap after choosing that
+domain.
+
 If startup reports a database connection error, check that the MySQL service is running, `.env` is in the project root, the database/user/password match, and port `3306` is available. If PowerShell says `mysql` is not recognized, use Workbench's SQL editor or add the MySQL `bin` folder to PATH.
 
 The previous SQLite file, if any, is not automatically imported. New MySQL tables start empty; back up any existing data before migrating it.
-
-### ISL alphabet recognition
-
-The pinned A–Z model is stored in `models\signspeak_model.joblib`. Its loader
-verifies the file checksum and scikit-learn version before loading it. If you
-need to restore the artifact, download the file at the pinned upstream revision
-shown in [models/README.md](models/README.md), then confirm its SHA-256:
-
-```powershell
-curl.exe --fail --location --retry 3 --retry-all-errors --continue-at - "https://raw.githubusercontent.com/arpita1505/SignSpeak-AI/6fc64c720e168d32f3c1a968d797be4af56e36cb/artifacts/signspeak_model.joblib" --output .\models\signspeak_model.joblib
-Get-FileHash .\models\signspeak_model.joblib -Algorithm SHA256
-```
-
-The checksum must match the value in [models/README.md](models/README.md).
-Restart Uvicorn after restoring the artifact. The model card reports 90.55%
-accuracy on the source dataset's held-out test split; signer IDs were
-unavailable, so this is not a guarantee for new users or webcam conditions.
-Predictions show the top letter, while sentence insertion requires three
-consecutive predictions at or above 50% model score. Scores are not calibrated.
-
-This recognizes isolated static alphabet poses only, not complete words,
-continuous fingerspelling, or movement-dependent signs.
 
 Run tests with:
 
@@ -157,10 +156,15 @@ Run tests with:
 2. Start the camera in **Live recognition** and keep the hand(s) clearly visible.
 3. Use a consistent anonymous contributor ID. Record at least 8 training samples.
 4. Change the split to validation and record at least 2 samples. Include a second contributor; for stronger evaluation, keep validation contributors out of training.
-5. Check the dataset status. A class becomes eligible only with 8 training samples, 2 validation samples, and 2 contributors.
+5. Check the dataset status. A complete dataset has 8 training samples, 2 validation samples, and 2 contributors; only training samples are used for live matching.
 6. Test the class under varied positions, lighting, and users; record any errors and do not treat prototype matches as verified translation.
 
 Samples store normalized hand landmarks, signer ID, and split in MySQL. They do not store camera images. Collect only with informed consent. See [datasets/README.md](datasets/README.md).
+
+Gesture Learning displays the saved reference photos for all alphabet and
+number entries. Its alphabet and number instructions come directly from
+`isl_alphabet_gestures.txt` and `number_gestures_steps.txt`; the separate
+dictionary instructions remain unchanged.
 
 ### Dictionary reference photos and training
 
@@ -169,28 +173,38 @@ reference photos (maximum 4 MB each). These photos are stored in the local
 database and displayed with that dictionary entry; they are visual references,
 not training samples. Use **Train this gesture** on its guide to create or
 select the corresponding recognition class and open AI Learning Mode. Record
-webcam landmark samples there: recognition only activates after 8 training
-samples, 2 validation samples, and at least 2 contributors.
+webcam landmark samples there. Saved training samples are used for live
+matching; validation samples are held out. The app reports when a class reaches
+8 training samples, 2 validation samples, and at least 2 contributors.
 
 ### Letter-based phrase suggestions and hands-free controls
 
 The app loads the 447 bilingual entries from
 [datasets/isl_phrase_dictionary.json](datasets/isl_phrase_dictionary.json),
 exported from the approved `ISL_phrase_dictionary.xlsx` `Phrases` sheet.
-Suggestions are filtered by a recognized A–Z letter and ordered by workbook
+Suggestions are filtered by a letter recognized from your saved gesture
+samples and ordered by workbook
 priority; they are phrase ideas, not a sentence translation. Review/select an
 idea, then use the visible controls to add it to the sentence and speak it.
 English or Hindi speech follows the selected speech language.
 
-Pointing navigation and double-blink controls are separately opt-in and off
-by default. Enable pointing to browse the current suggestions; enable
-double-blink to select and speak one. In AI Learning Mode, its separate
+Pointing, eye-gaze navigation, and double-blink controls are separately opt-in
+and off by default. Capture open eyes while looking at the camera to calibrate
+the gaze center; look left/right to browse ideas, then double-blink with both
+eyes to select and speak one. The live preview
+draws eye contours and iris markers alongside the hand landmark skeleton.
+Blink selection requires both eyes to close together. In AI Learning Mode, its separate
 double-blink option saves the current sample only when a gesture class,
 contributor, split, and hand are ready. Manual buttons and arrow-key
 navigation remain available. Eye measurements are computed locally and are
 not stored. Training stores hand landmarks only—never camera photos or video.
 Blink detection depends on camera angle, lighting, and the user's eyes, so use
 the manual controls if it does not respond reliably.
+
+AI Learning Mode also includes hands-free practice: capture open-eye and
+closed-eye readings to calibrate blink detection for the current session, then
+practice index-finger left/right swipes with live feedback. Calibration and
+practice readings are temporary; they do not create gesture training samples.
 
 ## API
 
@@ -201,6 +215,7 @@ The interactive API reference is available at `/docs`.
 | `GET` | `/api/health` | MySQL connection and vision dependency status |
 | `POST` | `/api/analyze` | Analyze a base64 JPEG frame and optional recent landmark sequence |
 | `GET` | `/api/phrase-suggestions?letter=A&limit=8` | Get priority-ranked bilingual ideas for a recognized letter |
+| `GET` | `/api/gesture-guides` | Read the uploaded alphabet and number instructions used by Gesture Learning |
 | `GET` | `/api/gestures` | List classes and sample readiness |
 | `POST` | `/api/gestures` | Create a static or dynamic gesture class |
 | `POST` | `/api/gestures/{id}/samples` | Add a landmark vector or temporal sequence with signer and split |
@@ -213,7 +228,7 @@ The interactive API reference is available at `/docs`.
 | `GET` | `/api/isl-reference/{id}/images/{image_id}` | Display a saved dictionary photo |
 | `DELETE` | `/api/isl-reference/{id}/images/{image_id}` | Remove a dictionary photo |
 
-`/api/analyze` uses the browser-provided frame and keeps no image. It returns hand landmarks, face-detection status, a transient eye-closure signal for the opt-in blink controls, and a gesture result only when a class meets the sample/contributor gates and matches above the heuristic distance/margin threshold. Eye measurements and face landmarks are not saved. Invalid input and unavailable vision dependencies return explicit HTTP errors.
+`/api/analyze` uses the browser-provided frame and keeps no image. It returns hand landmarks, face-detection status, a transient eye-closure signal for the opt-in blink controls, and gesture results only from saved classes that meet the sample/contributor gates and match above the heuristic distance/margin threshold. Eye measurements and face landmarks are not saved. Invalid input and unavailable vision dependencies return explicit HTTP errors.
 
 ## Implemented phases
 

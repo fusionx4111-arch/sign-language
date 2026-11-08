@@ -61,3 +61,47 @@ def test_eye_aspect_ratio_distinguishes_open_and_closed_eyes():
         landmarks[upper] = SimpleNamespace(x=x, y=0.04)
         landmarks[lower] = SimpleNamespace(x=x, y=-0.04)
     assert service._eye_aspect_ratio(landmarks) == pytest.approx(0.08)
+
+
+def test_double_blink_signal_requires_both_eyes_closed():
+    landmarks = [SimpleNamespace(x=0.0, y=0.0) for _ in range(478)]
+    for left, right, x in [(33, 133, 0.0), (362, 263, 2.0)]:
+        landmarks[left] = SimpleNamespace(x=x, y=0.0)
+        landmarks[right] = SimpleNamespace(x=x + 1.0, y=0.0)
+    for upper, lower, x in [(159, 145, 0.25), (158, 153, 0.75),
+                            (386, 374, 2.25), (385, 380, 2.75)]:
+        landmarks[upper] = SimpleNamespace(x=x, y=0.2)
+        landmarks[lower] = SimpleNamespace(x=x, y=-0.2)
+
+    service = LandmarkService()
+    assert service._eye_aspect_ratios(landmarks) == pytest.approx((0.4, 0.4))
+    assert not service._both_eyes_closed((0.08, 0.4))
+
+    for upper, lower, x in [(159, 145, 0.25), (158, 153, 0.75)]:
+        landmarks[upper] = SimpleNamespace(x=x, y=0.04)
+        landmarks[lower] = SimpleNamespace(x=x, y=-0.04)
+    ratios = service._eye_aspect_ratios(landmarks)
+    assert ratios[0] == pytest.approx(0.08)
+    assert ratios[1] == pytest.approx(0.4)
+    assert not service._both_eyes_closed(ratios)
+    assert service._both_eyes_closed((0.08, 0.08))
+
+
+def test_eye_gaze_and_landmark_overlay_use_refined_iris_points():
+    landmarks = [SimpleNamespace(x=0.5, y=0.5) for _ in range(478)]
+    landmarks[33] = SimpleNamespace(x=0.2, y=0.5)
+    landmarks[133] = SimpleNamespace(x=0.4, y=0.5)
+    landmarks[362] = SimpleNamespace(x=0.6, y=0.5)
+    landmarks[263] = SimpleNamespace(x=0.8, y=0.5)
+    for index in range(468, 473):
+        landmarks[index] = SimpleNamespace(x=0.32, y=0.5)
+    for index in range(473, 478):
+        landmarks[index] = SimpleNamespace(x=0.72, y=0.5)
+
+    service = LandmarkService()
+    assert service._eye_gaze_x(landmarks) == pytest.approx(0.6)
+    overlay = service._eye_landmarks(landmarks)
+    assert len(overlay["contours"]) == 2
+    assert len(overlay["contours"][0]) == len(service.LEFT_EYE_CONTOUR)
+    assert len(overlay["irises"]) == 2
+    assert overlay["irises"][0]["x"] == pytest.approx(0.32)

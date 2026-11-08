@@ -234,6 +234,7 @@ def training_samples(db: DatabaseConnection) -> list[dict]:
         SELECT g.id, g.label, g.meaning, g.language, g.kind,
                s.features_json, s.handedness
         FROM gestures g JOIN samples s ON s.gesture_id = g.id
+        WHERE s.split = 'train'
         """
     ).fetchall()
     return [
