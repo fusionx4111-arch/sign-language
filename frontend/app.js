@@ -12,6 +12,7 @@ const state = {
   gestureClasses: [], history: [], recognition: null, lastAppended: null,
   stableLabel: null, stableCount: 0, serviceUnavailable: false,
   stableLetter: null, stableLetterCount: 0, lastAppendedLetter: null,
+  formedLetter: null, clearedLetter: null,
   selectedEmergency: null, customPhrases: [],
   phraseCache: new Map(), phraseSuggestions: [], selectedPhraseIndex: -1,
   phraseMode: "offline",
@@ -62,6 +63,7 @@ function navigate(page) {
   $("#page-title").textContent = active?.querySelector("h1")?.textContent || "Dashboard";
   if (page === "history") loadHistory();
   if (page === "dictionary") { loadGestures(); setupDictTabs(); }
+  if (page === "recognition") loadGestures();
   if (page === "isl-reference") setupIslReference();
   if (page === "gesture-learn") setupGestureLearn();
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -281,7 +283,6 @@ function stopCamera() {
   state.stableLetterCount = 0;
   state.lastAppendedLetter = null;
   updateLearnedLetter();
-  renderOfflineSuggestions();
 }
 
 function drawLandmarksOnCanvas(canvas, video, result) {
@@ -554,41 +555,55 @@ function updateLearnedLetter() {
   const letter = state.recognizedLetter;
   const output = $("#alphabet-word");
   const detail = $("#alphabet-detail");
-  const stable = Boolean(letter);
-  output.textContent = letter || "—";
-  detail.textContent = letter
+  const visibleLetter = state.formedLetter
+    || (letter && letter !== state.clearedLetter ? letter : null);
+  output.textContent = visibleLetter || "—";
+  detail.textContent = state.formedLetter
+    ? `Phrase ideas are for ${state.formedLetter}. Clear the letter to reset suggestions.`
+    : visibleLetter
     ? "Matched from your saved AI Learning Mode samples."
     : "Train a letter in AI Learning Mode to recognize it here.";
 
-  if (stable) {
+  if (!letter) {
+    state.stableLetter = null;
+    state.stableLetterCount = 0;
+    state.lastAppendedLetter = null;
+    state.clearedLetter = null;
+  } else if (letter === state.clearedLetter) {
+    state.stableLetter = null;
+    state.stableLetterCount = 0;
+  } else {
+    state.clearedLetter = null;
     if (state.stableLetter === letter) state.stableLetterCount += 1;
     else {
       state.stableLetter = letter;
       state.stableLetterCount = 1;
     }
+    if (state.stableLetterCount >= 3) state.formedLetter = letter;
     if (state.stableLetterCount >= 3 && $("#auto-add-letters").checked && state.lastAppendedLetter !== letter) {
       const field = $("#sentence-text");
       field.value += letter;
       updateSentenceCount();
       state.lastAppendedLetter = letter;
     }
-  } else {
-    state.stableLetter = null;
-    state.stableLetterCount = 0;
-    state.lastAppendedLetter = null;
   }
-  updatePhraseSuggestions(stable && state.stableLetterCount >= 3 ? letter : null);
+  $("#clear-recognized-letter").disabled = !state.formedLetter;
+  updatePhraseSuggestions(state.formedLetter);
+}
+
+function clearRecognizedLetter() {
+  state.clearedLetter = state.recognizedLetter;
+  state.formedLetter = null;
+  state.stableLetter = null;
+  state.stableLetterCount = 0;
+  state.phraseRequestId += 1;
+  renderOfflineSuggestions();
+  updateLearnedLetter();
 }
 
 async function updatePhraseSuggestions(letter) {
   const normalized = /^[A-Z]$/i.test(letter || "") ? letter.toUpperCase() : null;
-  if (!normalized) {
-    if (state.phraseMode !== "offline") {
-      state.phraseRequestId += 1;
-      renderOfflineSuggestions();
-    }
-    return;
-  }
+  if (!normalized) return;
   if (normalized === state.phraseLetter && state.phraseMode === "letter") return;
   state.phraseMode = "letter";
   state.phraseLetter = normalized;
@@ -1002,6 +1017,35 @@ async function recordSample() {
   }
 }
 
+function updateReferencePhotoImportButton() {
+  const gestureId = Number($("#sample-gesture").value);
+  const gesture = state.gestureClasses.find((item) => item.id === gestureId);
+  $("#import-reference-photos").disabled = !gesture?.reference_id || gesture.kind !== "static";
+}
+
+async function importReferencePhotos() {
+  const gestureId = Number($("#sample-gesture").value);
+  const gesture = state.gestureClasses.find((item) => item.id === gestureId);
+  if (!gesture?.reference_id || gesture.kind !== "static") {
+    return toast("Select a linked static gesture class first.");
+  }
+  try {
+    const result = await api(`/api/gestures/${gestureId}/import-reference-photos`, {
+      method: "POST",
+      body: JSON.stringify({ reference_id: gesture.reference_id })
+    });
+    await loadGestures();
+    const failure = result.failed[0]?.reason;
+    toast(
+      `${result.imported_count} photo sample(s) imported; ` +
+      `${result.skipped_count} already imported.` +
+      (failure ? ` First issue: ${failure}` : "")
+    );
+  } catch (error) {
+    toast(`Could not import dictionary photos: ${error.message}`);
+  }
+}
+
 let countdownTimer = null;
 let countdownResetTimer = null;
 function cancelRecordCountdown() {
@@ -1076,6 +1120,7 @@ function renderGestures(gestures) {
   }
   $("#stat-gestures").textContent = gestures.length;
   $("#stat-ready").textContent = gestures.filter((item) => item.ready).length;
+  updateReferencePhotoImportButton();
   $$("[data-delete-gesture]").forEach((button) => button.addEventListener("click", async () => {
     if (!confirm("Delete this gesture and all its samples?")) return;
     try { await api(`/api/gestures/${button.dataset.deleteGesture}`, { method: "DELETE" }); await loadGestures(); }
@@ -1172,6 +1217,8 @@ function setupEvents() {
   $("#camera-stop").addEventListener("click", stopCamera);
   $("#gesture-form").addEventListener("submit", createGesture);
   $("#record-sample").addEventListener("click", recordSample);
+  $("#sample-gesture").addEventListener("change", updateReferencePhotoImportButton);
+  $("#import-reference-photos").addEventListener("click", importReferencePhotos);
   $("#refresh-gestures").addEventListener("click", loadGestures);
   $("#dictionary-search").addEventListener("input", () => renderGestures(state.gestureClasses));
   $("#history-search").addEventListener("input", (event) => loadHistory(event.target.value));
@@ -1194,6 +1241,7 @@ function setupEvents() {
     if (!option) return;
     useSelectedPhrase(Number(option.dataset.phraseIndex));
   });
+  $("#clear-recognized-letter").addEventListener("click", clearRecognizedLetter);
   $("#pointing-controls").addEventListener("change", () => { state.pointAnchorX = null; });
   $("#gaze-controls").addEventListener("change", () => {
     state.gazeDirection = null;
@@ -1583,6 +1631,7 @@ async function saveIslGesture(event) {
     if (files.length) toast(`${files.length} gesture photo${files.length === 1 ? "" : "s"} saved.`);
     closeIslEditModal();
     await loadIslReference();
+    await loadGestures();
   } catch (error) {
     $("#isl-edit-photos-input").value = "";
     await loadIslReference();
@@ -1605,24 +1654,17 @@ async function startReferenceTraining(referenceId) {
   const reference = ISL_REFERENCE.find((item) => item.id === referenceId);
   if (!reference) return toast("That dictionary gesture could not be found.");
   try {
-    const gestures = await api("/api/gestures");
-    let trainingClass = gestures.find((item) =>
-      item.label.trim().toLowerCase() === reference.label.trim().toLowerCase()
-      && item.kind === reference.kind
-    );
-    if (!trainingClass) {
-      trainingClass = await api("/api/gestures", {
-        method: "POST",
-        body: JSON.stringify({
-          label: reference.label,
-          meaning: reference.meaning,
-          language: "en",
-          category: reference.category.toLowerCase(),
-          kind: reference.kind
-        })
-      });
-      trainingClass = { id: trainingClass.id };
-    }
+    const trainingClass = await api("/api/gestures", {
+      method: "POST",
+      body: JSON.stringify({
+        label: reference.label,
+        meaning: reference.meaning,
+        language: "en",
+        category: reference.category.toLowerCase(),
+        kind: reference.kind,
+        reference_id: reference.id
+      })
+    });
     closeIslModal();
     closeIslEditModal();
     navigate("learning");

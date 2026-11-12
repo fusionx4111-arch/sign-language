@@ -36,6 +36,7 @@ gestures = Table(
     Column("language", String(2), nullable=False, server_default="en"),
     Column("category", String(50), nullable=False, server_default="daily"),
     Column("kind", String(10), nullable=False),
+    Column("reference_id", String(40), nullable=True),
     Column("created_at", DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP")),
     CheckConstraint("kind IN ('static', 'dynamic')", name="ck_gestures_kind"),
 )
@@ -198,6 +199,14 @@ def initialize(engine: Engine | None = None) -> None:
             connection.execute(
                 text("ALTER TABLE samples ADD COLUMN handedness VARCHAR(5) NOT NULL DEFAULT 'any'")
             )
+    gesture_columns = {
+        column["name"] for column in inspect(selected_engine).get_columns("gestures")
+    }
+    if "reference_id" not in gesture_columns:
+        with selected_engine.begin() as connection:
+            connection.execute(
+                text("ALTER TABLE gestures ADD COLUMN reference_id VARCHAR(40)")
+            )
     with selected_engine.begin() as connection:
         seed_isl_reference_if_empty(DatabaseConnection(connection))
 
@@ -206,6 +215,7 @@ def gesture_rows(db: DatabaseConnection) -> list[dict]:
     rows = db.execute(
         """
         SELECT g.id, g.label, g.meaning, g.language, g.category, g.kind,
+               g.reference_id,
                g.created_at, COUNT(s.id) AS sample_count,
                SUM(CASE WHEN s.split = 'train' THEN 1 ELSE 0 END) AS train_count,
                SUM(CASE WHEN s.split = 'validation' THEN 1 ELSE 0 END) AS validation_count,
@@ -226,6 +236,59 @@ def gesture_rows(db: DatabaseConnection) -> list[dict]:
         )
         result.append(item)
     return result
+
+
+def sync_reference_gesture(
+    db: DatabaseConnection,
+    reference_id: str,
+    label: str,
+    meaning: str,
+    category: str,
+    kind: str,
+    previous_label: str | None = None,
+    previous_kind: str | None = None,
+) -> int:
+    gesture = db.execute(
+        "SELECT id FROM gestures WHERE reference_id = ? ORDER BY id LIMIT 1",
+        (reference_id,),
+    ).fetchone()
+    if gesture is None and previous_label is not None and previous_kind is not None:
+        gesture = db.execute(
+            """
+            SELECT id FROM gestures
+            WHERE LOWER(label) = LOWER(?) AND kind = ? AND reference_id IS NULL
+            ORDER BY id LIMIT 1
+            """,
+            (previous_label, previous_kind),
+        ).fetchone()
+
+    if gesture is None:
+        cursor = db.execute(
+            """
+            INSERT INTO gestures (label, meaning, language, category, kind, reference_id)
+            VALUES (?, ?, 'en', ?, ?, ?)
+            """,
+            (label, meaning, category.lower(), kind, reference_id),
+        )
+        return cursor.lastrowid
+
+    gesture_id = gesture["id"]
+    db.execute(
+        """
+        UPDATE gestures
+        SET label = ?, meaning = ?, category = ?, kind = ?, reference_id = ?
+        WHERE id = ?
+        """,
+        (label, meaning, category.lower(), kind, reference_id, gesture_id),
+    )
+    return gesture_id
+
+
+def unlink_reference_gesture(db: DatabaseConnection, reference_id: str) -> None:
+    db.execute(
+        "UPDATE gestures SET reference_id = NULL WHERE reference_id = ?",
+        (reference_id,),
+    )
 
 
 def training_samples(db: DatabaseConnection) -> list[dict]:

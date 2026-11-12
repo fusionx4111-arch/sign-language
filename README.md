@@ -171,11 +171,15 @@ dictionary instructions remain unchanged.
 Edit a gesture in the ISL dictionary to upload up to 12 JPEG, PNG, or WebP
 reference photos (maximum 4 MB each). These photos are stored in the local
 database and displayed with that dictionary entry; they are visual references,
-not training samples. Use **Train this gesture** on its guide to create or
-select the corresponding recognition class and open AI Learning Mode. Record
-webcam landmark samples there. Saved training samples are used for live
-matching; validation samples are held out. The app reports when a class reaches
-8 training samples, 2 validation samples, and at least 2 contributors.
+not training samples unless explicitly imported. Each new dictionary gesture
+is also created as a trainable AI Learning class; editing a linked reference
+updates that class while preserving its saved samples. Use **Train this
+gesture** on its guide to open the corresponding class in AI Learning Mode.
+Record webcam landmark samples there. Live Recognition uses only AI Learning
+training samples, including explicitly imported dictionary photos; validation
+samples and the bundled reference dataset are not used for matching. The app
+reports when a class reaches 8 training samples, 2 validation samples, and at
+least 2 contributors.
 
 ### Letter-based phrase suggestions and hands-free controls
 

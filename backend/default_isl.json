@@ -1,7 +1,7 @@
 [
   {
     "id": "A",
-    "symbol": "🤚",
+    "symbol": "",
     "category": "Alphabet",
     "label": "A",
     "meaning": "Letter A",
@@ -17,7 +17,7 @@
   },
   {
     "id": "B",
-    "symbol": "✋",
+    "symbol": "",
     "category": "Alphabet",
     "label": "B",
     "meaning": "Letter B",
@@ -32,7 +32,7 @@
   },
   {
     "id": "C",
-    "symbol": "🤏",
+    "symbol": "",
     "category": "Alphabet",
     "label": "C",
     "meaning": "Letter C",
@@ -47,7 +47,7 @@
   },
   {
     "id": "D",
-    "symbol": "☝️",
+    "symbol": "",
     "category": "Alphabet",
     "label": "D",
     "meaning": "Letter D",
@@ -62,7 +62,7 @@
   },
   {
     "id": "E",
-    "symbol": "🤙",
+    "symbol": "",
     "category": "Alphabet",
     "label": "E",
     "meaning": "Letter E",
@@ -77,7 +77,7 @@
   },
   {
     "id": "F",
-    "symbol": "👌",
+    "symbol": "",
     "category": "Alphabet",
     "label": "F",
     "meaning": "Letter F",
@@ -92,7 +92,7 @@
   },
   {
     "id": "G",
-    "symbol": "👉",
+    "symbol": "",
     "category": "Alphabet",
     "label": "G",
     "meaning": "Letter G",
@@ -108,7 +108,7 @@
   },
   {
     "id": "H",
-    "symbol": "🖖",
+    "symbol": "",
     "category": "Alphabet",
     "label": "H",
     "meaning": "Letter H",
@@ -123,7 +123,7 @@
   },
   {
     "id": "I",
-    "symbol": "🤙",
+    "symbol": "",
     "category": "Alphabet",
     "label": "I",
     "meaning": "Letter I",
@@ -138,7 +138,7 @@
   },
   {
     "id": "J",
-    "symbol": "🤙",
+    "symbol": "",
     "category": "Alphabet",
     "label": "J",
     "meaning": "Letter J",
@@ -153,7 +153,7 @@
   },
   {
     "id": "K",
-    "symbol": "✌️",
+    "symbol": "",
     "category": "Alphabet",
     "label": "K",
     "meaning": "Letter K",
@@ -169,7 +169,7 @@
   },
   {
     "id": "L",
-    "symbol": "👆",
+    "symbol": "",
     "category": "Alphabet",
     "label": "L",
     "meaning": "Letter L",
@@ -185,7 +185,7 @@
   },
   {
     "id": "M",
-    "symbol": "✊",
+    "symbol": "",
     "category": "Alphabet",
     "label": "M",
     "meaning": "Letter M",
@@ -200,7 +200,7 @@
   },
   {
     "id": "N",
-    "symbol": "✊",
+    "symbol": "",
     "category": "Alphabet",
     "label": "N",
     "meaning": "Letter N",
@@ -215,7 +215,7 @@
   },
   {
     "id": "O",
-    "symbol": "👌",
+    "symbol": "",
     "category": "Alphabet",
     "label": "O",
     "meaning": "Letter O",
@@ -230,7 +230,7 @@
   },
   {
     "id": "P",
-    "symbol": "👇",
+    "symbol": "",
     "category": "Alphabet",
     "label": "P",
     "meaning": "Letter P",
@@ -246,7 +246,7 @@
   },
   {
     "id": "Q",
-    "symbol": "👇",
+    "symbol": "",
     "category": "Alphabet",
     "label": "Q",
     "meaning": "Letter Q",
@@ -262,7 +262,7 @@
   },
   {
     "id": "R",
-    "symbol": "🤞",
+    "symbol": "",
     "category": "Alphabet",
     "label": "R",
     "meaning": "Letter R",
@@ -278,7 +278,7 @@
   },
   {
     "id": "S",
-    "symbol": "✊",
+    "symbol": "",
     "category": "Alphabet",
     "label": "S",
     "meaning": "Letter S",
@@ -293,7 +293,7 @@
   },
   {
     "id": "T",
-    "symbol": "✊",
+    "symbol": "",
     "category": "Alphabet",
     "label": "T",
     "meaning": "Letter T",
@@ -308,7 +308,7 @@
   },
   {
     "id": "U",
-    "symbol": "✌️",
+    "symbol": "",
     "category": "Alphabet",
     "label": "U",
     "meaning": "Letter U",
@@ -323,7 +323,7 @@
   },
   {
     "id": "V",
-    "symbol": "✌️",
+    "symbol": "",
     "category": "Alphabet",
     "label": "V",
     "meaning": "Letter V",
@@ -338,7 +338,7 @@
   },
   {
     "id": "W",
-    "symbol": "🖖",
+    "symbol": "",
     "category": "Alphabet",
     "label": "W",
     "meaning": "Letter W",
@@ -353,7 +353,7 @@
   },
   {
     "id": "X",
-    "symbol": "☝️",
+    "symbol": "",
     "category": "Alphabet",
     "label": "X",
     "meaning": "Letter X",
@@ -368,7 +368,7 @@
   },
   {
     "id": "Y",
-    "symbol": "🤙",
+    "symbol": "",
     "category": "Alphabet",
     "label": "Y",
     "meaning": "Letter Y",
@@ -383,7 +383,7 @@
   },
   {
     "id": "Z",
-    "symbol": "☝️",
+    "symbol": "",
     "category": "Alphabet",
     "label": "Z",
     "meaning": "Letter Z",
@@ -398,7 +398,7 @@
   },
   {
     "id": "N1",
-    "symbol": "☝️",
+    "symbol": "",
     "category": "Number",
     "label": "1",
     "meaning": "Number 1",
@@ -412,7 +412,7 @@
   },
   {
     "id": "N2",
-    "symbol": "✌️",
+    "symbol": "",
     "category": "Number",
     "label": "2",
     "meaning": "Number 2",
@@ -426,7 +426,7 @@
   },
   {
     "id": "N3",
-    "symbol": "🤟",
+    "symbol": "",
     "category": "Number",
     "label": "3",
     "meaning": "Number 3",
@@ -441,7 +441,7 @@
   },
   {
     "id": "N4",
-    "symbol": "🖖",
+    "symbol": "",
     "category": "Number",
     "label": "4",
     "meaning": "Number 4",
@@ -456,7 +456,7 @@
   },
   {
     "id": "N5",
-    "symbol": "🖐️",
+    "symbol": "",
     "category": "Number",
     "label": "5",
     "meaning": "Number 5",
@@ -470,7 +470,7 @@
   },
   {
     "id": "N6",
-    "symbol": "🤙",
+    "symbol": "",
     "category": "Number",
     "label": "6",
     "meaning": "Number 6",
@@ -485,7 +485,7 @@
   },
   {
     "id": "N7",
-    "symbol": "🤘",
+    "symbol": "",
     "category": "Number",
     "label": "7",
     "meaning": "Number 7",
@@ -500,7 +500,7 @@
   },
   {
     "id": "N8",
-    "symbol": "🤌",
+    "symbol": "",
     "category": "Number",
     "label": "8",
     "meaning": "Number 8",
@@ -515,7 +515,7 @@
   },
   {
     "id": "N9",
-    "symbol": "🤏",
+    "symbol": "",
     "category": "Number",
     "label": "9",
     "meaning": "Number 9",
@@ -530,7 +530,7 @@
   },
   {
     "id": "N10",
-    "symbol": "🤙",
+    "symbol": "",
     "category": "Number",
     "label": "10",
     "meaning": "Number 10",

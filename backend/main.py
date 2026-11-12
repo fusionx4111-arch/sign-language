@@ -38,6 +38,7 @@ class GestureInput(BaseModel):
     language: str = Field(default="en", pattern="^(en|hi)$")
     category: str = Field(default="daily", max_length=50)
     kind: str = Field(default="static", pattern="^(static|dynamic)$")
+    reference_id: str | None = Field(default=None, max_length=40)
 
 
 class SampleInput(BaseModel):
@@ -72,6 +73,10 @@ class ISLReferenceImageInput(BaseModel):
     image_data: str = Field(min_length=1, max_length=7_000_000)
 
 
+class ReferencePhotoImportInput(BaseModel):
+    reference_id: str = Field(min_length=1, max_length=40)
+
+
 
 @app.on_event("startup")
 def startup() -> None:
@@ -91,7 +96,7 @@ def health() -> dict:
         "database": database_status,
         "vision_available": landmarks.available,
         "vision_error": landmarks.import_error,
-        "recognition": "Live recognition matches saved training samples; validation examples are held out and dataset readiness is tracked separately.",
+        "recognition": "Live recognition uses only AI Learning training samples; dictionary references are not used unless their photos are imported. Validation examples are held out.",
     }
 
 
@@ -246,6 +251,32 @@ def get_gestures() -> list[dict]:
 def add_gesture(payload: GestureInput) -> dict:
     try:
         with database.connect() as db:
+            if payload.reference_id:
+                reference = db.execute(
+                    """
+                    SELECT label, meaning, category, kind
+                    FROM isl_reference WHERE id = ?
+                    """,
+                    (payload.reference_id,),
+                ).fetchone()
+                if reference is None:
+                    raise HTTPException(
+                        status_code=404, detail="ISL reference gesture not found."
+                    )
+                gesture_id = database.sync_reference_gesture(
+                    db,
+                    payload.reference_id,
+                    reference["label"],
+                    reference["meaning"],
+                    reference["category"],
+                    reference["kind"],
+                    previous_label=reference["label"],
+                    previous_kind=reference["kind"],
+                )
+                return {
+                    "id": gesture_id,
+                    "message": "Linked AI Learning class is ready for training.",
+                }
             cursor = db.execute(
                 """
                 INSERT INTO gestures (label, meaning, language, category, kind)
@@ -384,8 +415,19 @@ def add_isl_reference(payload: ISLReferenceInput) -> dict:
                 payload.tip.strip() if payload.tip else "",
             ),
         )
+        training_gesture_id = database.sync_reference_gesture(
+            db,
+            gesture_id,
+            payload.label.strip(),
+            payload.meaning.strip(),
+            payload.category.strip() or "Common",
+            payload.kind,
+            previous_label=payload.label.strip(),
+            previous_kind=payload.kind,
+        )
     return {
         "id": gesture_id,
+        "training_gesture_id": training_gesture_id,
         "message": "ISL reference gesture added successfully.",
     }
 
@@ -393,7 +435,10 @@ def add_isl_reference(payload: ISLReferenceInput) -> dict:
 @app.put("/api/isl-reference/{gesture_id}")
 def update_isl_reference(gesture_id: str, payload: ISLReferenceInput) -> dict:
     with database.connect() as db:
-        existing = db.execute("SELECT id FROM isl_reference WHERE id = ?", (gesture_id,)).fetchone()
+        existing = db.execute(
+            "SELECT id, label, kind FROM isl_reference WHERE id = ?",
+            (gesture_id,),
+        ).fetchone()
         if not existing:
             raise HTTPException(status_code=404, detail="Gesture not found in ISL reference.")
 
@@ -415,7 +460,21 @@ def update_isl_reference(gesture_id: str, payload: ISLReferenceInput) -> dict:
                 gesture_id,
             ),
         )
-    return {"id": gesture_id, "message": "ISL reference gesture updated successfully."}
+        training_gesture_id = database.sync_reference_gesture(
+            db,
+            gesture_id,
+            payload.label.strip(),
+            payload.meaning.strip(),
+            payload.category.strip() or "Common",
+            payload.kind,
+            previous_label=existing["label"],
+            previous_kind=existing["kind"],
+        )
+    return {
+        "id": gesture_id,
+        "training_gesture_id": training_gesture_id,
+        "message": "ISL reference gesture updated successfully.",
+    }
 
 
 @app.delete("/api/isl-reference/{gesture_id}")
@@ -427,6 +486,7 @@ def delete_isl_reference(gesture_id: str) -> dict:
         cursor = db.execute("DELETE FROM isl_reference WHERE id = ?", (gesture_id,))
         if cursor.rowcount == 0:
             raise HTTPException(status_code=404, detail="Gesture not found in ISL reference.")
+        database.unlink_reference_gesture(db, gesture_id)
     return {"deleted": True, "id": gesture_id}
 
 
@@ -497,6 +557,103 @@ def add_isl_reference_image(
     return {
         "id": image_id,
         "url": f"/api/isl-reference/{gesture_id}/images/{image_id}",
+    }
+
+
+@app.post("/api/gestures/{gesture_id}/import-reference-photos")
+def import_reference_photos(
+    gesture_id: int, payload: ReferencePhotoImportInput
+) -> dict:
+    with database.connect() as db:
+        gesture = db.execute(
+            "SELECT id, kind FROM gestures WHERE id = ?", (gesture_id,)
+        ).fetchone()
+        if gesture is None:
+            raise HTTPException(status_code=404, detail="Gesture class not found.")
+        if gesture["kind"] != "static":
+            raise HTTPException(
+                status_code=400,
+                detail="Reference photos can only be imported into static gestures.",
+            )
+        reference = db.execute(
+            "SELECT id FROM isl_reference WHERE id = ?",
+            (payload.reference_id,),
+        ).fetchone()
+        if reference is None:
+            raise HTTPException(
+                status_code=404, detail="ISL reference gesture not found."
+            )
+        photos = db.execute(
+            """
+            SELECT id, mime_type, image_data
+            FROM isl_reference_images WHERE reference_id = ? ORDER BY id
+            """,
+            (payload.reference_id,),
+        ).fetchall()
+
+    imported_count = 0
+    skipped_count = 0
+    failed = []
+    for photo in photos:
+        image_data = (
+            f"data:{photo['mime_type']};base64,"
+            f"{base64.b64encode(photo['image_data']).decode('ascii')}"
+        )
+        try:
+            analysis = landmarks.analyze(image_data)
+        except (ValueError, ImportError, AttributeError, RuntimeError) as error:
+            failed.append({"photo_id": photo["id"], "reason": str(error)})
+            continue
+
+        hands = analysis.get("hands", [])
+        if not hands:
+            failed.append(
+                {"photo_id": photo["id"], "reason": "No hand was detected."}
+            )
+            continue
+        for index, hand in enumerate(hands):
+            features = hand.get("features")
+            if not valid_feature_vector(features):
+                failed.append(
+                    {
+                        "photo_id": photo["id"],
+                        "reason": f"Detected hand must have {FEATURE_SIZE} valid landmark values.",
+                    }
+                )
+                continue
+            signer_id = f"reference-photo-{photo['id']}-{index + 1}"
+            with database.connect() as db:
+                exists = db.execute(
+                    """
+                    SELECT id FROM samples
+                    WHERE gesture_id = ? AND signer_id = ? AND split = 'train'
+                    """,
+                    (gesture_id, signer_id),
+                ).fetchone()
+                if exists:
+                    skipped_count += 1
+                    continue
+                db.execute(
+                    """
+                    INSERT INTO samples
+                        (gesture_id, features_json, signer_id, handedness, split)
+                    VALUES (?, ?, ?, ?, 'train')
+                    """,
+                    (
+                        gesture_id,
+                        json.dumps(features),
+                        signer_id,
+                        hand.get("handedness")
+                        if hand.get("handedness") in ("Left", "Right")
+                        else "any",
+                    ),
+                )
+            imported_count += 1
+
+    return {
+        "imported_count": imported_count,
+        "skipped_count": skipped_count,
+        "failed": failed,
     }
 
 
