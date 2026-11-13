@@ -42,7 +42,7 @@ def test_mysql_schema_uses_supported_create_table_ddl():
         str(CreateTable(table).compile(dialect=mysql.dialect()))
         for table in metadata.sorted_tables
     ]
-    assert len(statements) == 3
+    assert len(statements) == 4
     assert all("AUTO_INCREMENT" in statement for statement in statements)
     assert all("DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" in statement for statement in statements)
 

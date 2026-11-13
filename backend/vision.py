@@ -95,6 +95,11 @@ class LandmarkService:
     def _point(point) -> dict[str, float]:
         return {"x": round(point.x, 5), "y": round(point.y, 5)}
 
+    @staticmethod
+    def _correct_handedness_for_unmirrored_frame(label: str) -> str:
+        # MediaPipe Hands assumes selfie-mirrored input; browser frames are raw.
+        return {"Left": "Right", "Right": "Left"}.get(label, label)
+
     def _eye_landmarks(self, landmarks) -> dict | None:
         if len(landmarks) < 478:
             return None
@@ -159,6 +164,7 @@ class LandmarkService:
                 label = "Unknown"
                 if index < len(handedness) and handedness[index].classification:
                     label = handedness[index].classification[0].label
+                label = self._correct_handedness_for_unmirrored_frame(label)
                 hands.append(
                     {"handedness": label, "landmarks": points, "features": self._features(landmarks)}
                 )

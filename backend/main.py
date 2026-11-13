@@ -58,6 +58,14 @@ class HistoryInput(BaseModel):
     text: str = Field(min_length=1, max_length=2000)
     confidence: float | None = Field(default=None, ge=0, le=1)
 
+
+class PhraseSuggestionInput(BaseModel):
+    letter: str = Field(min_length=1, max_length=1, pattern="^[A-Za-z]$")
+    category: str = Field(default="Custom", min_length=1, max_length=50)
+    english: str = Field(min_length=1, max_length=250)
+    hindi: str = Field(min_length=1, max_length=250)
+
+
 class ISLReferenceInput(BaseModel):
     id: str | None = None
     symbol: str = Field(default="✋", max_length=20)
@@ -157,7 +165,66 @@ def get_phrase_suggestions(letter: str, limit: int = 8) -> list[dict]:
         if item.get("letter", "").upper() == letter.upper()
     ]
     matching.sort(key=lambda item: int(item.get("priority", 99)))
-    return matching[:limit]
+    with database.connect() as db:
+        rows = db.execute(
+            """
+            SELECT id, letter, category, english, hindi
+            FROM custom_phrases
+            WHERE letter = ?
+            ORDER BY id DESC
+            """,
+            (letter.upper(),),
+        ).fetchall()
+    custom = [
+        {
+            **row,
+            "priority": 0,
+            "custom": True,
+        }
+        for row in rows
+    ]
+    return (custom + matching)[:limit]
+
+
+@app.post("/api/phrase-suggestions", status_code=201)
+def add_phrase_suggestion(payload: PhraseSuggestionInput) -> dict:
+    letter = payload.letter.upper()
+    category = payload.category.strip()
+    english = payload.english.strip()
+    hindi = payload.hindi.strip()
+    if not category or not english or not hindi:
+        raise HTTPException(
+            status_code=422,
+            detail="Category and both English and Hindi phrases are required.",
+        )
+    with database.connect() as db:
+        cursor = db.execute(
+            """
+            INSERT INTO custom_phrases (letter, category, english, hindi)
+            VALUES (?, ?, ?, ?)
+            """,
+            (letter, category, english, hindi),
+        )
+    return {
+        "id": cursor.lastrowid,
+        "letter": letter,
+        "category": category,
+        "english": english,
+        "hindi": hindi,
+        "message": f"Phrase added to the {letter} suggestions.",
+    }
+
+
+@app.delete("/api/phrase-suggestions/{phrase_id}")
+def delete_phrase_suggestion(phrase_id: int) -> dict:
+    with database.connect() as db:
+        cursor = db.execute(
+            "DELETE FROM custom_phrases WHERE id = ?",
+            (phrase_id,),
+        )
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Custom phrase not found.")
+    return {"deleted": True}
 
 
 def _read_guide_text(filename: str) -> str:

@@ -4,9 +4,25 @@ from types import SimpleNamespace
 
 import pytest
 from fastapi import HTTPException
+from sqlalchemy import create_engine
 
-from backend.main import get_phrase_suggestions
+import backend.database as database
+from backend.main import (
+    PhraseSuggestionInput,
+    add_phrase_suggestion,
+    delete_phrase_suggestion,
+    get_phrase_suggestions,
+)
 from backend.vision import LandmarkService
+
+
+@pytest.fixture
+def phrase_database(tmp_path, monkeypatch):
+    engine = create_engine(f"sqlite:///{tmp_path / 'phrases.sqlite3'}")
+    database.initialize(engine)
+    monkeypatch.setattr(database, "get_engine", lambda: engine)
+    yield engine
+    engine.dispose()
 
 
 def test_phrase_dictionary_has_447_bilingual_entries():
@@ -17,7 +33,9 @@ def test_phrase_dictionary_has_447_bilingual_entries():
     assert all(item["english"] and item["hindi"] for item in phrases)
 
 
-def test_phrase_suggestions_are_letter_filtered_priority_sorted_and_limited():
+def test_phrase_suggestions_are_letter_filtered_priority_sorted_and_limited(
+    phrase_database,
+):
     suggestions = get_phrase_suggestions("a", limit=5)
     phrase_file = Path(__file__).resolve().parents[1] / "datasets" / "isl_phrase_dictionary.json"
     source_phrases = json.loads(phrase_file.read_text(encoding="utf-8"))
@@ -35,12 +53,76 @@ def test_phrase_suggestions_are_letter_filtered_priority_sorted_and_limited():
     assert suggestions[0]["hindi"]
 
 
+def test_custom_phrase_is_saved_and_returned_first_for_its_letter(phrase_database):
+    saved = add_phrase_suggestion(
+        PhraseSuggestionInput(
+            letter="a",
+            category="Personal",
+            english="Ask for directions",
+            hindi="कृपया रास्ता बताइए",
+        )
+    )
+
+    suggestions = get_phrase_suggestions("A", limit=3)
+
+    assert saved["letter"] == "A"
+    assert saved["english"] == "Ask for directions"
+    assert suggestions[0] == {
+        "id": saved["id"],
+        "letter": "A",
+        "category": "Personal",
+        "english": "Ask for directions",
+        "hindi": "कृपया रास्ता बताइए",
+        "priority": 0,
+        "custom": True,
+    }
+
+
+def test_custom_phrase_can_be_deleted_from_its_suggestions(phrase_database):
+    saved = add_phrase_suggestion(
+        PhraseSuggestionInput(
+            letter="Z",
+            category="Personal",
+            english="Find my destination",
+            hindi="मुझे अपना गंतव्य ढूँढना है",
+        )
+    )
+
+    assert get_phrase_suggestions("Z")[0]["id"] == saved["id"]
+    assert delete_phrase_suggestion(saved["id"]) == {"deleted": True}
+    assert all(
+        item.get("id") != saved["id"]
+        for item in get_phrase_suggestions("Z")
+    )
+
+
+def test_deleting_unknown_custom_phrase_returns_not_found(phrase_database):
+    with pytest.raises(HTTPException) as error:
+        delete_phrase_suggestion(987654)
+
+    assert error.value.status_code == 404
+
+
 @pytest.mark.parametrize("letter", ["", "AA", "1", "?"])
 def test_phrase_suggestions_reject_invalid_letters(letter):
     with pytest.raises(HTTPException) as error:
         get_phrase_suggestions(letter)
 
     assert error.value.status_code == 400
+
+
+def test_custom_phrase_rejects_blank_translations(phrase_database):
+    with pytest.raises(HTTPException) as error:
+        add_phrase_suggestion(
+            PhraseSuggestionInput(
+                letter="B",
+                category="Personal",
+                english=" ",
+                hindi="संदेश",
+            )
+        )
+
+    assert error.value.status_code == 422
 
 
 def test_eye_aspect_ratio_distinguishes_open_and_closed_eyes():

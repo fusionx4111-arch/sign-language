@@ -63,7 +63,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css?v=20261108_7">
+  <link rel="stylesheet" href="/styles.css?v=20261113_1">
 </head>
 <body>
   <div class="app-shell">
@@ -165,9 +165,20 @@
               <div class="panel-heading">
                 <div>
                   <h2>Phrase ideas</h2>
-                  <p id="phrase-status">Ready-to-speak suggestions are available while the camera is off. Click one to add it to your sentence and hear it spoken.</p>
+                  <p id="phrase-status">Click a phrase to add it to your sentence and speak it immediately. Use Add to sentence to add it without speaking.</p>
                 </div>
+                <button id="phrase-add-toggle" class="text-button" type="button">＋ Add phrase</button>
               </div>
+              <form id="phrase-form" class="phrase-form" hidden>
+                <label>Suggestion letter<input id="phrase-letter" required maxlength="1" pattern="[A-Za-z]" title="Enter one letter from A to Z" placeholder="A"></label>
+                <label>Category<input id="phrase-category" maxlength="50" value="Personal"></label>
+                <label>English phrase<input id="phrase-english" required maxlength="250" placeholder="Enter your phrase in English"></label>
+                <label>Hindi phrase<input id="phrase-hindi" required maxlength="250" placeholder="हिंदी में वाक्य लिखें"></label>
+                <div class="phrase-form-actions">
+                  <button class="button button-primary" type="submit">Save phrase</button>
+                  <button id="phrase-cancel" class="button button-secondary" type="button">Cancel</button>
+                </div>
+              </form>
               <div class="phrase-list" id="phrase-list"></div>
               <div class="phrase-controls">
                 <div class="phrase-toggles-row">
@@ -178,6 +189,7 @@
                 <div class="button-row">
                   <button id="phrase-prev" class="button button-secondary" disabled>← Prev</button>
                   <button id="phrase-next" class="button button-secondary" disabled>Next →</button>
+                  <button id="phrase-add" class="button button-secondary" disabled>Add to sentence</button>
                   <button id="phrase-use" class="button button-primary" disabled>Use &amp; speak</button>
                 </div>
               </div>
@@ -257,7 +269,7 @@
             <div class="recognition-help-grid">
               <p><strong>1. Start the camera.</strong> Allow access and keep your hands clearly inside the frame.</p>
               <p><strong>2. Train your signs.</strong> Save examples in AI Learning Mode; live matching uses those saved samples.</p>
-              <p><strong>3. Build your sentence.</strong> Click a phrase suggestion to add it and hear it spoken, even when the camera is off.</p>
+              <p><strong>3. Build your sentence.</strong> Click a phrase idea to add it and speak it immediately, or use Add to sentence to add it silently.</p>
             </div>
           </article>
         </div>
@@ -700,6 +712,6 @@
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </main>
   </div>
-  <script src="/app.js?v=20261112_9" defer></script>
+  <script src="/app.js?v=20261113_3" defer></script>
 </body>
 </html>

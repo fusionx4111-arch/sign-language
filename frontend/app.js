@@ -637,20 +637,24 @@ function renderPhraseSuggestions(status = null) {
   const items = state.phraseSuggestions;
   const cameraActive = state.stream?.getVideoTracks().some((track) => track.readyState === "live");
   $("#phrase-status").textContent = status || (state.phraseMode === "offline"
-    ? `${cameraActive ? "No stable letter is recognized yet." : "Camera is off."} Click a suggested sentence to add it to your sentence and hear it spoken.`
+    ? `${cameraActive ? "No stable letter is recognized yet." : "Camera is off."} Click a phrase to add it and speak it immediately, or use Add to sentence to add it silently.`
     : items.length
-      ? `Priority-ranked ideas for letter ${state.phraseLetter}. Suggestions are not translations; click one to add and speak it.`
+      ? `Priority-ranked ideas for letter ${state.phraseLetter}. Click a phrase to add and speak it immediately; custom phrases can be deleted.`
       : `No phrase ideas found for ${state.phraseLetter || "this letter"}.`);
   list.innerHTML = items.map((item, index) => `
-    <button class="phrase-option${index === state.selectedPhraseIndex ? " selected" : ""}"
-      type="button" data-phrase-index="${index}" aria-pressed="${index === state.selectedPhraseIndex}">
-      <span class="phrase-option-meta">${escapeHtml(item.category)} · Priority ${item.priority}</span>
-      <strong>${escapeHtml(item.english)}</strong>
-      <span>${escapeHtml(item.hindi)}</span>
-    </button>`).join("");
+    <div class="phrase-suggestion">
+      <button class="phrase-option${index === state.selectedPhraseIndex ? " selected" : ""}"
+        type="button" data-phrase-index="${index}" aria-pressed="${index === state.selectedPhraseIndex}">
+        <span class="phrase-option-meta">${item.custom ? `Your phrase · ${escapeHtml(item.category)}` : `${escapeHtml(item.category)} · Priority ${item.priority}`}</span>
+        <strong>${escapeHtml(item.english)}</strong>
+        <span>${escapeHtml(item.hindi)}</span>
+      </button>
+      ${item.custom ? `<button class="phrase-delete" type="button" data-delete-phrase-id="${item.id}" aria-label="Delete custom phrase: ${escapeHtml(item.english)}" title="Delete custom phrase">×</button>` : ""}
+    </div>`).join("");
   const hasSelection = state.selectedPhraseIndex >= 0 && state.selectedPhraseIndex < items.length;
   $("#phrase-prev").disabled = !hasSelection || state.selectedPhraseIndex === 0;
   $("#phrase-next").disabled = !hasSelection || state.selectedPhraseIndex >= items.length - 1;
+  $("#phrase-add").disabled = !hasSelection;
   $("#phrase-use").disabled = !hasSelection;
 }
 
@@ -678,16 +682,53 @@ function changePhraseSelection(direction) {
   $("#phrase-list").querySelector(`[data-phrase-index="${next}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 
-function useSelectedPhrase(index = state.selectedPhraseIndex) {
+function selectedPhraseText(index) {
   const phrase = state.phraseSuggestions[index];
-  if (!phrase) return toast("Select a phrase idea first.");
+  if (!phrase) {
+    toast("Select a phrase idea first.");
+    return null;
+  }
   const text = speechLanguage().toLowerCase().startsWith("hi") ? phrase.hindi : phrase.english;
-  if (!text) return toast("The selected phrase is not available in that language.");
+  if (!text) {
+    toast("The selected phrase is not available in that language.");
+    return null;
+  }
   state.selectedPhraseIndex = index;
   renderPhraseSuggestions();
+  return text;
+}
+
+function addSelectedPhraseToSentence(index = state.selectedPhraseIndex) {
+  const text = selectedPhraseText(index);
+  if (!text) return;
+  appendSentence(text);
+  saveHistory("sign", text);
+  toast("Phrase added to your sentence.");
+}
+
+function useSelectedPhrase(index = state.selectedPhraseIndex) {
+  const text = selectedPhraseText(index);
+  if (!text) return;
   appendSentence(text);
   speakSuggestedSentence(text);
   saveHistory("sign", text);
+}
+
+async function deleteCustomPhrase(phraseId) {
+  const phrase = state.phraseSuggestions.find(
+    (item) => item.custom && item.id === phraseId
+  );
+  if (!phrase) return toast("That custom phrase is no longer available.");
+  if (!confirm(`Delete the custom phrase "${phrase.english}"?`)) return;
+  try {
+    await api(`/api/phrase-suggestions/${phraseId}`, { method: "DELETE" });
+    state.phraseCache.delete(phrase.letter);
+    state.phraseLetter = null;
+    await updatePhraseSuggestions(phrase.letter);
+    toast("Custom phrase deleted.");
+  } catch (error) {
+    toast(`Could not delete phrase: ${error.message}`);
+  }
 }
 
 function activePageIs(id) {
@@ -954,6 +995,32 @@ function appendSentence(word) {
 
 function updateSentenceCount() {
   $("#sentence-count").textContent = `${$("#sentence-text").value.length} characters`;
+}
+
+async function savePhraseSuggestion(event) {
+  event.preventDefault();
+  const letter = $("#phrase-letter").value.trim().toUpperCase();
+  const payload = {
+    letter,
+    category: $("#phrase-category").value.trim() || "Personal",
+    english: $("#phrase-english").value.trim(),
+    hindi: $("#phrase-hindi").value.trim()
+  };
+  try {
+    const result = await api("/api/phrase-suggestions", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+    state.phraseCache.delete(letter);
+    state.phraseLetter = null;
+    await updatePhraseSuggestions(letter);
+    $("#phrase-form").reset();
+    $("#phrase-form").hidden = true;
+    $("#phrase-add-toggle").textContent = "＋ Add phrase";
+    toast(result.message);
+  } catch (error) {
+    toast(`Could not save phrase: ${error.message}`);
+  }
 }
 
 async function createGesture(event) {
@@ -1235,8 +1302,32 @@ function setupEvents() {
   $("#save-sentence").addEventListener("click", () => saveHistory("sign", $("#sentence-text").value));
   $("#phrase-prev").addEventListener("click", () => changePhraseSelection(-1));
   $("#phrase-next").addEventListener("click", () => changePhraseSelection(1));
+  $("#phrase-add-toggle").addEventListener("click", () => {
+    const form = $("#phrase-form");
+    form.hidden = !form.hidden;
+    $("#phrase-add-toggle").textContent = form.hidden ? "＋ Add phrase" : "Cancel";
+    if (!form.hidden) {
+      $("#phrase-letter").value = state.formedLetter || "";
+      $("#phrase-english").focus();
+    }
+  });
+  $("#phrase-cancel").addEventListener("click", () => {
+    $("#phrase-form").reset();
+    $("#phrase-form").hidden = true;
+    $("#phrase-add-toggle").textContent = "＋ Add phrase";
+  });
+  $("#phrase-letter").addEventListener("input", (event) => {
+    event.target.value = event.target.value.toUpperCase();
+  });
+  $("#phrase-form").addEventListener("submit", savePhraseSuggestion);
+  $("#phrase-add").addEventListener("click", () => addSelectedPhraseToSentence());
   $("#phrase-use").addEventListener("click", useSelectedPhrase);
   $("#phrase-list").addEventListener("click", (event) => {
+    const deleteButton = event.target.closest("[data-delete-phrase-id]");
+    if (deleteButton) {
+      deleteCustomPhrase(Number(deleteButton.dataset.deletePhraseId));
+      return;
+    }
     const option = event.target.closest("[data-phrase-index]");
     if (!option) return;
     useSelectedPhrase(Number(option.dataset.phraseIndex));

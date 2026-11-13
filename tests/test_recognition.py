@@ -2,6 +2,12 @@ from backend.recognition import FEATURE_SIZE, predict, valid_feature_vector
 from backend.vision import LandmarkService
 
 
+def test_unmirrored_camera_frames_report_correct_hand_sides():
+    assert LandmarkService._correct_handedness_for_unmirrored_frame("Left") == "Right"
+    assert LandmarkService._correct_handedness_for_unmirrored_frame("Right") == "Left"
+    assert LandmarkService._correct_handedness_for_unmirrored_frame("Unknown") == "Unknown"
+
+
 def test_feature_vector_validation():
     assert valid_feature_vector([0.0] * FEATURE_SIZE)
     assert not valid_feature_vector([0.0] * 5)

@@ -72,6 +72,16 @@ history = Table(
         "mode IN ('sign', 'speech', 'emergency')", name="ck_history_mode"
     ),
 )
+custom_phrases = Table(
+    "custom_phrases",
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("letter", String(1), nullable=False),
+    Column("category", String(50), nullable=False),
+    Column("english", String(250), nullable=False),
+    Column("hindi", String(250), nullable=False),
+    Column("created_at", DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP")),
+)
 isl_metadata = MetaData()
 isl_reference = Table(
     "isl_reference",

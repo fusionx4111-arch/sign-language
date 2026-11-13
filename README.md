@@ -41,6 +41,18 @@ The modules are separated between API and service logic. Facial landmarks are sh
    whether each class has enough training, validation, and contributor
    coverage. This is not a full ISL word or sentence translator.
 
+## Add custom live phrase suggestions
+
+Open **Live recognition** and choose **＋ Add phrase** above the Phrase ideas.
+Enter the letter that should suggest the phrase, a category, and its English
+and Hindi text, then choose **Save phrase**. The phrase is saved in the local
+database and appears at the top of suggestions for that letter. When the
+letter is currently selected, the list refreshes immediately; otherwise, it
+appears when that letter's suggestions are shown. Click a suggestion to add it
+to the sentence and speak it immediately. Use **Add to sentence**
+to append it without speaking. Select the **×** beside a custom phrase to
+delete it; built-in suggestions cannot be deleted.
+
 ## Project structure
 
 ```text
